@@ -1,20 +1,19 @@
 const std = @import("std");
 const jok = @import("jok");
+
 const sdl = jok.sdl;
 const font = jok.font;
 const j2d = jok.j2d;
 const print = std.debug.print;
-
-
-const Vec3 = struct { x: f32, y: f32, z: f32 };
-
-const Con = struct {to: usize, weight: f32};
 
 const maxIn: usize = 4;
 const maxOut: usize = 4;
 const maxHidden: usize = 3*3;
 const maxCons: usize = maxIn + maxOut + maxHidden;
 
+const Vec3 = struct {x: f32, y: f32, z: f32};
+
+const Con = struct {to: usize, weight: f32};
 
 const Nuron = struct
 {
@@ -79,7 +78,6 @@ const Bug =struct
             .outputs = outputs,
             .hidden = hidden
         };
-
     }
 };
 
@@ -90,14 +88,12 @@ pub fn init(ctx: jok.Context) !void
     _ = ctx;
     std.log.info("game init", .{});
 
-
     for(0..Bugs.len)|i|
     {
         const ii: i32 = @intCast(i);
         const b = Bug{.x=1 + ii , .y=1, .z=0};
         Bugs[i] = b;
         Bugs[i].init(i);
-
     }
 
     for (Bugs, 0..) |elem, i|
@@ -144,8 +140,6 @@ pub fn draw(ctx: jok.Context) !void {
     //     .aligned,
     // );
     // try j2d.rectFilled(area, rect_color, .{});
-
-
 }
 
 pub fn quit(ctx: jok.Context) void {
