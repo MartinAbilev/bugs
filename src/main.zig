@@ -25,7 +25,11 @@ const Nuron = struct
     cons: [maxCons] Con = undefined,
     fn conToAll(self: *Nuron) void
     {
-        _=self;
+        for(0..self.cons.len)|i|
+        {
+            const con: Con = Con{.to = i, .weight = 0.5};
+            self.cons[i] = con;
+        }
     }
 };
 
