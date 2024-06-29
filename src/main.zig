@@ -168,12 +168,13 @@ pub fn draw(ctx: jok.Context) !void {
 
     for(Bugs)|bug|
     {
-
+        const bugx: f32 =  size.x / 2 + bug.x;
+        const bugy: f32 =  size.y / 2 + bug.y;
         try j2d.image(
             tex[0],
             .{
-                .x = size.x / 2 + bug.x,
-                .y = size.y / 2 + bug.y,
+                .x = bugx,
+                .y = bugy,
             },
             .{
                 .rotate_degree = ctx.seconds() * 60 + bug.x,
@@ -181,6 +182,22 @@ pub fn draw(ctx: jok.Context) !void {
                 .anchor_point = .{ .x = 0.5, .y = 0.5 },
             },
         );
+        for(bug.brain.inputs.nurons, 0..)|inp, i|
+        {
+            _=i;
+            try j2d.image(
+            tex[1],
+            .{
+                .x = bugx+inp.x,
+                .y = bugy+inp.y,
+            },
+            .{
+                .rotate_degree = ctx.seconds() * 60 + bug.x,
+                .scale =.{.x = 0.01, .y = 0.01},
+                .anchor_point = .{ .x = 0.5, .y = 0.5 },
+            },
+            );
+        }
 
     }
 
