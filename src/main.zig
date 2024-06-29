@@ -22,7 +22,11 @@ const Nuron = struct
     x: f32,
     y: f32,
     z: f32,
-    cons: [maxCons] Con = undefined
+    cons: [maxCons] Con = undefined,
+    fn conToAll(self: *Nuron) void
+    {
+        _=self;
+    }
 };
 
 const Inputs = struct {nurons:[maxIn] Nuron};
