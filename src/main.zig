@@ -49,9 +49,9 @@ const Brain = struct
 const Bug =struct
 {
     id: usize = 0,
-    x: i32,
-    y: i32,
-    z: i32,
+    x: f32,
+    y: f32,
+    z: f32,
     brain: Brain = undefined,
     // cords: Vec3,
 
@@ -108,8 +108,8 @@ pub fn init(ctx: jok.Context) !void
 
     for(0..Bugs.len)|i|
     {
-        const ii: i32 = @intCast(i);
-        const b = Bug{.x=1 + ii , .y=1, .z=0};
+        const ii: f32 = @floatFromInt(i);
+        const b = Bug{.x=100 * ii , .y=100 * ii, .z=0};
         Bugs[i] = b;
         Bugs[i].init(i);
     }
@@ -140,21 +140,23 @@ pub fn draw(ctx: jok.Context) !void {
     j2d.begin(.{ .depth_sort = .back_to_forth });
     defer j2d.end();
 
-    try j2d.image(
-        tex,
-        .{
-            .x = ctx.getCanvasSize().x / 2,
-            .y = ctx.getCanvasSize().y / 2,
-        },
-        .{
-            .rotate_degree = ctx.seconds() * 60,
-            .scale = .{
-                .x = 0.8 + @cos(ctx.seconds()) * 0.5,
-                .y = 0.8 + @cos(ctx.seconds()) * 0.5,
+    for(Bugs)|bug|
+    {
+
+        try j2d.image(
+            tex,
+            .{
+                .x = ctx.getCanvasSize().x / 2 + bug.x,
+                .y = ctx.getCanvasSize().y / 2 + bug.y,
             },
-            .anchor_point = .{ .x = 0.5, .y = 0.5 },
-        },
-    );
+            .{
+                .rotate_degree = ctx.seconds() * 60,
+                .scale =.{.x = 0.1, .y = 0.1},
+                .anchor_point = .{ .x = 0.5, .y = 0.5 },
+            },
+        );
+
+    }
 
     // atlas = try font.DebugFont.getAtlas(ctx, 20);
     // try j2d.text(
