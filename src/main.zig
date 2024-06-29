@@ -150,7 +150,7 @@ pub fn draw(ctx: jok.Context) !void {
                 .y = ctx.getCanvasSize().y / 2 + bug.y,
             },
             .{
-                .rotate_degree = ctx.seconds() * 60,
+                .rotate_degree = ctx.seconds() * 60 + bug.x,
                 .scale =.{.x = 0.1, .y = 0.1},
                 .anchor_point = .{ .x = 0.5, .y = 0.5 },
             },
