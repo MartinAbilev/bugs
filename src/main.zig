@@ -158,7 +158,7 @@ pub fn update(ctx: jok.Context) !void {
 pub fn draw(ctx: jok.Context) !void {
     ctx.clear(null);
 
-    // const size = ctx.getCanvasSize();
+    const size = ctx.getCanvasSize();
     // const rect_color = sdl.Color.rgba(0, 128, 0, 120);
     // var area: sdl.RectangleF = undefined;
     // var atlas: *font.Atlas = undefined;
@@ -172,8 +172,8 @@ pub fn draw(ctx: jok.Context) !void {
         try j2d.image(
             tex[0],
             .{
-                .x = ctx.getCanvasSize().x / 2 + bug.x,
-                .y = ctx.getCanvasSize().y / 2 + bug.y,
+                .x = size.x / 2 + bug.x,
+                .y = size.y / 2 + bug.y,
             },
             .{
                 .rotate_degree = ctx.seconds() * 60 + bug.x,
