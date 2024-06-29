@@ -6,8 +6,8 @@ const font = jok.font;
 const j2d = jok.j2d;
 const print = std.debug.print;
 
-var svg: jok.svg.SvgBitmap = undefined;
-var tex: sdl.Texture = undefined;
+var svg: [2]jok.svg.SvgBitmap = undefined;
+var tex: [2]sdl.Texture = undefined;
 
 const maxIn: usize = 4;
 const maxOut: usize = 4;
@@ -111,19 +111,25 @@ pub fn init(ctx: jok.Context) !void
     // _ = ctx;
     std.log.info("game init", .{});
 
-        svg = try jok.svg.createBitmapFromFile(
+    svg[0] = try jok.svg.createBitmapFromFile(
         ctx.allocator(),
         "assets/bug.svg",
         .{},
     );
+    svg[1] = try jok.svg.createBitmapFromFile(
+        ctx.allocator(),
+        "assets/inp.svg",
+        .{},
+    );
 
-    tex = try jok.utils.gfx.createTextureFromPixels(
+    for(svg, 0..)|asvg, i|
+    tex[i] = try jok.utils.gfx.createTextureFromPixels(
         ctx,
-        svg.pixels,
-        svg.format,
+        asvg.pixels,
+        asvg.format,
         .static,
-        svg.width,
-        svg.height,
+        asvg.width,
+        asvg.height,
     );
 
     for(0..Bugs.len)|i|
@@ -164,7 +170,7 @@ pub fn draw(ctx: jok.Context) !void {
     {
 
         try j2d.image(
-            tex,
+            tex[0],
             .{
                 .x = ctx.getCanvasSize().x / 2 + bug.x,
                 .y = ctx.getCanvasSize().y / 2 + bug.y,
@@ -202,7 +208,10 @@ pub fn quit(ctx: jok.Context) void {
     _ = ctx;
     std.log.info("game quit", .{});
 
-    svg.destroy();
-    tex.destroy();
+    for(0..svg.len)|i|
+    {
+        svg[i].destroy();
+        tex[i].destroy();
+    }
 }
 
