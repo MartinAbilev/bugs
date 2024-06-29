@@ -61,16 +61,16 @@ const Bug =struct
         self.id = id;
 
         var idc: usize= 0;
-        
-        var  in1 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0}; idc = idc + 1 ;
-        var  in2 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0}; idc = idc + 1 ;
-        var  in3 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0}; idc = idc + 1 ;
-        var  in4 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0}; idc = idc + 1 ;
 
-        var  on1 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0}; idc = idc + 1 ;
-        var  on2 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0}; idc = idc + 1 ;
-        var  on3 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0}; idc = idc + 1 ;
-        var  on4 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0}; idc = idc + 1 ;
+        var  in1 = Nuron{.id = idc, .x = 50, .y = 0, .z = 0}; idc = idc + 1 ;
+        var  in2 = Nuron{.id = idc, .x = -50, .y = 0, .z = 0}; idc = idc + 1 ;
+        var  in3 = Nuron{.id = idc, .x = 0, .y = 50, .z = 0}; idc = idc + 1 ;
+        var  in4 = Nuron{.id = idc, .x = 0, .y = -50, .z = 0}; idc = idc + 1 ;
+
+        var  on1 = Nuron{.id = idc, .x = 30, .y = 0, .z = 0}; idc = idc + 1 ;
+        var  on2 = Nuron{.id = idc, .x = -30, .y = 0, .z = 0}; idc = idc + 1 ;
+        var  on3 = Nuron{.id = idc, .x = 0, .y = 30, .z = 0}; idc = idc + 1 ;
+        var  on4 = Nuron{.id = idc, .x = 0, .y = -30, .z = 0}; idc = idc + 1 ;
 
         var  hnn: [maxHidden]Nuron = undefined;
         for(0..maxHidden)|i|
