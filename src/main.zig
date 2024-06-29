@@ -6,6 +6,9 @@ const font = jok.font;
 const j2d = jok.j2d;
 const print = std.debug.print;
 
+var svg: jok.svg.SvgBitmap = undefined;
+var tex: sdl.Texture = undefined;
+
 const maxIn: usize = 4;
 const maxOut: usize = 4;
 const maxHidden: usize = 3*3;
@@ -85,8 +88,23 @@ var Bugs :[3] Bug= undefined;
 
 pub fn init(ctx: jok.Context) !void
 {
-    _ = ctx;
+    // _ = ctx;
     std.log.info("game init", .{});
+
+        svg = try jok.svg.createBitmapFromFile(
+        ctx.allocator(),
+        "assets/bug.svg",
+        .{},
+    );
+
+    tex = try jok.utils.gfx.createTextureFromPixels(
+        ctx,
+        svg.pixels,
+        svg.format,
+        .static,
+        svg.width,
+        svg.height,
+    );
 
     for(0..Bugs.len)|i|
     {
@@ -122,6 +140,22 @@ pub fn draw(ctx: jok.Context) !void {
     j2d.begin(.{ .depth_sort = .back_to_forth });
     defer j2d.end();
 
+    try j2d.image(
+        tex,
+        .{
+            .x = ctx.getCanvasSize().x / 2,
+            .y = ctx.getCanvasSize().y / 2,
+        },
+        .{
+            .rotate_degree = ctx.seconds() * 60,
+            .scale = .{
+                .x = 0.8 + @cos(ctx.seconds()) * 0.5,
+                .y = 0.8 + @cos(ctx.seconds()) * 0.5,
+            },
+            .anchor_point = .{ .x = 0.5, .y = 0.5 },
+        },
+    );
+
     // atlas = try font.DebugFont.getAtlas(ctx, 20);
     // try j2d.text(
     //     .{
@@ -145,5 +179,8 @@ pub fn draw(ctx: jok.Context) !void {
 pub fn quit(ctx: jok.Context) void {
     _ = ctx;
     std.log.info("game quit", .{});
+
+    svg.destroy();
+    tex.destroy();
 }
 
