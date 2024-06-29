@@ -60,19 +60,39 @@ const Bug =struct
         //self.cords = Vec3 {.x = 1, .y = 1, .z = 1};
         self.id = id;
 
-        const in = Nuron{.id = 0, .x = 0, .y = 0, .z = 0};
-        const on = Nuron{.id = 0, .x = 0, .y = 0, .z = 0};
+        var idc: usize= 0;
+        
+        var  in1 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0}; idc = idc + 1 ;
+        var  in2 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0}; idc = idc + 1 ;
+        var  in3 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0}; idc = idc + 1 ;
+        var  in4 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0}; idc = idc + 1 ;
+
+        var  on1 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0}; idc = idc + 1 ;
+        var  on2 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0}; idc = idc + 1 ;
+        var  on3 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0}; idc = idc + 1 ;
+        var  on4 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0}; idc = idc + 1 ;
 
         var  hnn: [maxHidden]Nuron = undefined;
         for(0..maxHidden)|i|
         {
-            const hn = Nuron{.id = 0, .x = 0, .y = 0, .z = 0};
+            const hn = Nuron{.id = idc, .x = 0, .y = 0, .z = 0};
             hnn[i] = hn;
-
+            hnn[i].conToAll();
+            idc = idc + 1 ;
         }
 
-        const inputs   = Inputs{.nurons=[_]Nuron{in, in, in, in}};
-        const outputs = Outputs{.nurons = [_]Nuron{on, on, on, on}};
+        in1.conToAll();
+        in2.conToAll();
+        in3.conToAll();
+        in4.conToAll();
+
+        on1.conToAll();
+        on2.conToAll();
+        on3.conToAll();
+        on4.conToAll();
+
+        const inputs   = Inputs{.nurons=[_]Nuron{in1, in2, in3, in4}};
+        const outputs = Outputs{.nurons = [_]Nuron{on1, on2, on3, on4}};
         const hidden   = Hidden{.nurons = hnn};
 
         self.brain = Brain
