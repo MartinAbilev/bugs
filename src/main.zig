@@ -41,15 +41,17 @@ const Nuron = struct
 
         for (self.cons, 0..self.cons.len) |con, i|
         {
-            _=con;
-            _=i;
-            varsum *=1;
-            // varsum = varsum * con.weight * allnurons[i].neuronvalue   ;
-                    print("varsum: {}\n", .{allnurons[0].id});
+            // _=con;
+            // _=i;
+            if(allnurons.len > i)
+            {
+                print("all nuron id, totalneurons, counter i: {} {} {}\n", .{allnurons[i].id, allnurons.len, i});
+                varsum = varsum * con.weight * allnurons[i].neuronvalue   ;
+            }
 
         }
         self.neuronvalue = varsum;
-        print("varsum: {}\n", .{self.neuronvalue});
+        print("varsum: {}\n", .{self.neuronvalue+varsum});
     }
 };
 
