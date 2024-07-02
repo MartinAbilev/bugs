@@ -25,6 +25,7 @@ const Nuron = struct
     y: f32,
     z: f32,
     cons: [maxCons] Con = undefined,
+    neuronvalue: f32 = 0.001,
     fn conToAll(self: *Nuron) void
     {
         for(0..self.cons.len)|i|
@@ -32,6 +33,19 @@ const Nuron = struct
             const con: Con = Con{.to = i, .weight = 0.5};
             self.cons[i] = con;
         }
+    }
+    fn fire(self: *Nuron, allnurons: []Nuron) void
+    {
+        _=allnurons;
+        // var varsum: f32= 0.001;
+
+        // for (self.cons, 0..self.cons.len) |con, i|
+        // {
+        //     _=self.cons;
+        //     varsum = varsum * con.weight * allnurons[i].neuronvalue   ;
+        // }
+        // self.neuronvalue = varsum;
+        print("varsum: {}\n", .{self.neuronvalue});
     }
 };
 
@@ -102,6 +116,16 @@ const Bug =struct
             .hidden = hidden
         };
     }
+    fn fire(self: *Bug) void
+    {
+
+        for (self.brain.hidden.nurons, 0..self.brain.hidden.nurons.len) |nuron,i|
+        {
+            _=nuron;
+            self.brain.hidden.nurons[i].fire(&self.brain.hidden.nurons);
+
+        }
+    }
 };
 
 var Bugs :[3] Bug= undefined;
@@ -153,6 +177,11 @@ pub fn event(ctx: jok.Context, e: sdl.Event) !void {
 
 pub fn update(ctx: jok.Context) !void {
     _ = ctx;
+    for(Bugs, 0..Bugs.len) |bug, i|
+    {
+        Bugs[i].fire();
+        _=bug;
+    }
 }
 
 pub fn draw(ctx: jok.Context) !void {
