@@ -36,15 +36,19 @@ const Nuron = struct
     }
     fn fire(self: *Nuron, allnurons: []Nuron) void
     {
-        _=allnurons;
-        // var varsum: f32= 0.001;
+        // _=allnurons;
+        var varsum: f32= 0.001;
 
-        // for (self.cons, 0..self.cons.len) |con, i|
-        // {
-        //     _=self.cons;
-        //     varsum = varsum * con.weight * allnurons[i].neuronvalue   ;
-        // }
-        // self.neuronvalue = varsum;
+        for (self.cons, 0..self.cons.len) |con, i|
+        {
+            _=con;
+            _=i;
+            varsum *=1;
+            // varsum = varsum * con.weight * allnurons[i].neuronvalue   ;
+                    print("varsum: {}\n", .{allnurons[0].id});
+
+        }
+        self.neuronvalue = varsum;
         print("varsum: {}\n", .{self.neuronvalue});
     }
 };
