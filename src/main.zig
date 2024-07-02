@@ -25,7 +25,7 @@ const Nuron = struct
     y: f32,
     z: f32,
     cons: [maxCons] Con = undefined,
-    neuronvalue: f32 = 0.001,
+    neuronvalue: f32 = 0.1,
     fn conToAll(self: *Nuron) void
     {
         for(0..self.cons.len)|i|
@@ -37,7 +37,7 @@ const Nuron = struct
     fn fire(self: *Nuron, allnurons: []Nuron) void
     {
         // _=allnurons;
-        var varsum: f32= 0.001;
+        var varsum: f32= 0.1;
 
         for (self.cons, 0..self.cons.len) |con, i|
         {
@@ -50,8 +50,15 @@ const Nuron = struct
             }
 
         }
-        self.neuronvalue = varsum;
-        print("varsum: {}\n", .{self.neuronvalue+varsum});
+        if(varsum >= 0.5)
+        {
+            self.neuronvalue = 1.0;
+        }
+        else
+        {
+            self.neuronvalue = 0.1;
+        }
+        print("varsum: {}\n", .{self.neuronvalue});
     }
 };
 
