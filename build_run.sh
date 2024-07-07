@@ -1,1 +1,1 @@
-zig build run
+zig build bugs

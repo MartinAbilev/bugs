@@ -1,10 +1,13 @@
 const std = @import("std");
 const jok = @import("jok");
 
+const cp = jok.cp;
 const sdl = jok.sdl;
 const font = jok.font;
 const j2d = jok.j2d;
 const print = std.debug.print;
+
+var rng: std.Random.Xoshiro256 = undefined;
 
 var svg: [2]jok.svg.SvgBitmap = undefined;
 var tex: [2]sdl.Texture = undefined;
@@ -13,6 +16,8 @@ const maxIn: usize = 4;
 const maxOut: usize = 4;
 const maxHidden: usize = 3*3;
 const maxCons: usize = maxIn + maxOut + maxHidden;
+
+var world: cp.World = undefined;
 
 const Vec3 = struct {x: f32, y: f32, z: f32};
 
@@ -148,6 +153,11 @@ pub fn init(ctx: jok.Context) !void
     // _ = ctx;
     std.log.info("game init", .{});
 
+     rng = std.Random.DefaultPrng.init(
+        @intCast(std.time.timestamp()),
+    );
+
+    // const size = ctx.getCanvasSize();
     svg[0] = try jok.svg.createBitmapFromFile(
         ctx.allocator(),
         "assets/bug.svg",
@@ -158,6 +168,12 @@ pub fn init(ctx: jok.Context) !void
         "assets/inp.svg",
         .{},
     );
+
+    world = try cp.World.init(ctx.allocator(), .{
+        .gravity = .{ .x = 0, .y = 600 },
+    });
+
+
 
     for(svg, 0..)|asvg, i|
     tex[i] = try jok.utils.gfx.createTextureFromPixels(
@@ -189,12 +205,13 @@ pub fn event(ctx: jok.Context, e: sdl.Event) !void {
 }
 
 pub fn update(ctx: jok.Context) !void {
-    _ = ctx;
+    // _ = ctx;
     for(Bugs, 0..Bugs.len) |bug, i|
     {
         Bugs[i].fire();
         _=bug;
     }
+    world.update(ctx.deltaSeconds());
 }
 
 pub fn draw(ctx: jok.Context) !void {
@@ -207,6 +224,9 @@ pub fn draw(ctx: jok.Context) !void {
 
     j2d.begin(.{ .depth_sort = .back_to_forth });
     defer j2d.end();
+
+    ctx.displayStats(.{});
+    try world.debugDraw(ctx.renderer());
 
     for(Bugs)|bug|
     {
@@ -242,30 +262,12 @@ pub fn draw(ctx: jok.Context) !void {
         }
 
     }
-
-    // atlas = try font.DebugFont.getAtlas(ctx, 20);
-    // try j2d.text(
-    //     .{
-    //         .atlas = atlas,
-    //         .pos = .{ .x = 0, .y = 0 },
-    //         .ypos_type = .top,
-    //         .tint_color = sdl.Color.cyan,
-    //     },
-    //     "ABCDEFGHIJKL abcdefghijkl",
-    //     .{},
-    // );
-    // area = try atlas.getBoundingBox(
-    //     "ABCDEFGHIJKL abcdefghijkl",
-    //     .{ .x = 0, .y = 0 },
-    //     .top,
-    //     .aligned,
-    // );
-    // try j2d.rectFilled(area, rect_color, .{});
 }
 
 pub fn quit(ctx: jok.Context) void {
     _ = ctx;
     std.log.info("game quit", .{});
+    world.deinit();
 
     for(0..svg.len)|i|
     {
