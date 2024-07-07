@@ -89,6 +89,7 @@ const Bug =struct
 
     fn init(self: *Bug, ctx: jok.Context, id: usize) !void
     {
+        _=ctx;
         //self.cords = Vec3 {.x = 1, .y = 1, .z = 1};
         self.id = id;
 
@@ -134,14 +135,14 @@ const Bug =struct
             .hidden = hidden
         };
 
-        const size = ctx.getCanvasSize();
+        // const size = ctx.getCanvasSize();
 
 
         const dynamic_body: cp.World.ObjectOption.BodyProperty = .{
             .dynamic = .{
                 .position = .{
-                    .x = size.x / 2,
-                    .y = 10,
+                    .x = self.x,
+                    .y = self.y,
                 },
             },
         };
@@ -213,11 +214,13 @@ pub fn init(ctx: jok.Context) !void
         asvg.height,
     );
 
+    const size = ctx.getCanvasSize();
+
     for(0..Bugs.len)|i|
     {
         const ii: f32 = @floatFromInt(i);
-        const x: f32 = 100 * ii;
-        const y: f32 = 100 * ii;
+        const x: f32 = 100 * ii + size.x / 2;
+        const y: f32 = 100 * ii + size.y / 2;
         const b = Bug{.x=x , .y=y, .z=0};
         Bugs[i] = b;
         try Bugs[i].init(ctx, i);
@@ -250,7 +253,7 @@ pub fn update(ctx: jok.Context) !void {
 pub fn draw(ctx: jok.Context) !void {
     ctx.clear(null);
 
-    const size = ctx.getCanvasSize();
+    // const size = ctx.getCanvasSize();
     // const rect_color = sdl.Color.rgba(0, 128, 0, 120);
     // var area: sdl.RectangleF = undefined;
     // var atlas: *font.Atlas = undefined;
@@ -263,8 +266,8 @@ pub fn draw(ctx: jok.Context) !void {
 
     for(Bugs)|bug|
     {
-        const bugx: f32 =  size.x / 2 + bug.x;
-        const bugy: f32 =  size.y / 2 + bug.y;
+        const bugx: f32 =  bug.x;
+        const bugy: f32 =  bug.y;
         try j2d.image(
             tex[0],
             .{
