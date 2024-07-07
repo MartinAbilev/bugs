@@ -87,7 +87,7 @@ const Bug =struct
     brain: Brain = undefined,
     // cords: Vec3,
 
-    fn init(self: *Bug, id: usize) void
+    fn init(self: *Bug, ctx: jok.Context, id: usize) !void
     {
         //self.cords = Vec3 {.x = 1, .y = 1, .z = 1};
         self.id = id;
@@ -133,6 +133,34 @@ const Bug =struct
             .outputs = outputs,
             .hidden = hidden
         };
+
+        const size = ctx.getCanvasSize();
+
+
+        const dynamic_body: cp.World.ObjectOption.BodyProperty = .{
+            .dynamic = .{
+                .position = .{
+                    .x = size.x / 2,
+                    .y = 10,
+                },
+            },
+        };
+        const physics: cp.World.ObjectOption.ShapeProperty.Physics = .{
+            .weight = .{ .mass = 1 },
+            .elasticity = 0.5,
+        };
+
+        _ = try world.addObject(.{
+            .body = dynamic_body,
+            .shapes = &.{
+                .{
+                    .circle = .{
+                        .radius = 15,
+                        .physics = physics,
+                    },
+                },
+            },
+        });
     }
     fn fire(self: *Bug) void
     {
@@ -157,7 +185,7 @@ pub fn init(ctx: jok.Context) !void
         @intCast(std.time.timestamp()),
     );
 
-    // const size = ctx.getCanvasSize();
+
     svg[0] = try jok.svg.createBitmapFromFile(
         ctx.allocator(),
         "assets/bug.svg",
@@ -188,15 +216,20 @@ pub fn init(ctx: jok.Context) !void
     for(0..Bugs.len)|i|
     {
         const ii: f32 = @floatFromInt(i);
-        const b = Bug{.x=100 * ii , .y=100 * ii, .z=0};
+        const x: f32 = 100 * ii;
+        const y: f32 = 100 * ii;
+        const b = Bug{.x=x , .y=y, .z=0};
         Bugs[i] = b;
-        Bugs[i].init(i);
+        try Bugs[i].init(ctx, i);
     }
 
     for (Bugs, 0..) |elem, i|
     {
         std.log.info("id: {}, bug: {}\n", .{i, elem});
     }
+
+
+
 }
 
 pub fn event(ctx: jok.Context, e: sdl.Event) !void {
