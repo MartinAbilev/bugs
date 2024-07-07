@@ -39,7 +39,7 @@ const Nuron = struct
             self.cons[i] = con;
         }
     }
-    fn fire(self: *Nuron, allnurons: []Nuron) void
+    fn update(self: *Nuron, allnurons: []Nuron) void
     {
         // _=allnurons;
         var varsum: f32= 0.1;
@@ -85,6 +85,8 @@ const Bug =struct
     y: f32,
     z: f32,
     brain: Brain = undefined,
+    dynamic_body: cp.World.ObjectOption.BodyProperty = undefined,
+    physics: cp.World.ObjectOption.ShapeProperty.Physics = undefined,
     // cords: Vec3,
 
     fn init(self: *Bug, ctx: jok.Context, id: usize) !void
@@ -138,7 +140,7 @@ const Bug =struct
         // const size = ctx.getCanvasSize();
 
 
-        const dynamic_body: cp.World.ObjectOption.BodyProperty = .{
+        self.dynamic_body = .{
             .dynamic = .{
                 .position = .{
                     .x = self.x,
@@ -146,32 +148,34 @@ const Bug =struct
                 },
             },
         };
-        const physics: cp.World.ObjectOption.ShapeProperty.Physics = .{
+        self.physics = .{
             .weight = .{ .mass = 1 },
             .elasticity = 0.5,
         };
 
         _ = try world.addObject(.{
-            .body = dynamic_body,
+            .body = self.dynamic_body,
             .shapes = &.{
                 .{
                     .circle = .{
                         .radius = 15,
-                        .physics = physics,
+                        .physics = self.physics,
                     },
                 },
             },
         });
     }
-    fn fire(self: *Bug) void
+    fn update(self: *Bug) void
     {
 
-        for (self.brain.hidden.nurons, 0..self.brain.hidden.nurons.len) |nuron,i|
-        {
-            _=nuron;
-            self.brain.hidden.nurons[i].fire(&self.brain.hidden.nurons);
+        // for (self.brain.hidden.nurons, 0..self.brain.hidden.nurons.len) |nuron,i|
+        // {
+        //     _=nuron;
+        //     self.brain.hidden.nurons[i].update(&self.brain.hidden.nurons);
 
-        }
+        // }
+
+        _=self;
     }
 };
 
@@ -244,8 +248,9 @@ pub fn update(ctx: jok.Context) !void {
     // _ = ctx;
     for(Bugs, 0..Bugs.len) |bug, i|
     {
-        Bugs[i].fire();
+        Bugs[i].update();
         _=bug;
+        // _=i;
     }
     world.update(ctx.deltaSeconds());
 }
