@@ -176,7 +176,7 @@ const Bug =struct
                 .dynamic = .{
                     .position = .{
                         .x = self.x + 0,
-                        .y = self.y + 100,
+                        .y = self.y + 50,
                     },
                 }
             },
@@ -200,7 +200,7 @@ const Bug =struct
                 .dynamic = .{
                     .position = .{
                         .x = self.x + 0,
-                        .y = self.y - 100,
+                        .y = self.y - 50,
                     },
                 }
             },
@@ -223,7 +223,7 @@ const Bug =struct
             .body = .{
                 .dynamic = .{
                     .position = .{
-                        .x = self.x + 100,
+                        .x = self.x + 50,
                         .y = self.y + 0,
                     },
                 }
@@ -247,7 +247,7 @@ const Bug =struct
             .body = .{
                 .dynamic = .{
                     .position = .{
-                        .x = self.x - 100,
+                        .x = self.x - 50,
                         .y = self.y + 0,
                     },
                 }
@@ -280,6 +280,22 @@ const Bug =struct
             _=nuron;
             self.brain.hidden.nurons[i].update(&self.brain.hidden.nurons);
         }
+
+        const pinp1 = cp.c.cpBodyGetPosition(self.pinp1);
+        self.brain.inputs.nurons[0].x = pinp1.x;
+        self.brain.inputs.nurons[0].y = pinp1.y;
+
+        const pinp2 = cp.c.cpBodyGetPosition(self.pinp2);
+        self.brain.inputs.nurons[1].x = pinp2.x;
+        self.brain.inputs.nurons[1].y = pinp2.y;
+
+        const pinp3 = cp.c.cpBodyGetPosition(self.pinp3);
+        self.brain.inputs.nurons[2].x = pinp3.x;
+        self.brain.inputs.nurons[2].y = pinp3.y;
+
+        const pinp4 = cp.c.cpBodyGetPosition(self.pinp4);
+        self.brain.inputs.nurons[3].x = pinp4.x;
+        self.brain.inputs.nurons[3].y = pinp4.y;
 
         const b =   self.pbody;
         const bv = cp.c.cpBodyGetPosition(b);
@@ -422,12 +438,12 @@ pub fn draw(ctx: jok.Context) !void {
             try j2d.image(
             tex[1],
             .{
-                .x = bugx+inp.x,
-                .y = bugy+inp.y,
+                .x = inp.x,
+                .y = inp.y,
             },
             .{
                 .rotate_degree = ctx.seconds() * 60 + bug.x,
-                .scale =.{.x = 0.01, .y = 0.01},
+                .scale =.{.x = 0.05, .y = 0.05},
                 .anchor_point = .{ .x = 0.5, .y = 0.5 },
             },
             );
