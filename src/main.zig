@@ -166,7 +166,7 @@ const Bug =struct
             .body = .{
                 .dynamic = .{
                     .position = .{
-                        .x = self.x,
+                        .x = self.x + 30,
                         .y = self.y + 100,
                     },
                 }
@@ -187,15 +187,18 @@ const Bug =struct
         // cpPinJoint *cpPinJointAlloc(void)
         // cpPinJoint *cpPinJointInit(cpPinJoint *joint, cpBody *a, cpBody *b, cpVect anchorA, cpVect anchorB)
         // cpConstraint *cpPinJointNew(cpBody *a, cpBody *b, cpVect anchorA, cpVect anchorB)
+
         // const joint = cp.c.cpPinJointAlloc();
 
-        // _= cp.c.cpPinJointInit(joint, self.pbody, world.objects.items[pinp1].body.?, .{.x=0, .y=0}, .{.x=0, .y=0 } );
+        // _= cp.c.cpPinJointInit(joint.?, world.objects.items[self.pid].body.?, world.objects.items[pinp1].body.?, .{.x=0, .y=0}, .{.x=0, .y=0 } );
 
-        _= cp.c.cpPinJointNew(self.pbody, world.objects.items[pinp1].body.?, .{.x=0, .y=0}, .{.x=0, .y=0 });
+        const pj = cp.c.cpPinJointNew(self.pbody, world.objects.items[pinp1].body.?, .{.x=0, .y=0}, .{.x=0, .y=0 });
+
+        _= cp.c.cpSpaceAddConstraint(world.space, pj);
 
         // _=pinp1;
 
-        print("pid: {}\n", .{self.pid});
+        // print("pid: {} {}\n", .{self.pid, joint.?});
     }
     fn update(self: *Bug) void
     {
@@ -212,7 +215,8 @@ const Bug =struct
 
         const px: f32 = bv.x;
         const py: f32 = bv.y;
-        print("bug {} x, y: {}, {}\n", .{self.id, px, py});
+
+        // print("bug {} x, y: {}, {}\n", .{self.id, px, py});
 
         self.x = px;
         self.y = py;
