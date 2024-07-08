@@ -23,7 +23,7 @@ pub const Config = struct {
     jok_software_renderer_fallback: bool = true,
 
     /// Window's title
-    jok_window_title: [:0]const u8 = "jok",
+    jok_window_title: [:0]const u8 = "Bugz",
 
     /// Position of window
     jok_window_pos_x: sdl.WindowPosition = .default,
