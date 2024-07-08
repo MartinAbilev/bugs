@@ -267,6 +267,10 @@ const Bug =struct
         self.pinp4 = world.objects.items[pid4].body.?;
         constrain(self.pbody, self.pinp4);
 
+        constrain(self.pinp1, self.pinp4);
+        constrain(self.pinp2, self.pinp3);
+        constrain(self.pinp3, self.pinp4);
+
     }
     fn update(self: *Bug) void
     {
