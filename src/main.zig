@@ -86,8 +86,7 @@ const Bug =struct
     y: f32,
     z: f32,
     brain: Brain = undefined,
-    dynamic_body: cp.World.ObjectOption.BodyProperty = undefined,
-    physics: cp.World.ObjectOption.ShapeProperty.Physics = undefined,
+    pbody: ?*cp.c.cpBody = undefined,
     // cords: Vec3,
 
     fn init(self: *Bug, ctx: jok.Context, id: usize) !void
@@ -101,7 +100,8 @@ const Bug =struct
         var  in1 = Nuron{.id = idc, .x = 50, .y = 0, .z = 0}; idc = idc + 1 ;
         var  in2 = Nuron{.id = idc, .x = -50, .y = 0, .z = 0}; idc = idc + 1 ;
         var  in3 = Nuron{.id = idc, .x = 0, .y = 50, .z = 0}; idc = idc + 1 ;
-        var  in4 = Nuron{.id = idc, .x = 0, .y = -50, .z = 0}; idc = idc + 1 ;
+        var  in4 = Nuron{.id = idc, .x = 0, .y = -50, .z = 0}; idc
+        = idc + 1 ;
 
         var  on1 = Nuron{.id = idc, .x = 30, .y = 0, .z = 0}; idc = idc + 1 ;
         var  on2 = Nuron{.id = idc, .x = -30, .y = 0, .z = 0}; idc = idc + 1 ;
@@ -138,33 +138,63 @@ const Bug =struct
             .hidden = hidden
         };
 
-        // const size = ctx.getCanvasSize();
-        self.dynamic_body = .{
-            .dynamic = .{
-                .position = .{
-                    .x = self.x,
-                    .y = self.y,
-                },
-            }
-        };
-
-
-        self.physics = .{
-            .weight = .{ .mass = 1 },
-            .elasticity = 0.5,
-        };
-
         self.pid  = try world.addObject(.{
-            .body = self.dynamic_body,
+            .body = .{
+                .dynamic = .{
+                    .position = .{
+                        .x = self.x,
+                        .y = self.y,
+                    },
+                }
+            },
             .shapes = &.{
                 .{
                     .circle = .{
                         .radius = 15,
-                        .physics = self.physics,
+                        .physics = .{
+                            .weight = .{ .mass = 1 },
+                            .elasticity = 0.5,
+                        },
                     },
                 },
             },
         });
+
+        self.pbody = world.objects.items[self.pid].body.?;
+
+        const pinp1 =  try world.addObject(.{
+            .body = .{
+                .dynamic = .{
+                    .position = .{
+                        .x = self.x,
+                        .y = self.y + 100,
+                    },
+                }
+            },
+            .shapes = &.{
+                .{
+                    .circle = .{
+                        .radius = 5,
+                        .physics = .{
+                            .weight = .{ .mass = 1 },
+                            .elasticity = 0.5,
+                        },
+                    },
+                },
+            },
+        });
+
+        // cpPinJoint *cpPinJointAlloc(void)
+        // cpPinJoint *cpPinJointInit(cpPinJoint *joint, cpBody *a, cpBody *b, cpVect anchorA, cpVect anchorB)
+        // cpConstraint *cpPinJointNew(cpBody *a, cpBody *b, cpVect anchorA, cpVect anchorB)
+        // const joint = cp.c.cpPinJointAlloc();
+
+        // _= cp.c.cpPinJointInit(joint, self.pbody, world.objects.items[pinp1].body.?, .{.x=0, .y=0}, .{.x=0, .y=0 } );
+
+        _= cp.c.cpPinJointNew(self.pbody, world.objects.items[pinp1].body.?, .{.x=0, .y=0}, .{.x=0, .y=0 });
+
+        // _=pinp1;
+
         print("pid: {}\n", .{self.pid});
     }
     fn update(self: *Bug) void
@@ -177,7 +207,7 @@ const Bug =struct
 
         }
 
-        const b =   world.objects.items[self.pid].body.?;
+        const b =   self.pbody;
         const bv = cp.c.cpBodyGetPosition(b);
 
         const px: f32 = bv.x;
