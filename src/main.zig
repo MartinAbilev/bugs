@@ -241,6 +241,27 @@ pub fn init(ctx: jok.Context) !void
         try Bugs[i].init(ctx, i);
     }
 
+    _ = try world.addObject(.{
+        .body = .{
+            .kinematic = .{
+                .position = .{ .x = 200, .y = 600 },
+                .angular_velocity = 0,
+            },
+        },
+        .shapes = &[_]cp.World.ObjectOption.ShapeProperty{
+            .{
+                .segment = .{
+                    .a = .{ .x = -100, .y = 0 },
+                    .b = .{ .x = 500, .y = 0 },
+                    .radius = 10,
+                    .physics = .{
+                        .weight = .{ .mass = 0 },
+                        .elasticity = 1.0,
+                    },
+                },
+            },
+        },
+    });
     // for (Bugs, 0..) |elem, i|
     // {
     //     std.log.info("id: {}, bug: {}\n", .{i, elem});
