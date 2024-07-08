@@ -23,15 +23,6 @@ const Vec3 = struct {x: f32, y: f32, z: f32};
 
 const Con = struct {to: usize, weight: f32};
 
- const   dynamic_body: cp.World.ObjectOption.BodyProperty = .{
-            .dynamic = .{
-                .position = .{
-                    .x = 0,
-                    .y = 0,
-                },
-            },
-        };
-
 const Nuron = struct
 {
     id: usize,
@@ -90,18 +81,12 @@ const Brain = struct
 const Bug =struct
 {
     id: usize = 0,
+    pid: usize = undefined, //  chips id
     x: f32,
     y: f32,
     z: f32,
     brain: Brain = undefined,
-    dynamic_body: cp.World.ObjectOption.BodyProperty = .{
-            .dynamic = .{
-                .position = .{
-                    .x = 0,
-                    .y = 0,
-                },
-            },
-        },
+    dynamic_body: cp.World.ObjectOption.BodyProperty = undefined,
     physics: cp.World.ObjectOption.ShapeProperty.Physics = undefined,
     // cords: Vec3,
 
@@ -154,6 +139,14 @@ const Bug =struct
         };
 
         // const size = ctx.getCanvasSize();
+        self.dynamic_body = .{
+            .dynamic = .{
+                .position = .{
+                    .x = self.x,
+                    .y = self.y,
+                },
+            }
+        };
 
 
         self.physics = .{
@@ -161,7 +154,7 @@ const Bug =struct
             .elasticity = 0.5,
         };
 
-        const bd  = try world.addObject(.{
+        self.pid  = try world.addObject(.{
             .body = self.dynamic_body,
             .shapes = &.{
                 .{
@@ -172,7 +165,7 @@ const Bug =struct
                 },
             },
         });
-        print("bd {}\n", .{bd});
+        print("pid: {}\n", .{self.pid});
     }
     fn update(self: *Bug) void
     {
@@ -184,21 +177,20 @@ const Bug =struct
 
         }
 
-        const px: i32 = @intFromFloat(self.dynamic_body.dynamic.position.x);
-        const py: i32 = @intFromFloat(self.dynamic_body.dynamic.position.y);
-        // const py = self.dynamic_body.dynamic.position.y;
+        const b =   world.objects.items[self.pid].body.?;
+        const bv = cp.c.cpBodyGetPosition(b);
+
+        const px: f32 = bv.x;
+        const py: f32 = bv.y;
         print("bug {} x, y: {}, {}\n", .{self.id, px, py});
 
+        self.x = px;
+        self.y = py;
 
-
-        // self.x = self.dynamic_body.dynamic.position.x;
-        // self.y = self.dynamic_body.dynamic.position.y;
-        // self.x = self.x + 1;
-        // _=self;
     }
 };
 
-var Bugs :[1] Bug= undefined;
+var Bugs :[3] Bug= undefined;
 
 pub fn init(ctx: jok.Context) !void
 {
@@ -237,37 +229,24 @@ pub fn init(ctx: jok.Context) !void
         asvg.height,
     );
 
-    // const size = ctx.getCanvasSize();
+    const size = ctx.getCanvasSize();
 
-    // for(0..Bugs.len)|i|
-    // {
-    //     const ii: f32 = @floatFromInt(i);
-    //     const x: f32 = 100 * ii + size.x / 2;
-    //     const y: f32 = 100 * ii + size.y / 2;
-    //     const b = Bug{.x=x , .y=y, .z=0};
-    //     Bugs[i] = b;
-    //     try Bugs[i].init(ctx, i);
-    // }
+    for(0..Bugs.len)|i|
+    {
+        const ii: f32 = @floatFromInt(i);
+        const x: f32 = 100 * ii + size.x / 2;
+        const y: f32 = 100 * ii + size.y / 4;
+        const b = Bug{.x=x , .y=y, .z=0};
+        Bugs[i] = b;
+        try Bugs[i].init(ctx, i);
+    }
 
     // for (Bugs, 0..) |elem, i|
     // {
     //     std.log.info("id: {}, bug: {}\n", .{i, elem});
     // }
 
-        _= try world.addObject(.{
-            .body = dynamic_body,
-            .shapes = &.{
-                .{
-                    .circle = .{
-                        .radius = 15,
-                        .physics = .{
-                                    .weight = .{ .mass = 1 },
-                                    .elasticity = 0.5,
-                                },
-                    },
-                },
-            },
-        });
+
 
 }
 
@@ -279,16 +258,13 @@ pub fn event(ctx: jok.Context, e: sdl.Event) !void {
 pub fn update(ctx: jok.Context) !void {
     // _ = ctx;
     world.update(ctx.deltaSeconds());
-    // for(Bugs, 0..Bugs.len) |bug, i|
-    // {
-    //     Bugs[i].update();
-    //     _=bug;
-    //     // _=i;
-    // }
-        const px: i32 = @intFromFloat(dynamic_body.dynamic.position.x);
-        const py: i32 = @intFromFloat(dynamic_body.dynamic.position.y);
-        // const py = self.dynamic_body.dynamic.position.y;
-        print("bug {} x, y: {}, {}\n", .{0, px, py});
+    for(Bugs, 0..Bugs.len) |bug, i|
+    {
+        Bugs[i].update();
+        _=bug;
+        // _=i;
+    }
+
 }
 
 pub fn draw(ctx: jok.Context) !void {
