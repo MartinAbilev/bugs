@@ -23,6 +23,12 @@ const Vec3 = struct {x: f32, y: f32, z: f32};
 
 const Con = struct {to: usize, weight: f32};
 
+pub fn constrain (a: ?*cp.c.cpBody, b: ?*cp.c.cpBody) void
+{
+    const pj = cp.c.cpPinJointNew(a, b, .{.x=0, .y=0}, .{.x=0, .y=0 });
+    _= cp.c.cpSpaceAddConstraint(world.space, pj);
+}
+
 const Nuron = struct
 {
     id: usize,
@@ -87,6 +93,10 @@ const Bug =struct
     z: f32,
     brain: Brain = undefined,
     pbody: ?*cp.c.cpBody = undefined,
+    pinp1: ?*cp.c.cpBody = undefined,
+    pinp2: ?*cp.c.cpBody = undefined,
+    pinp3: ?*cp.c.cpBody = undefined,
+    pinp4: ?*cp.c.cpBody = undefined,
     // cords: Vec3,
 
     fn init(self: *Bug, ctx: jok.Context, id: usize) !void
@@ -162,11 +172,11 @@ const Bug =struct
 
         self.pbody = world.objects.items[self.pid].body.?;
 
-        const pinp1 =  try world.addObject(.{
+        const pid1 =  try world.addObject(.{
             .body = .{
                 .dynamic = .{
                     .position = .{
-                        .x = self.x + 30,
+                        .x = self.x + 0,
                         .y = self.y + 100,
                     },
                 }
@@ -183,12 +193,9 @@ const Bug =struct
                 },
             },
         });
+        self.pinp1 = world.objects.items[pid1].body.?;
+        constrain(self.pbody, self.pinp1);
 
-        const pj = cp.c.cpPinJointNew(self.pbody, world.objects.items[pinp1].body.?, .{.x=0, .y=0}, .{.x=0, .y=0 });
-
-        _= cp.c.cpSpaceAddConstraint(world.space, pj);
-
-        // print("pid: {} {}\n", .{self.pid, joint.?});
     }
     fn update(self: *Bug) void
     {
@@ -197,7 +204,6 @@ const Bug =struct
         {
             _=nuron;
             self.brain.hidden.nurons[i].update(&self.brain.hidden.nurons);
-
         }
 
         const b =   self.pbody;
