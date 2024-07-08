@@ -169,7 +169,6 @@ const Bug =struct
                 },
             },
         });
-
         self.pbody = world.objects.items[self.pid].body.?;
 
         const pid1 =  try world.addObject(.{
@@ -195,6 +194,78 @@ const Bug =struct
         });
         self.pinp1 = world.objects.items[pid1].body.?;
         constrain(self.pbody, self.pinp1);
+
+        const pid2 =  try world.addObject(.{
+            .body = .{
+                .dynamic = .{
+                    .position = .{
+                        .x = self.x + 0,
+                        .y = self.y - 100,
+                    },
+                }
+            },
+            .shapes = &.{
+                .{
+                    .circle = .{
+                        .radius = 5,
+                        .physics = .{
+                            .weight = .{ .mass = 1 },
+                            .elasticity = 0.5,
+                        },
+                    },
+                },
+            },
+        });
+        self.pinp2 = world.objects.items[pid2].body.?;
+        constrain(self.pbody, self.pinp2);
+
+        const pid3 =  try world.addObject(.{
+            .body = .{
+                .dynamic = .{
+                    .position = .{
+                        .x = self.x + 100,
+                        .y = self.y + 0,
+                    },
+                }
+            },
+            .shapes = &.{
+                .{
+                    .circle = .{
+                        .radius = 5,
+                        .physics = .{
+                            .weight = .{ .mass = 1 },
+                            .elasticity = 0.5,
+                        },
+                    },
+                },
+            },
+        });
+        self.pinp3 = world.objects.items[pid3].body.?;
+        constrain(self.pbody, self.pinp3);
+
+        const pid4 =  try world.addObject(.{
+            .body = .{
+                .dynamic = .{
+                    .position = .{
+                        .x = self.x - 100,
+                        .y = self.y + 0,
+                    },
+                }
+            },
+            .shapes = &.{
+                .{
+                    .circle = .{
+                        .radius = 5,
+                        .physics = .{
+                            .weight = .{ .mass = 1 },
+                            .elasticity = 0.5,
+                        },
+                    },
+                },
+            },
+        });
+        self.pinp4 = world.objects.items[pid4].body.?;
+        constrain(self.pbody, self.pinp4);
 
     }
     fn update(self: *Bug) void
