@@ -367,13 +367,6 @@ pub fn init(ctx: jok.Context) !void
             },
         },
     });
-    // for (Bugs, 0..) |elem, i|
-    // {
-    //     std.log.info("id: {}, bug: {}\n", .{i, elem});
-    // }
-
-
-
 }
 
 pub fn event(ctx: jok.Context, e: sdl.Event) !void {
