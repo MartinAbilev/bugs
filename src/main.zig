@@ -184,19 +184,9 @@ const Bug =struct
             },
         });
 
-        // cpPinJoint *cpPinJointAlloc(void)
-        // cpPinJoint *cpPinJointInit(cpPinJoint *joint, cpBody *a, cpBody *b, cpVect anchorA, cpVect anchorB)
-        // cpConstraint *cpPinJointNew(cpBody *a, cpBody *b, cpVect anchorA, cpVect anchorB)
-
-        // const joint = cp.c.cpPinJointAlloc();
-
-        // _= cp.c.cpPinJointInit(joint.?, world.objects.items[self.pid].body.?, world.objects.items[pinp1].body.?, .{.x=0, .y=0}, .{.x=0, .y=0 } );
-
         const pj = cp.c.cpPinJointNew(self.pbody, world.objects.items[pinp1].body.?, .{.x=0, .y=0}, .{.x=0, .y=0 });
 
         _= cp.c.cpSpaceAddConstraint(world.space, pj);
-
-        // _=pinp1;
 
         // print("pid: {} {}\n", .{self.pid, joint.?});
     }
