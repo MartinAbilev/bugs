@@ -93,6 +93,7 @@ const Bug =struct
     z: f32,
     brain: Brain = undefined,
     pbody: ?*cp.c.cpBody = undefined,
+    pshape: ?*cp.c.cpShape = undefined,
     pinp1: ?*cp.c.cpBody = undefined,
     pinp2: ?*cp.c.cpBody = undefined,
     pinp3: ?*cp.c.cpBody = undefined,
@@ -170,6 +171,10 @@ const Bug =struct
             },
         });
         self.pbody = world.objects.items[self.pid].body.?;
+        // Try cp.c.cpBodyGetPosition.
+        // One more thing, world.objects.items[0].body is optional type, you might consider using .? operator to get real pointer.
+        // const ctp = cp.c.cpShapeGetCollisionType(world.objects.items[self.pid].shapes[0]);
+        // print("bug {} \n", .{ctp});
 
         const pid1 =  try world.addObject(.{
             .body = .{
