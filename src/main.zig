@@ -343,7 +343,21 @@ pub fn init(ctx: jok.Context) !void
         .gravity = .{ .x = 0, .y = 600 },
     });
 
+    const postSolve = struct {
+        fn postSolve(arb: ?*cp.c.cpArbiter, space: ?*cp.c.cpSpace, data: ?*anyopaque) callconv(.C) void
+        {
+            _= arb;
+            _= space;
+            _= data;
+            print("COLLIDE!!! \n", .{});
+        }
+    }.postSolve;
 
+    // const space = cp.c.cpSpaceNew();
+    
+    // Create a collision handler
+    const handler = cp.c.cpSpaceAddCollisionHandler(world.space, 0, 0);
+    handler.*.postSolveFunc = postSolve;
 
     for(svg, 0..)|asvg, i|
     tex[i] = try jok.utils.gfx.createTextureFromPixels(
