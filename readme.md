@@ -14,9 +14,14 @@ of evolutionary proceses take place.
 
 to doos:
 
-find working 2d physic lib or make my own.
+detect colision, bug death
 
 add simple ui.
+    togle world/brain mode
+
+test nuron firing in brain mode
+
+mutate weights function
 
 
 uses  JOK https://github.com/Jack-Ji/jok
