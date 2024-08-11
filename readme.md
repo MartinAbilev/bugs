@@ -18,6 +18,7 @@ detect colision, bug death
 
 add simple ui.
     togle world/brain mode
+    function to grid layout nurons position
 
 test nuron firing in brain mode
 
