@@ -363,7 +363,7 @@ SetUserData(cpBody *body, cpUserData data)
 {
 	cpUserData ud;
 
-	ud.id = 13;
+	ud.id = data.id;
 	body->udData = ud;
 }
 

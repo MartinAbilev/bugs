@@ -276,11 +276,12 @@ const Bug =struct
         constrain(self.pinp2, self.pinp3);
         constrain(self.pinp3, self.pinp4);
 
-        cp.c.cpBodySetUserData(self.pbody, self);
-        cp.c.cpBodySetUserData(self.pinp1, self);
-        cp.c.cpBodySetUserData(self.pinp2, self);
-        cp.c.cpBodySetUserData(self.pinp3, self);
-        cp.c.cpBodySetUserData(self.pinp4, self);
+        cp.c.cpBodySetMyUserData(self.pbody, .{.id=self.id});
+        cp.c.cpBodySetMyUserData(self.pinp1, .{.id=self.id});
+        cp.c.cpBodySetMyUserData(self.pinp2, .{.id=self.id});
+        cp.c.cpBodySetMyUserData(self.pinp3, .{.id=self.id});
+        cp.c.cpBodySetMyUserData(self.pinp4, .{.id=self.id});
+
     }
     fn update(self: *Bug) void
     {
@@ -363,7 +364,7 @@ pub fn init(ctx: jok.Context) !void
             // Check if bodyA is not null and then retrieve its userData
             const aId = if (bodyA) |body| cp.c.cpBodyGetUserData(body) else null;
             if (aId) |id| {
-                    cp.c.cpBodySetMyUserData(bodyA, .{.id=0});
+                    // cp.c.cpBodySetMyUserData(bodyA, .{.id=666});
                  const pinp1 = cp.c.cpBodyGetMyUserData(bodyA);
                 std.debug.print("Body A: {} {p}\n", .{pinp1, id});
             } else {
