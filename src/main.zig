@@ -363,7 +363,9 @@ pub fn init(ctx: jok.Context) !void
             // Check if bodyA is not null and then retrieve its userData
             const aId = if (bodyA) |body| cp.c.cpBodyGetUserData(body) else null;
             if (aId) |id| {
-                std.debug.print("Body A: {p}\n", .{id});
+
+                 const pinp1 = cp.c.cpBodyGetMyUserData(bodyA);
+                std.debug.print("Body A: {} {p}\n", .{pinp1, id});
             } else {
                 std.debug.print("Body A: null userData\n", .{});
             }

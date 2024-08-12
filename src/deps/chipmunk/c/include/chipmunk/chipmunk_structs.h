@@ -1,15 +1,15 @@
 /* Copyright (c) 2013 Scott Lembcke and Howling Moon Software
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -32,47 +32,54 @@ struct cpArray {
 	void **arr;
 };
 
+struct cpUserData {
+	int id;
+	void **arr;
+};
+
 struct cpBody {
+
+	cpUserData udData;
 	// Integration functions
 	cpBodyVelocityFunc velocity_func;
 	cpBodyPositionFunc position_func;
-	
+
 	// mass and it's inverse
 	cpFloat m;
 	cpFloat m_inv;
-	
+
 	// moment of inertia and it's inverse
 	cpFloat i;
 	cpFloat i_inv;
-	
+
 	// center of gravity
 	cpVect cog;
-	
+
 	// position, velocity, force
 	cpVect p;
 	cpVect v;
 	cpVect f;
-	
+
 	// Angle, angular velocity, torque (radians)
 	cpFloat a;
 	cpFloat w;
 	cpFloat t;
-	
+
 	cpTransform transform;
-	
+
 	cpDataPointer userData;
-	
+
 	// "pseudo-velocities" used for eliminating overlap.
 	// Erin Catto has some papers that talk about what these are.
 	cpVect v_bias;
 	cpFloat w_bias;
-	
+
 	cpSpace *space;
-	
+
 	cpShape *shapeList;
 	cpArbiter *arbiterList;
 	cpConstraint *constraintList;
-	
+
 	struct {
 		cpBody *root;
 		cpBody *next;
@@ -100,22 +107,22 @@ struct cpArbiterThread {
 
 struct cpContact {
 	cpVect r1, r2;
-	
+
 	cpFloat nMass, tMass;
 	cpFloat bounce; // TODO: look for an alternate bounce solution.
 
 	cpFloat jnAcc, jtAcc, jBias;
 	cpFloat bias;
-	
+
 	cpHashValue hash;
 };
 
 struct cpCollisionInfo {
 	const cpShape *a, *b;
 	cpCollisionID id;
-	
+
 	cpVect n;
-	
+
 	int count;
 	// TODO Should this be a unique struct type?
 	struct cpContact *arr;
@@ -125,21 +132,21 @@ struct cpArbiter {
 	cpFloat e;
 	cpFloat u;
 	cpVect surface_vr;
-	
+
 	cpDataPointer data;
-	
+
 	const cpShape *a, *b;
 	cpBody *body_a, *body_b;
 	struct cpArbiterThread thread_a, thread_b;
-	
+
 	int count;
 	struct cpContact *contacts;
 	cpVect n;
-	
+
 	// Regular, wildcard A and wildcard B collision handlers.
 	cpCollisionHandler *handler, *handlerA, *handlerB;
 	cpBool swapped;
-	
+
 	cpTimestamp stamp;
 	enum cpArbiterState state;
 };
@@ -167,7 +174,7 @@ typedef struct cpShapeClass cpShapeClass;
 
 struct cpShapeClass {
 	cpShapeType type;
-	
+
 	cpShapeCacheDataImpl cacheData;
 	cpShapeDestroyImpl destroy;
 	cpShapePointQueryImpl pointQuery;
@@ -176,43 +183,43 @@ struct cpShapeClass {
 
 struct cpShape {
 	const cpShapeClass *klass;
-	
+
 	cpSpace *space;
 	cpBody *body;
 	struct cpShapeMassInfo massInfo;
 	cpBB bb;
-	
+
 	cpBool sensor;
-	
+
 	cpFloat e;
 	cpFloat u;
 	cpVect surfaceV;
 
 	cpDataPointer userData;
-	
+
 	cpCollisionType type;
 	cpShapeFilter filter;
-	
+
 	cpShape *next;
 	cpShape *prev;
-	
+
 	cpHashValue hashid;
 };
 
 struct cpCircleShape {
 	cpShape shape;
-	
+
 	cpVect c, tc;
 	cpFloat r;
 };
 
 struct cpSegmentShape {
 	cpShape shape;
-	
+
 	cpVect a, b, n;
 	cpVect ta, tb, tn;
 	cpFloat r;
-	
+
 	cpVect a_tangent, b_tangent;
 };
 
@@ -224,13 +231,13 @@ struct cpSplittingPlane {
 
 struct cpPolyShape {
 	cpShape shape;
-	
+
 	cpFloat r;
-	
+
 	int count;
 	// The untransformed planes are appended at the end of the transformed planes.
 	struct cpSplittingPlane *planes;
-	
+
 	// Allocate a small number of splitting planes internally for simple poly.
 	struct cpSplittingPlane _planes[2*CP_POLY_SHAPE_INLINE_ALLOC];
 };
@@ -249,21 +256,21 @@ typedef struct cpConstraintClass {
 
 struct cpConstraint {
 	const cpConstraintClass *klass;
-	
+
 	cpSpace *space;
-	
+
 	cpBody *a, *b;
 	cpConstraint *next_a, *next_b;
-	
+
 	cpFloat maxForce;
 	cpFloat errorBias;
 	cpFloat maxBias;
-	
+
 	cpBool collideBodies;
-	
+
 	cpConstraintPreSolveFunc preSolve;
 	cpConstraintPostSolveFunc postSolve;
-	
+
 	cpDataPointer userData;
 };
 
@@ -271,11 +278,11 @@ struct cpPinJoint {
 	cpConstraint constraint;
 	cpVect anchorA, anchorB;
 	cpFloat dist;
-	
+
 	cpVect r1, r2;
 	cpVect n;
 	cpFloat nMass;
-	
+
 	cpFloat jnAcc;
 	cpFloat bias;
 };
@@ -284,11 +291,11 @@ struct cpSlideJoint {
 	cpConstraint constraint;
 	cpVect anchorA, anchorB;
 	cpFloat min, max;
-	
+
 	cpVect r1, r2;
 	cpVect n;
 	cpFloat nMass;
-	
+
 	cpFloat jnAcc;
 	cpFloat bias;
 };
@@ -296,10 +303,10 @@ struct cpSlideJoint {
 struct cpPivotJoint {
 	cpConstraint constraint;
 	cpVect anchorA, anchorB;
-	
+
 	cpVect r1, r2;
 	cpMat2x2 k;
-	
+
 	cpVect jAcc;
 	cpVect bias;
 };
@@ -308,12 +315,12 @@ struct cpGrooveJoint {
 	cpConstraint constraint;
 	cpVect grv_n, grv_a, grv_b;
 	cpVect  anchorB;
-	
+
 	cpVect grv_tn;
 	cpFloat clamp;
 	cpVect r1, r2;
 	cpMat2x2 k;
-	
+
 	cpVect jAcc;
 	cpVect bias;
 };
@@ -325,14 +332,14 @@ struct cpDampedSpring {
 	cpFloat stiffness;
 	cpFloat damping;
 	cpDampedSpringForceFunc springForceFunc;
-	
+
 	cpFloat target_vrn;
 	cpFloat v_coef;
-	
+
 	cpVect r1, r2;
 	cpFloat nMass;
 	cpVect n;
-	
+
 	cpFloat jAcc;
 };
 
@@ -342,10 +349,10 @@ struct cpDampedRotarySpring {
 	cpFloat stiffness;
 	cpFloat damping;
 	cpDampedRotarySpringTorqueFunc springTorqueFunc;
-	
+
 	cpFloat target_wrn;
 	cpFloat w_coef;
-	
+
 	cpFloat iSum;
 	cpFloat jAcc;
 };
@@ -353,9 +360,9 @@ struct cpDampedRotarySpring {
 struct cpRotaryLimitJoint {
 	cpConstraint constraint;
 	cpFloat min, max;
-	
+
 	cpFloat iSum;
-		
+
 	cpFloat bias;
 	cpFloat jAcc;
 };
@@ -363,9 +370,9 @@ struct cpRotaryLimitJoint {
 struct cpRatchetJoint {
 	cpConstraint constraint;
 	cpFloat angle, phase, ratchet;
-	
+
 	cpFloat iSum;
-		
+
 	cpFloat bias;
 	cpFloat jAcc;
 };
@@ -374,9 +381,9 @@ struct cpGearJoint {
 	cpConstraint constraint;
 	cpFloat phase, ratio;
 	cpFloat ratio_inv;
-	
+
 	cpFloat iSum;
-		
+
 	cpFloat bias;
 	cpFloat jAcc;
 };
@@ -384,9 +391,9 @@ struct cpGearJoint {
 struct cpSimpleMotor {
 	cpConstraint constraint;
 	cpFloat rate;
-	
+
 	cpFloat iSum;
-		
+
 	cpFloat jAcc;
 };
 
@@ -395,19 +402,19 @@ typedef void (*cpSpaceArbiterApplyImpulseFunc)(cpArbiter *arb);
 
 struct cpSpace {
 	int iterations;
-	
+
 	cpVect gravity;
 	cpFloat damping;
-	
+
 	cpFloat idleSpeedThreshold;
 	cpFloat sleepTimeThreshold;
-	
+
 	cpFloat collisionSlop;
 	cpFloat collisionBias;
 	cpTimestamp collisionPersistence;
-	
+
 	cpDataPointer userData;
-	
+
 	cpTimestamp stamp;
 	cpFloat curr_dt;
 
@@ -415,28 +422,28 @@ struct cpSpace {
 	cpArray *staticBodies;
 	cpArray *rousedBodies;
 	cpArray *sleepingComponents;
-	
+
 	cpHashValue shapeIDCounter;
 	cpSpatialIndex *staticShapes;
 	cpSpatialIndex *dynamicShapes;
-	
+
 	cpArray *constraints;
-	
+
 	cpArray *arbiters;
 	cpContactBufferHeader *contactBuffersHead;
 	cpHashSet *cachedArbiters;
 	cpArray *pooledArbiters;
-	
+
 	cpArray *allocatedBuffers;
 	int locked;
-	
+
 	cpBool usesWildcards;
 	cpHashSet *collisionHandlers;
 	cpCollisionHandler defaultHandler;
-	
+
 	cpBool skipPostStep;
 	cpArray *postStepCallbacks;
-	
+
 	cpBody *staticBody;
 	cpBody _staticBody;
 };

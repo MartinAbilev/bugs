@@ -1,15 +1,15 @@
 /* Copyright (c) 2013 Scott Lembcke and Howling Moon Software
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -96,6 +96,7 @@ CP_EXPORT void cpBodySetMoment(cpBody *body, cpFloat i);
 
 /// Set the position of a body.
 CP_EXPORT cpVect cpBodyGetPosition(const cpBody *body);
+CP_EXPORT cpUserData cpBodyGetMyUserData(const cpBody *body);
 /// Set the position of the body.
 CP_EXPORT void cpBodySetPosition(cpBody *body, cpVect pos);
 
@@ -171,17 +172,17 @@ CP_EXPORT cpVect cpBodyGetVelocityAtLocalPoint(const cpBody *body, cpVect point)
 /// Get the amount of kinetic energy contained by the body.
 CP_EXPORT cpFloat cpBodyKineticEnergy(const cpBody *body);
 
-/// Body/shape iterator callback function type. 
+/// Body/shape iterator callback function type.
 typedef void (*cpBodyShapeIteratorFunc)(cpBody *body, cpShape *shape, void *data);
 /// Call @c func once for each shape attached to @c body and added to the space.
 CP_EXPORT void cpBodyEachShape(cpBody *body, cpBodyShapeIteratorFunc func, void *data);
 
-/// Body/constraint iterator callback function type. 
+/// Body/constraint iterator callback function type.
 typedef void (*cpBodyConstraintIteratorFunc)(cpBody *body, cpConstraint *constraint, void *data);
 /// Call @c func once for each constraint attached to @c body and added to the space.
 CP_EXPORT void cpBodyEachConstraint(cpBody *body, cpBodyConstraintIteratorFunc func, void *data);
 
-/// Body/arbiter iterator callback function type. 
+/// Body/arbiter iterator callback function type.
 typedef void (*cpBodyArbiterIteratorFunc)(cpBody *body, cpArbiter *arbiter, void *data);
 /// Call @c func once for each arbiter that is currently active on the body.
 CP_EXPORT void cpBodyEachArbiter(cpBody *body, cpBodyArbiterIteratorFunc func, void *data);

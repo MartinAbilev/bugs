@@ -969,6 +969,9 @@ pub const struct_cpVect = extern struct {
     x: cpFloat = @import("std").mem.zeroes(cpFloat),
     y: cpFloat = @import("std").mem.zeroes(cpFloat),
 };
+pub const cpUserData = extern struct {
+    id: usize,
+};
 pub const cpVect = struct_cpVect;
 pub const struct_cpTransform = extern struct {
     a: cpFloat = @import("std").mem.zeroes(cpFloat),
@@ -1778,6 +1781,7 @@ pub extern fn cpBodySetMass(body: ?*cpBody, m: cpFloat) void;
 pub extern fn cpBodyGetMoment(body: ?*const cpBody) cpFloat;
 pub extern fn cpBodySetMoment(body: ?*cpBody, i: cpFloat) void;
 pub extern fn cpBodyGetPosition(body: ?*const cpBody) cpVect;
+pub extern fn cpBodyGetMyUserData(body: ?*const cpBody) cpUserData;
 pub extern fn cpBodySetPosition(body: ?*cpBody, pos: cpVect) void;
 pub extern fn cpBodyGetCenterOfGravity(body: ?*const cpBody) cpVect;
 pub extern fn cpBodySetCenterOfGravity(body: ?*cpBody, cog: cpVect) void;
