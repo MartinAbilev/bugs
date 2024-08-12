@@ -971,6 +971,7 @@ pub const struct_cpVect = extern struct {
 };
 pub const cpUserData = extern struct {
     id: usize,
+    inp: usize,
 };
 pub const cpVect = struct_cpVect;
 pub const struct_cpTransform = extern struct {

@@ -72,6 +72,11 @@ const Nuron = struct
         }
         // print("varsum: {}\n", .{self.neuronvalue});
     }
+    fn fire(self: *Nuron) void
+    {
+        self.neuronvalue = 1.0;
+        print("nuron fired {}\n", .{self.id});
+    }
 };
 
 const Inputs = struct {nurons:[maxIn] Nuron};
@@ -112,8 +117,7 @@ const Bug =struct
         var  in1 = Nuron{.id = idc, .x = 50, .y = 0, .z = 0}; idc = idc + 1 ;
         var  in2 = Nuron{.id = idc, .x = -50, .y = 0, .z = 0}; idc = idc + 1 ;
         var  in3 = Nuron{.id = idc, .x = 0, .y = 50, .z = 0}; idc = idc + 1 ;
-        var  in4 = Nuron{.id = idc, .x = 0, .y = -50, .z = 0}; idc
-        = idc + 1 ;
+        var  in4 = Nuron{.id = idc, .x = 0, .y = -50, .z = 0}; idc = idc + 1 ;
 
         var  on1 = Nuron{.id = idc, .x = 30, .y = 0, .z = 0}; idc = idc + 1 ;
         var  on2 = Nuron{.id = idc, .x = -30, .y = 0, .z = 0}; idc = idc + 1 ;
@@ -172,7 +176,7 @@ const Bug =struct
             },
         });
         self.pbody = world.objects.items[self.pid].body.?;
-
+        cp.c.cpShapeSetCollisionType(world.objects.items[self.pid].shapes[0], 1);
         // Try cp.c.cpBodyGetPosition.
         // One more thing, world.objects.items[0].body is optional type, you might consider using .? operator to get real pointer.
         // const ctp = cp.c.cpShapeGetCollisionType(world.objects.items[self.pid].shapes[0]);
@@ -282,11 +286,11 @@ const Bug =struct
         constrain(self.pinp2, self.pinp3);
         constrain(self.pinp3, self.pinp4);
 
-        cp.c.cpBodySetMyUserData(self.pbody, .{.id=self.id});
-        cp.c.cpBodySetMyUserData(self.pinp1, .{.id=self.id});
-        cp.c.cpBodySetMyUserData(self.pinp2, .{.id=self.id});
-        cp.c.cpBodySetMyUserData(self.pinp3, .{.id=self.id});
-        cp.c.cpBodySetMyUserData(self.pinp4, .{.id=self.id});
+        cp.c.cpBodySetMyUserData(self.pbody, .{.id=self.id, .inp = 0});
+        cp.c.cpBodySetMyUserData(self.pinp1, .{.id=self.id, .inp = 0});
+        cp.c.cpBodySetMyUserData(self.pinp2, .{.id=self.id, .inp = 1});
+        cp.c.cpBodySetMyUserData(self.pinp3, .{.id=self.id, .inp = 2});
+        cp.c.cpBodySetMyUserData(self.pinp4, .{.id=self.id, .inp = 3});
 
     }
     fn update(self: *Bug) void
@@ -325,6 +329,10 @@ const Bug =struct
         self.x = px;
         self.y = py;
 
+    }
+    fn fire(self: *Bug, id: usize) void
+    {
+        self.brain.inputs.nurons[id].fire();
     }
 };
 
@@ -368,11 +376,56 @@ pub fn init(ctx: jok.Context) !void
             cp.c.cpArbiterGetBodies(arbiter, &bodyA, &bodyB);
 
             // Check if bodyA is not null and then retrieve its userData
+            // const aId = if (bodyA) |body| cp.c.cpBodyGetUserData(body) else null;
+            // if (aId) |id| {
+            //     _=id;
+            //      const userData = cp.c.cpBodyGetMyUserData(bodyA);
+            //      // make given nuron to fire;
+            //     //  Bugs[userData.id].fire(userData.inp);
+            //     std.debug.print("Body A: {} \n", .{userData});
+            // } else {
+            //     std.debug.print("Body A: null userData\n", .{});
+            // }
+
+            // Check if bodyB is not null and then retrieve its userData
+            const bId = if (bodyB) |body| cp.c.cpBodyGetUserData(body) else null;
+            if (bId) |id| {
+                _= id;
+                // std.debug.print("Body B: {p}\n", .{id});
+            } else {
+                std.debug.print("Body B: null userData\n", .{});
+            }
+
+        } else {
+            std.debug.print("Arbiter is null.\n", .{});
+        }
+        // _=arb;
+        _= space;
+        _= data;
+
+        }
+    }.postSolve;
+
+    const preSolve = struct {
+        fn preSolve(arb: ?*cp.c.cpArbiter, space: ?*cp.c.cpSpace, data: ?*anyopaque) callconv(.C) u8
+        {
+
+        if (arb) |arbiter|
+        {
+            // _= arbiter;
+            var bodyA: ?*cp.c.cpBody = null;
+            var bodyB: ?*cp.c.cpBody = null;
+
+            cp.c.cpArbiterGetBodies(arbiter, &bodyA, &bodyB);
+
+            // Check if bodyA is not null and then retrieve its userData
             const aId = if (bodyA) |body| cp.c.cpBodyGetUserData(body) else null;
             if (aId) |id| {
-                    // cp.c.cpBodySetMyUserData(bodyA, .{.id=666});
-                 const pinp1 = cp.c.cpBodyGetMyUserData(bodyA);
-                std.debug.print("Body A: {} {p}\n", .{pinp1, id});
+                _=id;
+                 const userData = cp.c.cpBodyGetMyUserData(bodyA);
+                 // make given nuron to fire;
+                 Bugs[userData.id].fire(userData.inp);
+                std.debug.print("Body A: {} \n", .{userData});
             } else {
                 std.debug.print("Body A: null userData\n", .{});
             }
@@ -391,15 +444,18 @@ pub fn init(ctx: jok.Context) !void
         // _=arb;
         _= space;
         _= data;
-
+        return 1;
         }
-    }.postSolve;
+    }.preSolve;
 
     // const space = cp.c.cpSpaceNew();
 
     // Create a collision handler
-    const handler = cp.c.cpSpaceAddCollisionHandler(world.space, 0, 0);
+    const handler = cp.c.cpSpaceAddCollisionHandler(world.space, 1, 0);
     handler.*.postSolveFunc = postSolve;
+
+    const handler2 = cp.c.cpSpaceAddCollisionHandler(world.space, 0, 0);
+    handler2.*.preSolveFunc = preSolve;
 
     for(svg, 0..)|asvg, i|
     tex[i] = try jok.utils.gfx.createTextureFromPixels(

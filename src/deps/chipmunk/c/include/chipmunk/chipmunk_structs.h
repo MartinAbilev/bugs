@@ -33,7 +33,7 @@ struct cpArray {
 };
 
 struct cpUserData {
-	size_t id;
+	size_t id, inp;
 };
 
 struct cpBody {

@@ -39,6 +39,7 @@ cpBodyInit(cpBody *body, cpFloat mass, cpFloat moment)
 	body->constraintList = NULL;
 
 	body->udData.id = 0;
+	body->udData.inp = 0;
 
 	body->velocity_func = cpBodyUpdateVelocity;
 	body->position_func = cpBodyUpdatePosition;
@@ -363,8 +364,8 @@ SetUserData(cpBody *body, cpUserData data)
 {
 	cpUserData ud;
 
-	ud.id = data.id;
-	body->udData = ud;
+	// ud.id = data.id;
+	body->udData = data;
 }
 
 static inline cpFloat
