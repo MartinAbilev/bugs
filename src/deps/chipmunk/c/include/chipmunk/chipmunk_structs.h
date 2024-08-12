@@ -33,8 +33,7 @@ struct cpArray {
 };
 
 struct cpUserData {
-	int id;
-	void **arr;
+	size_t id;
 };
 
 struct cpBody {

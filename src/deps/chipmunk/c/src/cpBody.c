@@ -38,6 +38,8 @@ cpBodyInit(cpBody *body, cpFloat mass, cpFloat moment)
 	body->arbiterList = NULL;
 	body->constraintList = NULL;
 
+	body->udData.id = 0;
+
 	body->velocity_func = cpBodyUpdateVelocity;
 	body->position_func = cpBodyUpdatePosition;
 
@@ -356,6 +358,15 @@ SetTransform(cpBody *body, cpVect p, cpFloat a)
 	);
 }
 
+static void
+SetUserData(cpBody *body, cpUserData data)
+{
+	cpUserData ud;
+
+	ud.id = 13;
+	body->udData = ud;
+}
+
 static inline cpFloat
 SetAngle(cpBody *body, cpFloat a)
 {
@@ -375,6 +386,16 @@ cpUserData
 cpBodyGetMyUserData(const cpBody *body)
 {
 	return body->udData;
+}
+
+void
+cpBodySetMyUserData(cpBody *body, cpUserData data)
+{
+	cpBodyActivate(body);
+	// cpVect p = body->p = cpvadd(cpTransformVect(body->transform, body->cog), position);
+	cpAssertSaneBody(body);
+
+	SetUserData(body, data);
 }
 
 void

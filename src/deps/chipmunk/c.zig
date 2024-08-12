@@ -1782,6 +1782,7 @@ pub extern fn cpBodyGetMoment(body: ?*const cpBody) cpFloat;
 pub extern fn cpBodySetMoment(body: ?*cpBody, i: cpFloat) void;
 pub extern fn cpBodyGetPosition(body: ?*const cpBody) cpVect;
 pub extern fn cpBodyGetMyUserData(body: ?*const cpBody) cpUserData;
+pub extern fn cpBodySetMyUserData(body: ?*cpBody, data: cpUserData) void;
 pub extern fn cpBodySetPosition(body: ?*cpBody, pos: cpVect) void;
 pub extern fn cpBodyGetCenterOfGravity(body: ?*const cpBody) cpVect;
 pub extern fn cpBodySetCenterOfGravity(body: ?*cpBody, cog: cpVect) void;
