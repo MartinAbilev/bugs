@@ -255,7 +255,7 @@ const Bug =struct
                         .x = self.x - 50,
                         .y = self.y + 0,
                     },
-                }
+                },
             },
             .shapes = &.{
                 .{
@@ -275,6 +275,11 @@ const Bug =struct
         constrain(self.pinp1, self.pinp4);
         constrain(self.pinp2, self.pinp3);
         constrain(self.pinp3, self.pinp4);
+
+
+
+
+
 
     }
     fn update(self: *Bug) void
@@ -346,15 +351,43 @@ pub fn init(ctx: jok.Context) !void
     const postSolve = struct {
         fn postSolve(arb: ?*cp.c.cpArbiter, space: ?*cp.c.cpSpace, data: ?*anyopaque) callconv(.C) void
         {
-            _= arb;
-            _= space;
-            _= data;
-            print("COLLIDE!!! \n", .{});
+
+        if (arb) |arbiter|
+        {
+            // _= arbiter;
+            var bodyA: ?*cp.c.cpBody = null;
+            var bodyB: ?*cp.c.cpBody = null;
+
+            cp.c.cpArbiterGetBodies(arbiter, &bodyA, &bodyB);
+
+            // Check if bodyA is not null and then retrieve its userData
+            const aId = if (bodyA) |body| cp.c.cpBodyGetUserData(body) else null;
+            if (aId) |id| {
+                std.debug.print("Body A: {p}\n", .{id});
+            } else {
+                std.debug.print("Body A: null userData\n", .{});
+            }
+
+            // Check if bodyB is not null and then retrieve its userData
+            const bId = if (bodyB) |body| cp.c.cpBodyGetUserData(body) else null;
+            if (bId) |id| {
+                std.debug.print("Body B: {p}\n", .{id});
+            } else {
+                std.debug.print("Body B: null userData\n", .{});
+            }
+
+        } else {
+            std.debug.print("Arbiter is null.\n", .{});
+        }
+        // _=arb;
+        _= space;
+        _= data;
+
         }
     }.postSolve;
 
     // const space = cp.c.cpSpaceNew();
-    
+
     // Create a collision handler
     const handler = cp.c.cpSpaceAddCollisionHandler(world.space, 0, 0);
     handler.*.postSolveFunc = postSolve;
