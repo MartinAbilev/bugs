@@ -15,8 +15,7 @@ of evolutionary proceses take place.
 to doos:
 
 
-    make body only to colide
-    and inps sensor type
+    make sensor call fire/set value for nuron to 1.0 to coresponding inp
 
     bug death
 
