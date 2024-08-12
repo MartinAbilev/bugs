@@ -276,11 +276,11 @@ const Bug =struct
         constrain(self.pinp2, self.pinp3);
         constrain(self.pinp3, self.pinp4);
 
-
-
-
-
-
+        cp.c.cpBodySetUserData(self.pbody, self);
+        cp.c.cpBodySetUserData(self.pinp1, self);
+        cp.c.cpBodySetUserData(self.pinp2, self);
+        cp.c.cpBodySetUserData(self.pinp3, self);
+        cp.c.cpBodySetUserData(self.pinp4, self);
     }
     fn update(self: *Bug) void
     {
