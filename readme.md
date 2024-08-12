@@ -14,10 +14,9 @@ of evolutionary proceses take place.
 
 to doos:
 
-
-    make sensor call fire/set value for nuron to 1.0 to coresponding inp
-
     bug death
+
+    code cleanup and rearrange
 
 add simple ui.
     togle world/brain mode
