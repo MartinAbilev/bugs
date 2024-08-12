@@ -14,7 +14,11 @@ of evolutionary proceses take place.
 
 to doos:
 
-detect colision, bug death
+
+    make body only to colide
+    and inps sensor type
+
+    bug death
 
 add simple ui.
     togle world/brain mode
