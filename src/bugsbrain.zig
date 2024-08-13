@@ -26,6 +26,8 @@ pub const Brain = struct
 
         for(self.inputs.nurons) |inp|
         {
+            const value = inp.neuronvalue;
+
             for(inp.cons) |con|
             {
                 const conto = con.to;
@@ -35,8 +37,40 @@ pub const Brain = struct
                 {
                     if(self.hidden.nurons[i].id == conto)
                     {
-                        self.hidden.nurons[i].neuronvalue = 666 * weight;
+                        self.hidden.nurons[i].neuronvalue = 666 * weight * value;
                     }
+                }
+            }
+        }
+
+        for(self.hidden.nurons) |hid|
+        {
+            const value = hid.neuronvalue;
+
+            for(hid.cons) |con|
+            {
+                const conto = con.to;
+                const weight = con.weight;
+
+                for(0..self.hidden.nurons.len)|i|
+                {
+                    // _=value;
+                    // _=conto;
+                    // _=weight;
+
+                        // std.debug.print("IIII = {}\n", .{i});
+                    if(self.hidden.nurons[i].id == conto)
+                    {
+                        if( weight * value > 0.5)
+                        self.hidden.nurons[i].neuronvalue =  1.0
+                        else
+                        self.hidden.nurons[i].neuronvalue =  0.0;
+                    }
+                    if(self.inputs.nurons.len > i)
+                    if(self.inputs.nurons[i].id == conto)
+                    {
+                        self.inputs.nurons[i].neuronvalue -= 0.01;
+                    };
                 }
             }
         }
