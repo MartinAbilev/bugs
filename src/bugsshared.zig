@@ -1,7 +1,9 @@
 const std = @import("std");
-const jok = @import("jok");
+pub const jok = @import("jok");
 
-const cp = jok.cp;
+pub const cp = jok.cp;
+
+pub const print = std.debug.print;
 
 pub fn constrain (world: cp.World, a: ?*cp.c.cpBody, b: ?*cp.c.cpBody) void
 {

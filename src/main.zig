@@ -1,12 +1,13 @@
-const std = @import("std");
-const jok = @import("jok");
 const bs = @import("bugsshared.zig");
+const std = bs.std;
+const jok = bs.jok;
 
-const cp = jok.cp;
-const sdl = jok.sdl;
+const cp = bs.cp;
 const font = jok.font;
 const j2d = jok.j2d;
-const print = std.debug.print;
+const sdl = jok.sdl;
+
+const print = bs.print;
 
 var rng: std.Random.Xoshiro256 = undefined;
 
@@ -23,8 +24,6 @@ var world: cp.World = undefined;
 const Vec3 = struct {x: f32, y: f32, z: f32};
 
 const Con = struct {to: usize, weight: f32};
-
-
 
 const Nuron = struct
 {
