@@ -16,6 +16,7 @@
 
     #Dependencies
         uses  JOK https://github.com/Jack-Ji/jok
+        http  TOKAMAK https://github.com/cztomsik/tokamak
 
     #To doos:
 
