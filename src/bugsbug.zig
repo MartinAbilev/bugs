@@ -1,4 +1,3 @@
-// The BUG main struct to doos later to sep file
 const br = @import("bugsbrain.zig");
 
 const conf = @import("bugsconfig.zig");
@@ -9,9 +8,10 @@ const constrain = @import("bugsshared.zig").constrain;
 const print = @import("bugsshared.zig").print;
 const jok = @import("bugsshared.zig").jok;
 
-// the World todoos later move to sep file
+// the World
 pub var world: cp.World = undefined;
 
+// The BUG main struct
 pub const Bug =struct
 {
     id: usize = 0,
@@ -27,12 +27,10 @@ pub const Bug =struct
     pinp2: ?*cp.c.cpBody = undefined,
     pinp3: ?*cp.c.cpBody = undefined,
     pinp4: ?*cp.c.cpBody = undefined,
-    // cords: Vec3,
 
     pub fn init(self: *Bug, ctx: jok.Context, id: usize) !void
     {
         _=ctx;
-        //self.cords = Vec3 {.x = 1, .y = 1, .z = 1};
         self.id = id;
 
         var idc: usize= 0;
@@ -214,11 +212,9 @@ pub const Bug =struct
         cp.c.cpBodySetMyUserData(self.pinp2, .{.id=self.id, .inp = 1});
         cp.c.cpBodySetMyUserData(self.pinp3, .{.id=self.id, .inp = 2});
         cp.c.cpBodySetMyUserData(self.pinp4, .{.id=self.id, .inp = 3});
-
     }
     pub fn update(self: *Bug) void
     {
-
         for (self.brain.hidden.nurons, 0..self.brain.hidden.nurons.len) |nuron,i|
         {
             _=nuron;
@@ -247,11 +243,8 @@ pub const Bug =struct
         const px: f32 = bv.x;
         const py: f32 = bv.y;
 
-        // print("bug {} x, y: {}, {}\n", .{self.id, px, py});
-
         self.x = px;
         self.y = py;
-
     }
     pub fn fire(self: *Bug, id: usize) void
     {

@@ -1,8 +1,8 @@
-// the nuron will be to spearate file later
 const conf = @import("bugsconfig.zig");
 const print = @import("bugsshared.zig").print;
 pub const Con = struct {to: usize, weight: f32};
 
+// the nuron struct
 pub const Nuron = struct
 {
     id: usize,
@@ -21,7 +21,6 @@ pub const Nuron = struct
     }
     pub fn update(self: *Nuron, allnurons: []Nuron) void
     {
-        // _=allnurons;
         var varsum: f32= 1.0;
 
         //  axson fires when all conected inputs value * weight  pass treasold 0.5

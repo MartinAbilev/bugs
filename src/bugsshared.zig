@@ -1,8 +1,5 @@
 pub const std = @import("std");
 pub const jok = @import("jok");
-pub const Bug = @import("bugsbug.zig");
-
-const conf = @import("bugsconfig.zig");
 
 pub const cp = jok.cp;
 

@@ -14,7 +14,6 @@ of evolutionary proceses take place.
 
 to doos:
 
-    code cleanup
     add trsuters
     make them fire with some gfx
 
