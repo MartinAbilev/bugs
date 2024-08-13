@@ -19,8 +19,6 @@ pub const Brain = struct
 
     size: usize = brainSize,
 
-    nurons: [brainSize]nn.Nuron = undefined,
-
     pub fn update(self: *Brain)void
     {
 
@@ -43,9 +41,10 @@ pub const Brain = struct
             }
         }
 
-        for(self.hidden.nurons) |hid|
+        for(self.hidden.nurons, 0..self.hidden.nurons.len) |hid, ii|
         {
-            const value = hid.neuronvalue;
+            // const value = hid.neuronvalue;
+            var varsum:f32 = 0.0;
 
             for(hid.cons) |con|
             {
@@ -61,19 +60,22 @@ pub const Brain = struct
                         // std.debug.print("IIII = {}\n", .{i});
                     if(self.hidden.nurons[i].id == conto)
                     {
-                        if( weight * value > 0.5)
-                        self.hidden.nurons[i].neuronvalue =  1.0
-                        else
-                        self.hidden.nurons[i].neuronvalue =  0.0;
+                        varsum = (varsum + self.hidden.nurons[i].neuronvalue) * weight;
                     }
                     if(self.inputs.nurons.len > i)
                     if(self.inputs.nurons[i].id == conto)
                     {
-                        self.inputs.nurons[i].neuronvalue -= 0.01;
+                        self.inputs.nurons[i].neuronvalue -= 0.001;
                     };
                 }
             }
+            if(varsum > 0.5)
+            self.hidden.nurons[ii].neuronvalue = 1.0
+            else
+            self.hidden.nurons[ii].neuronvalue = 0.0;
+            self.hidden.nurons[ii].varsum = varsum;
         }
+
 
     }
 };
