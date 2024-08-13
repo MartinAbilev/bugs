@@ -92,6 +92,9 @@ pub fn createGame(
             .{ .name = "znoise", .module = znoise_pkg.znoise },
         },
     });
+
+    const tokamak = b.dependency("tokamak", .{}).module("tokamak");
+    
     if (opt.use_ztracy) {
         jok.import_table.putNoClobber(b.allocator, "ztracy", ztracy_pkg.ztracy) catch unreachable;
     }
@@ -104,10 +107,13 @@ pub fn createGame(
         .optimize = optimize,
     });
     exe.root_module.addImport("jok", jok);
+    exe.root_module.addImport("tokamak", b.dependency("tokamak", .{}).module("tokamak"));
+
     exe.root_module.addImport("game", b.createModule(.{
         .root_source_file = .{ .cwd_relative = root_file },
         .imports = &.{
             .{ .name = "jok", .module = jok },
+            .{ .name = "tokamak", .module = tokamak },
         },
     }));
 

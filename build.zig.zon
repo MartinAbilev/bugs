@@ -23,11 +23,14 @@
     // Once all dependencies are fetched, `zig build` no longer requires
     // internet connectivity.
     .dependencies = .{
-                .sdl = .{
-                    .path = "src/deps/sdl",
+        .sdl = .{
+            .path = "src/deps/sdl",
             // .url = "https://github.com/jack-ji/sdl.zig/archive/3d310985c2e8b77df2af8089a9bfb052eea62c7d.tar.gz",
             // .hash = "1220821a34cc5fa538f4f5f96541322019e73104586e4f3fbafc614646e8e9bf64d0",
         },
+        .tokamak = .{
+            .path = "src/deps/tokamak"
+        }
     },
     .paths = .{
         "build.zig",

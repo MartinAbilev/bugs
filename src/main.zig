@@ -1,5 +1,6 @@
 const bs = @import("bugsshared.zig");
 const bb =@import("bugsbug.zig");
+const tk = @import("tokamak");
 
 const std = bs.std;
 const jok = bs.jok;
@@ -18,24 +19,38 @@ var tex: [2]sdl.Texture = undefined;
 
 var Bugs :[3] bb.Bug= undefined;
 
-pub fn httpz() void
+// bugz httpz test
+pub fn httpz() !void
 {
-    // Create an allocator.
+    print("httpz init.", .{});
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer std.debug.assert(gpa.deinit() == .ok);
-    const allocator = gpa.allocator();
+    defer _ = gpa.deinit();
 
-    const http = std.http;
-
-    // Create an HTTP client.
-    var client = http.Client{ .allocator = allocator };
-    defer client.deinit();
+    var server = try tk.Server.start(gpa.allocator(), handler, .{ .port = 8080 });
+    server.wait();
 }
+const handler = tk.chain(.{
+    tk.logger(.{}),
+    tk.get("/", tk.send("Hello")),
+    tk.group("/api", tk.router(api)),
+    tk.send(error.NotFound),
+});
+const api = struct {
+    pub fn @"GET /"() []const u8 {
+        return "Hello";
+    }
+
+    pub fn @"GET /:name"(allocator: std.mem.Allocator, name: []const u8) ![]const u8 {
+        return std.fmt.allocPrint(allocator, "Hello {s}", .{name});
+    }
+};
+
+// init bugz jok
 pub fn init(ctx: jok.Context) !void
 {
     // _ = ctx;
 
-    httpz();
+    try httpz();
     std.log.info("game init", .{});
 
      rng = std.Random.DefaultPrng.init(
