@@ -36,12 +36,27 @@ const handler = tk.chain(.{
     tk.send(error.NotFound),
 });
 const api = struct {
+
     pub fn @"GET /"() []const u8 {
         return "Hello2";
     }
 
     pub fn @"GET /:name"(allocator: std.mem.Allocator, name: []const u8) ![]const u8 {
-        return std.fmt.allocPrint(allocator, "Hello3 {s} {any}", .{name, Bugs});
+
+            const Place = struct { lat: f32, long: f32 };
+
+            const x = Place{
+                .lat = 51.997664,
+                .long = -0.740687,
+            };
+
+            var buf: [100]u8 = undefined;
+            var fba = std.heap.FixedBufferAllocator.init(&buf);
+
+            var string = std.ArrayList(u8).init(fba.allocator());
+            try std.json.stringify(x, .{}, string.writer());
+
+        return std.fmt.allocPrint(allocator, "Hello3 {s} {s}", .{name, string.items});
     }
 };
 
