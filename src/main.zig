@@ -50,7 +50,9 @@ pub fn init(ctx: jok.Context) !void
 {
     // _ = ctx;
 
-    try httpz();
+    const thread = try std.Thread.spawn(.{}, httpz, .{});
+    _ = thread;
+
     std.log.info("game init", .{});
 
      rng = std.Random.DefaultPrng.init(

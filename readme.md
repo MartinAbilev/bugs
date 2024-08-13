@@ -34,7 +34,8 @@
 
         #for net
             *add simple server
-            !make it nonblokng probably in separate tread;
+            *make it nonblokng probably in separate tread;
+            !crete response with bugz state
             create simple web ui
 
 
