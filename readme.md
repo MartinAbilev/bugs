@@ -1,5 +1,7 @@
 #BUGZ
 
+    https://youtu.be/ZsoNCcIcb3U
+
     Reanimation of old historic project "the bugs".
     where you evolve ANN Bugs. previosly writen in python
     no code surrived. features was 2d physicaly simulated container with

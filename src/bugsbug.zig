@@ -1,7 +1,7 @@
-const br = @import("bugsbrain.zig");
+pub const br = @import("bugsbrain.zig");
 
 const conf = @import("bugsconfig.zig");
-const Nuron = @import("bugsnuron.zig").Nuron;
+pub const Nuron = @import("bugsnuron.zig").Nuron;
 
 const cp = @import("bugsshared.zig").cp;
 const constrain = @import("bugsshared.zig").constrain;
@@ -254,7 +254,7 @@ pub const Bug =struct
     {
         self.isAlive = false;
 
-        const kur = cp.c.cpv(0.0, 1000.0);
+        const kur = cp.c.cpv(300.0, 10.0);
         cp.c.cpBodySetPosition(self.pbody, kur);
         cp.c.cpBodySetPosition(self.pinp1, kur);
         cp.c.cpBodySetPosition(self.pinp2, kur);

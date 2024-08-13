@@ -43,7 +43,7 @@ const api = struct {
 
     pub fn @"GET /:name"(allocator: std.mem.Allocator, name: []const u8) ![]const u8 {
 
-            const JsonBugs = struct { id: usize, x: f32, y: f32 };
+            const JsonBugs = struct { id: usize, x: f32, y: f32, brain: bb.br.Brain };
 
             var x:[Bugs.len]JsonBugs = undefined;
 
@@ -55,10 +55,11 @@ const api = struct {
                     .id = b.id,
                     .x = b.x,
                     .y = b.y,
+                    .brain = b.brain,
                 };
             }
 
-            var buf: [1000]u8 = undefined;
+            var buf: [100000]u8 = undefined;
             var fba = std.heap.FixedBufferAllocator.init(&buf);
 
             var string = std.ArrayList(u8).init(fba.allocator());
@@ -222,8 +223,8 @@ pub fn init(ctx: jok.Context) !void
         .shapes = &[_]cp.World.ObjectOption.ShapeProperty{
             .{
                 .segment = .{
-                    .a = .{ .x = -100, .y = 0 },
-                    .b = .{ .x = 500, .y = 0 },
+                    .a = .{ .x = -390, .y = 0 },
+                    .b = .{ .x = 690, .y = 0 },
                     .radius = 10,
                     .physics = .{
                         .weight = .{ .mass = 0 },
