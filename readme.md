@@ -34,6 +34,7 @@
 
         #for net
             *add simple server
+            !make it nonblokng probably in separate tread;
             create simple web ui
 
 
