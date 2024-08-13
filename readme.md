@@ -1,5 +1,6 @@
 #BUGZ
-    reanimation of old historic project "the bugs".
+
+    Reanimation of old historic project "the bugs".
     where you evolve ANN Bugs. previosly writen in python
     no code surrived. features was 2d physicaly simulated container with
     bugs with simple task to learn not colide with each other and
@@ -14,7 +15,7 @@
     of evolutionary proceses take place.
 
     #Dependencies
-    uses  JOK https://github.com/Jack-Ji/jok
+        uses  JOK https://github.com/Jack-Ji/jok
 
     #To doos:
 
