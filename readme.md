@@ -33,7 +33,7 @@
             mutate weights function
 
         #for net
-            add simple server
+            *add simple server
             create simple web ui
 
 
