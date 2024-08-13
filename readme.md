@@ -19,7 +19,7 @@ to doos:
     add trsuters
     make them fire with some gfx
 
-add simple ui.
+    add simple ui.
     togle world/brain mode
     function to grid layout nurons position
 

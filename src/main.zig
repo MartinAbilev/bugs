@@ -1,5 +1,6 @@
 const std = @import("std");
 const jok = @import("jok");
+const bs = @import("bugsshared.zig");
 
 const cp = jok.cp;
 const sdl = jok.sdl;
@@ -23,11 +24,7 @@ const Vec3 = struct {x: f32, y: f32, z: f32};
 
 const Con = struct {to: usize, weight: f32};
 
-pub fn constrain (a: ?*cp.c.cpBody, b: ?*cp.c.cpBody) void
-{
-    const pj = cp.c.cpPinJointNew(a, b, .{.x=0, .y=0}, .{.x=0, .y=0 });
-    _= cp.c.cpSpaceAddConstraint(world.space, pj);
-}
+
 
 const Nuron = struct
 {
@@ -206,7 +203,7 @@ const Bug =struct
         });
         self.pinp1 = world.objects.items[pid1].body.?;
         cp.c.cpShapeSetSensor(world.objects.items[pid1].shapes[0], cp.c.cpTrue);
-        constrain(self.pbody, self.pinp1);
+        bs.constrain(world, self.pbody, self.pinp1);
 
         const pid2 =  try world.addObject(.{
             .body = .{
@@ -231,7 +228,7 @@ const Bug =struct
         });
         self.pinp2 = world.objects.items[pid2].body.?;
         cp.c.cpShapeSetSensor(world.objects.items[pid2].shapes[0], cp.c.cpTrue);
-        constrain(self.pbody, self.pinp2);
+        bs.constrain(world, self.pbody, self.pinp2);
 
         const pid3 =  try world.addObject(.{
             .body = .{
@@ -256,7 +253,7 @@ const Bug =struct
         });
         self.pinp3 = world.objects.items[pid3].body.?;
         cp.c.cpShapeSetSensor(world.objects.items[pid3].shapes[0], cp.c.cpTrue);
-        constrain(self.pbody, self.pinp3);
+        bs.constrain(world, self.pbody, self.pinp3);
 
         const pid4 =  try world.addObject(.{
             .body = .{
@@ -281,11 +278,11 @@ const Bug =struct
         });
         self.pinp4 = world.objects.items[pid4].body.?;
         cp.c.cpShapeSetSensor(world.objects.items[pid4].shapes[0], cp.c.cpTrue);
-        constrain(self.pbody, self.pinp4);
 
-        constrain(self.pinp1, self.pinp4);
-        constrain(self.pinp2, self.pinp3);
-        constrain(self.pinp3, self.pinp4);
+        bs.constrain(world,self.pbody, self.pinp4);
+        bs.constrain(world,self.pinp1, self.pinp4);
+        bs.constrain(world,self.pinp2, self.pinp3);
+        bs.constrain(world,self.pinp3, self.pinp4);
 
         cp.c.cpBodySetMyUserData(self.pbody, .{.id=self.id, .inp = 0});
         cp.c.cpBodySetMyUserData(self.pinp1, .{.id=self.id, .inp = 0});
