@@ -1,4 +1,6 @@
 const bs = @import("bugsshared.zig");
+const bb =@import("bugsbug.zig");
+
 const std = bs.std;
 const jok = bs.jok;
 
@@ -14,7 +16,7 @@ var rng: std.Random.Xoshiro256 = undefined;
 var svg: [2]jok.svg.SvgBitmap = undefined;
 var tex: [2]sdl.Texture = undefined;
 
-var Bugs :[3] bs.Bug= undefined;
+var Bugs :[3] bb.Bug= undefined;
 
 pub fn init(ctx: jok.Context) !void
 {
@@ -37,7 +39,7 @@ pub fn init(ctx: jok.Context) !void
         .{},
     );
 
-    bs.world = try cp.World.init(ctx.allocator(), .{
+    bb.world = try cp.World.init(ctx.allocator(), .{
         .gravity = .{ .x = 0, .y = 600 },
     });
 
@@ -127,10 +129,10 @@ pub fn init(ctx: jok.Context) !void
 
 
     // Create a collision handler
-    const handler = cp.c.cpSpaceAddCollisionHandler(bs.world.space, 1, 0);
+    const handler = cp.c.cpSpaceAddCollisionHandler(bb.world.space, 1, 0);
     handler.*.postSolveFunc = postSolve;
 
-    const handler2 = cp.c.cpSpaceAddCollisionHandler(bs.world.space, 0, 0);
+    const handler2 = cp.c.cpSpaceAddCollisionHandler(bb.world.space, 0, 0);
     handler2.*.preSolveFunc = preSolve;
 
     for(svg, 0..)|asvg, i|
@@ -150,12 +152,12 @@ pub fn init(ctx: jok.Context) !void
         const ii: f32 = @floatFromInt(i);
         const x: f32 = 100 * ii + size.x / 2;
         const y: f32 = 100 * ii + size.y / 4;
-        const b = bs.Bug{.x=x , .y=y, .z=0};
+        const b = bb.Bug{.x=x , .y=y, .z=0};
         Bugs[i] = b;
         try Bugs[i].init(ctx, i);
     }
 
-    _ = try bs.world.addObject(.{
+    _ = try bb.world.addObject(.{
         .body = .{
             .kinematic = .{
                 .position = .{ .x = 200, .y = 600 },
@@ -185,7 +187,7 @@ pub fn event(ctx: jok.Context, e: sdl.Event) !void {
 
 pub fn update(ctx: jok.Context) !void {
     // _ = ctx;
-    bs.world.update(ctx.deltaSeconds());
+    bb.world.update(ctx.deltaSeconds());
     for(Bugs, 0..Bugs.len) |bug, i|
     {
         Bugs[i].update();
@@ -207,7 +209,7 @@ pub fn draw(ctx: jok.Context) !void {
     defer j2d.end();
 
     ctx.displayStats(.{});
-    try bs.world.debugDraw(ctx.renderer());
+    try bb.world.debugDraw(ctx.renderer());
 
     for(Bugs)|bug|
     {
@@ -248,7 +250,7 @@ pub fn draw(ctx: jok.Context) !void {
 pub fn quit(ctx: jok.Context) void {
     _ = ctx;
     std.log.info("game quit", .{});
-    bs.world.deinit();
+    bb.world.deinit();
 
     for(0..svg.len)|i|
     {
