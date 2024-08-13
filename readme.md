@@ -14,9 +14,10 @@ of evolutionary proceses take place.
 
 to doos:
 
-    bug death
-
     code cleanup and rearrange
+
+    add trsuters
+    make them fire with some gfx
 
 add simple ui.
     togle world/brain mode
