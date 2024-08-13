@@ -1,6 +1,6 @@
 
 
-    
+
 #BUGZ
 
 [![Everything Is AWESOME]( https://i9.ytimg.com/vi/ZsoNCcIcb3U/mqdefault.jpg?sqp=CNi_7bUG-oaymwEmCMACELQB8quKqQMa8AEB-AHUBoAC4AOKAgwIABABGDggTChyMA8=&rs=AOn4CLABN2jeDsDLn-yplfEVowK3Ahjmig )]( https://youtu.be/ZsoNCcIcb3U "BUGZ")
@@ -35,14 +35,14 @@
             function to grid layout nurons position
 
         #for ann logic
-            test nuron firing in brain mode
+            !move update from nurons to brai this is brin functin to update and mutate
             mutate weights function
 
         #for net
             *add simple server
             *make it nonblokng probably in separate tread;
             *crete response with bugz state
-            !format bugstate responses to json
+            *format bugstate responses to json
             create simple web ui
 
 

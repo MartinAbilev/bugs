@@ -59,7 +59,7 @@ const api = struct {
                 };
             }
 
-            var buf: [100000]u8 = undefined;
+            var buf: [600000]u8 = undefined;
             var fba = std.heap.FixedBufferAllocator.init(&buf);
 
             var string = std.ArrayList(u8).init(fba.allocator());
@@ -160,7 +160,7 @@ pub fn init(ctx: jok.Context) !void
                  const userData = cp.c.cpBodyGetMyUserData(bodyA);
                  // make given nuron to fire;
                  Bugs[userData.id].fire(userData.inp);
-                std.debug.print("Body A: {} \n", .{userData});
+                // std.debug.print("Body A: {} \n", .{userData});
             } else {
                 std.debug.print("Body A: null userData\n", .{});
             }
@@ -168,7 +168,8 @@ pub fn init(ctx: jok.Context) !void
             // Check if bodyB is not null and then retrieve its userData
             const bId = if (bodyB) |body| cp.c.cpBodyGetUserData(body) else null;
             if (bId) |id| {
-                std.debug.print("Body B: {p}\n", .{id});
+                _= id;
+                // std.debug.print("Body B: {p}\n", .{id});
             } else {
                 std.debug.print("Body B: null userData\n", .{});
             }

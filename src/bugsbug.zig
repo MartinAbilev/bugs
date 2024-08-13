@@ -35,15 +35,15 @@ pub const Bug =struct
 
         var idc: usize= 0;
 
-        var  in1 = Nuron{.id = idc, .x = 50, .y = 0, .z = 0}; idc = idc + 1 ;
-        var  in2 = Nuron{.id = idc, .x = -50, .y = 0, .z = 0}; idc = idc + 1 ;
-        var  in3 = Nuron{.id = idc, .x = 0, .y = 50, .z = 0}; idc = idc + 1 ;
-        var  in4 = Nuron{.id = idc, .x = 0, .y = -50, .z = 0}; idc = idc + 1 ;
+        var  in1 = Nuron{.id = idc, .x = 50, .y = 0, .z = 0, .ntype = 1, }; idc = idc + 1 ;
+        var  in2 = Nuron{.id = idc, .x = -50, .y = 0, .z = 0, .ntype = 1, }; idc = idc + 1 ;
+        var  in3 = Nuron{.id = idc, .x = 0, .y = 50, .z = 0, .ntype = 1, }; idc = idc + 1 ;
+        var  in4 = Nuron{.id = idc, .x = 0, .y = -50, .z = 0, .ntype = 1, }; idc = idc + 1 ;
 
-        var  on1 = Nuron{.id = idc, .x = 30, .y = 0, .z = 0}; idc = idc + 1 ;
-        var  on2 = Nuron{.id = idc, .x = -30, .y = 0, .z = 0}; idc = idc + 1 ;
-        var  on3 = Nuron{.id = idc, .x = 0, .y = 30, .z = 0}; idc = idc + 1 ;
-        var  on4 = Nuron{.id = idc, .x = 0, .y = -30, .z = 0}; idc = idc + 1 ;
+        var  on1 = Nuron{.id = idc, .x = 30, .y = 0, .z = 0, .ntype = 2, }; idc = idc + 1 ;
+        var  on2 = Nuron{.id = idc, .x = -30, .y = 0, .z = 0, .ntype = 2, }; idc = idc + 1 ;
+        var  on3 = Nuron{.id = idc, .x = 0, .y = 30, .z = 0, .ntype = 2, }; idc = idc + 1 ;
+        var  on4 = Nuron{.id = idc, .x = 0, .y = -30, .z = 0, .ntype = 2, }; idc = idc + 1 ;
 
         var  hnn: [conf.maxHidden]Nuron = undefined;
         for(0..conf.maxHidden)|i|
@@ -215,11 +215,7 @@ pub const Bug =struct
     }
     pub fn update(self: *Bug) void
     {
-        for (self.brain.hidden.nurons, 0..self.brain.hidden.nurons.len) |nuron,i|
-        {
-            _=nuron;
-            self.brain.hidden.nurons[i].update(&self.brain.hidden.nurons);
-        }
+        self.brain.update();
 
         const pinp1 = cp.c.cpBodyGetPosition(self.pinp1);
         self.brain.inputs.nurons[0].x = pinp1.x;
