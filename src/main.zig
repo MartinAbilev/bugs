@@ -43,14 +43,22 @@ const api = struct {
 
     pub fn @"GET /:name"(allocator: std.mem.Allocator, name: []const u8) ![]const u8 {
 
-            const Place = struct { lat: f32, long: f32 };
+            const JsonBugs = struct { id: usize, x: f32, y: f32 };
 
-            const x = Place{
-                .lat = 51.997664,
-                .long = -0.740687,
-            };
+            var x:[Bugs.len]JsonBugs = undefined;
 
-            var buf: [100]u8 = undefined;
+            for(0..Bugs.len)|i|
+            {
+                const b = Bugs[i];
+                x[i] = JsonBugs
+                {
+                    .id = b.id,
+                    .x = b.x,
+                    .y = b.y,
+                };
+            }
+
+            var buf: [1000]u8 = undefined;
             var fba = std.heap.FixedBufferAllocator.init(&buf);
 
             var string = std.ArrayList(u8).init(fba.allocator());
