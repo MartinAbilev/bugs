@@ -32,5 +32,9 @@
             test nuron firing in brain mode
             mutate weights function
 
+        #for net
+            add simple server
+            create simple web ui
+
 
 M.A 2024
