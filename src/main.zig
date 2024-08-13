@@ -93,6 +93,7 @@ const Brain = struct
 const Bug =struct
 {
     id: usize = 0,
+    isAlive: bool = true,
     pid: usize = undefined, //  chips id
     x: f32,
     y: f32,
@@ -334,6 +335,19 @@ const Bug =struct
     {
         self.brain.inputs.nurons[id].fire();
     }
+    fn die(self: *Bug) void
+    {
+        self.isAlive = false;
+
+        const kur = cp.c.cpv(0.0, 1000.0);
+        cp.c.cpBodySetPosition(self.pbody, kur);
+        cp.c.cpBodySetPosition(self.pinp1, kur);
+        cp.c.cpBodySetPosition(self.pinp2, kur);
+        cp.c.cpBodySetPosition(self.pinp3, kur);
+        cp.c.cpBodySetPosition(self.pinp4, kur);
+
+        print("Bug {} DIE!\n", .{self.id});
+    }
 };
 
 var Bugs :[3] Bug= undefined;
@@ -376,16 +390,15 @@ pub fn init(ctx: jok.Context) !void
             cp.c.cpArbiterGetBodies(arbiter, &bodyA, &bodyB);
 
             // Check if bodyA is not null and then retrieve its userData
-            // const aId = if (bodyA) |body| cp.c.cpBodyGetUserData(body) else null;
-            // if (aId) |id| {
-            //     _=id;
-            //      const userData = cp.c.cpBodyGetMyUserData(bodyA);
-            //      // make given nuron to fire;
-            //     //  Bugs[userData.id].fire(userData.inp);
-            //     std.debug.print("Body A: {} \n", .{userData});
-            // } else {
-            //     std.debug.print("Body A: null userData\n", .{});
-            // }
+
+            if (bodyA) |body| {
+                const userData = cp.c.cpBodyGetMyUserData(body);
+                 // make bug dead;
+                Bugs[userData.id].die();
+                // std.debug.print("Body A: {} \n", .{userData});
+            } else {
+                std.debug.print("Body A: null userData\n", .{});
+            }
 
             // Check if bodyB is not null and then retrieve its userData
             const bId = if (bodyB) |body| cp.c.cpBodyGetUserData(body) else null;
@@ -448,7 +461,6 @@ pub fn init(ctx: jok.Context) !void
         }
     }.preSolve;
 
-    // const space = cp.c.cpSpaceNew();
 
     // Create a collision handler
     const handler = cp.c.cpSpaceAddCollisionHandler(world.space, 1, 0);
