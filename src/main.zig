@@ -44,6 +44,7 @@ const api = struct {
 
     pub fn @"GET /:name"(allocator: std.mem.Allocator, name: []const u8) ![]const u8 {
 
+            _=name;
             const JsonBugs = struct { id: usize, x: f32, y: f32, brain: bb.br.Brain };
 
             var x:[Bugs.len]JsonBugs = undefined;
@@ -66,7 +67,7 @@ const api = struct {
             var string = std.ArrayList(u8).init(fba.allocator());
             try std.json.stringify(x, .{}, string.writer());
 
-        return std.fmt.allocPrint(allocator, "Hello3 {s} {s}", .{name, string.items});
+        return std.fmt.allocPrint(allocator, "{s}", .{string.items});
     }
 
     pub fn @"POST /:id"(allocator: std.mem.Allocator, id: u32, data: struct {}) ![]const u8
