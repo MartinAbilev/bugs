@@ -43,37 +43,19 @@ const api = struct {
     }
 
     pub fn @"GET /:name"(allocator: std.mem.Allocator, name: []const u8) ![]const u8 {
-
-            _=name;
-            const JsonBugs = struct { id: usize, x: f32, y: f32, brain: bb.br.Brain };
-
-            var x:[Bugs.len]JsonBugs = undefined;
-
-            for(0..Bugs.len)|i|
-            {
-                const b = Bugs[i];
-                x[i] = JsonBugs
-                {
-                    .id = b.id,
-                    .x = b.x,
-                    .y = b.y,
-                    .brain = b.brain,
-                };
-            }
-
-            var buf: [600000]u8 = undefined;
-            var fba = std.heap.FixedBufferAllocator.init(&buf);
-
-            var string = std.ArrayList(u8).init(fba.allocator());
-            try std.json.stringify(x, .{}, string.writer());
-
-        return std.fmt.allocPrint(allocator, "{s}", .{string.items});
+        _=name;
+        return  returnState(allocator);
     }
 
     pub fn @"POST /:id"(allocator: std.mem.Allocator, id: u32, data: struct {}) ![]const u8
     {
-            _= data;
-            _= id;
+        _= data;
+        _= id;
+        return  returnState(allocator);
+    }
+};
+fn returnState(allocator: std.mem.Allocator)![]const u8
+{
             const JsonBugs = struct { id: usize, x: f32, y: f32, brain: bb.br.Brain };
 
             var x:[Bugs.len]JsonBugs = undefined;
@@ -90,17 +72,19 @@ const api = struct {
                 };
             }
 
-            var buf: [600000]u8 = undefined;
+            const JSON = struct{ id: usize, bugz: [Bugs.len]JsonBugs };
+
+            const json: JSON = .{.id=777, .bugz = x};
+
+            var buf: [1000000]u8 = undefined;
             var fba = std.heap.FixedBufferAllocator.init(&buf);
 
             var string = std.ArrayList(u8).init(fba.allocator());
-            try std.json.stringify(x, .{}, string.writer());
+            try std.json.stringify(json, .{}, string.writer());
+            // try std.json.stringify(x, .{}, string.writer());
 
-        return std.fmt.allocPrint(allocator, "{s}", .{string.items});
-    }
-
-
-};
+            return std.fmt.allocPrint(allocator, "{s}", .{string.items});
+}
 
 // init bugz jok
 pub fn init(ctx: jok.Context) !void
