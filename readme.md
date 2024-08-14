@@ -3,7 +3,7 @@
 
 #BUGZ
 
-[![Everything Is AWESOME]( https://i9.ytimg.com/vi/ZsoNCcIcb3U/mqdefault.jpg?sqp=CNi_7bUG-oaymwEmCMACELQB8quKqQMa8AEB-AHUBoAC4AOKAgwIABABGDggTChyMA8=&rs=AOn4CLABN2jeDsDLn-yplfEVowK3Ahjmig )]( https://youtu.be/ZsoNCcIcb3U "BUGZ")
+[![Everything Is AWESOME]( https://bianca-ai.vercel.app/mqdefault.jpg )]( https://youtu.be/ZsoNCcIcb3U "BUGZ")
 
     Reanimation of old historic project "the bugs".
     where you evolve ANN Bugs. previosly writen in python

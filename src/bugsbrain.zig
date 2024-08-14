@@ -69,7 +69,7 @@ pub const Brain = struct
                     };
                 }
             }
-            if(varsum > 0.5)
+            if(varsum > 100)
             self.hidden.nurons[ii].neuronvalue = 1.0
             else
             self.hidden.nurons[ii].neuronvalue = 0.0;
