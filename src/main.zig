@@ -26,7 +26,7 @@ pub fn httpz() !void
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
 
-    var server = try tk.Server.start(gpa.allocator(), handler, .{ .port = 8080 });
+    var server = try tk.Server.start(gpa.allocator(), handler, .{ .port = 3001 });
     server.wait();
 }
 const handler = tk.chain(.{
