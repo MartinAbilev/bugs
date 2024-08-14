@@ -43,7 +43,9 @@
             *make it nonblokng probably in separate tread;
             *crete response with bugz state
             *format bugstate responses to json
-            create simple web ui
+            create simple web ui here
+                https://bianca-ai.vercel.app/
+                kinda separate view
 
 
 M.A 2024
