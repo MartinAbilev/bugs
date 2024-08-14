@@ -35,8 +35,8 @@
             function to grid layout nurons position
 
         #for ann logic
-            !move update from nurons to brai this is brin functin to update and mutate
-            mutate weights function
+            *move update from nurons to brai this is brin functin to update and mutate
+            !mutate weights function
 
         #for net
             *add simple server
