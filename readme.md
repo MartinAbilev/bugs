@@ -1,13 +1,15 @@
-
-
-
 #BUGZ
 
 [![Everything Is AWESOME]( https://bianca-ai.vercel.app/mqdefault.jpg )]( https://youtu.be/ZsoNCcIcb3U "BUGZ")
 
 
-Client (Next Js) work in progress:
-https://bianca-ai.vercel.app/
+#Client (Next Js) work in progress
+
+-local working when up: 
+        http://77.38.218.82:3000
+        
+-prod deploy on vercel. bugz server not accesible from there: 
+        https://bianca-ai.vercel.app
 
     Reanimation of old historic project "the bugs".
     where you evolve ANN Bugs. previosly writen in python
