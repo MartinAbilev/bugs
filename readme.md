@@ -5,6 +5,10 @@
 
 [![Everything Is AWESOME]( https://bianca-ai.vercel.app/mqdefault.jpg )]( https://youtu.be/ZsoNCcIcb3U "BUGZ")
 
+
+Client (Next Js) work in progress:
+https://bianca-ai.vercel.app/
+
     Reanimation of old historic project "the bugs".
     where you evolve ANN Bugs. previosly writen in python
     no code surrived. features was 2d physicaly simulated container with
