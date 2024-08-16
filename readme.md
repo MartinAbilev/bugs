@@ -1,54 +1,39 @@
-#BUGZ
+# BUGZ
 
 [![Everything Is AWESOME]( https://bianca-ai.vercel.app/mqdefault.jpg )]( https://youtu.be/ZsoNCcIcb3U "BUGZ")
 
 
-#Client (Next Js) work in progress
+## Client (Next Js) work in progress
+- vercel prod client whith local server: https://bianca-ai.vercel.app
 
--vercel prod client whith local server:
-        https://bianca-ai.vercel.app
+## Reanimation of "The Bugs" Project
+This repository breathes new life into the historic "The Bugs" project, an artificial neural network (ANN) simulation initially developed in Python. Unfortunately, none of the original code has survived, but the core concept remains the same: evolve a population of virtual "bugs" within a 2D, physically simulated environment.
 
-    Reanimation of old historic project "the bugs".
-    where you evolve ANN Bugs. previosly writen in python
-    no code surrived. features was 2d physicaly simulated container with
-    bugs with simple task to learn not colide with each other and
-    all red colorpainted objects.
+Project Overview
+In the original "The Bugs" project, the goal was to create and evolve ANN-controlled bugs with the simple objective of avoiding collisions with each other and with any red-colored objects in their environment.
 
-    Bug featured 4 input sensors simply checking for red color pixsel
-    and 4 (5) "actuators" physical impulse on x y ahis and rotation.
+Key Features:
+2D Physics Simulation: Bugs exist in a 2D container where physical interactions are simulated, including collisions and movement.
+ANN Sensors: Each bug is equipped with 4 input sensors that detect the presence of red pixels in its immediate surroundings.
+Actuators: Bugs have 4 (or 5) actuators that allow them to move and rotate within the environment.
+Survival of the Fittest: Bugs that survive the longest in this environment are selected to spawn the next generation, promoting the evolution of more adept behaviors.
+Morphological Evolution: In the later iterations, bugs also began to evolve their "morphology," meaning the positions of their sensors could change, leading to fascinating evolutionary developments.
 
-    the bug who surriwes longer emits next bath of ancestors.
-    last itereations got even muttion of "morphology" aka
-    position of inputs can change so interesting observations
-    of evolutionary proceses take place.
+## Dependencies
+- JOK https://github.com/Jack-Ji/jok
+- TOKAMAK https://github.com/cztomsik/tokamak
 
-    #Dependencies
-        uses  JOK https://github.com/Jack-Ji/jok
-        http  TOKAMAK https://github.com/cztomsik/tokamak
+## To-Dos:
 
-    #To doos:
+## For Physics
+- Add thrusters.
+- Make them fire with some graphics (gfx).
 
-        #for physics
-            add trsuters
-            make them fire with some gfx
+## For UI/UX
+- Add a simple UI.
+- Toggle between world/brain mode.
+- Implement a function to grid layout neurons' positions.
 
-        #for jok
-            add simple ui.
-            togle world/brain mode
-            function to grid layout nurons position
-
-        #for ann logic
-            *move update from nurons to brai this is brin functin to update and mutate
-            !mutate weights function
-
-        #for net
-            *add simple server
-            *make it nonblokng probably in separate tread;
-            *crete response with bugz state
-            *format bugstate responses to json
-            create simple web ui here
-                https://bianca-ai.vercel.app/
-                kinda separate view
 
 
 M.A 2024
