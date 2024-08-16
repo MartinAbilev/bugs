@@ -258,8 +258,9 @@ pub fn update(ctx: jok.Context) !void {
     bb.world.update(ctx.deltaSeconds());
     for(Bugs, 0..Bugs.len) |bug, i|
     {
+        if(bug.y > 1000) Bugs[i].die();
         Bugs[i].update();
-        _=bug;
+        // _=bug;
         // _=i;
     }
 
