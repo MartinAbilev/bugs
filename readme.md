@@ -1,6 +1,6 @@
 # BUGZ
 
-[![Everything Is AWESOME]( https://bianca-ai.vercel.app/mqdefault.jpg )]( https://youtu.be/ZsoNCcIcb3U "BUGZ")
+[![Everything Is AWESOME]( https://bianca-ai.vercel.app/mqdefault.jpg )]( https://youtu.be/jN84WLWYTGY "BUGZ")
 
 
 ## Client (Next Js) work in progress
