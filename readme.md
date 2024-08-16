@@ -5,10 +5,10 @@
 
 #Client (Next Js) work in progress
 
--local working when up: 
+-dev with local-server working when up: 
         https://bianca-ai-git-dev-martinabilevs-projects.vercel.app
         
--prod deploy on vercel.some ssues on prod: 
+-prod with local-server. not workin with some issues: 
         https://bianca-ai.vercel.app
 
     Reanimation of old historic project "the bugs".
