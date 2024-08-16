@@ -35,15 +35,10 @@ const handler = tk.chain(.{
     tk.group("/api", tk.router(api)),
     tk.send(error.NotFound),
 });
-const api = struct {
+const api = struct
+{
 
-    pub fn @"GET /"() []const u8
-    {
-        return "Hello from BUGZ server.";
-    }
-
-    pub fn @"GET /:name"(allocator: std.mem.Allocator, name: []const u8) ![]const u8 {
-        _=name;
+    pub fn @"GET /"(allocator: std.mem.Allocator) ![]const u8 {
         return  returnState(allocator);
     }
 
