@@ -47,10 +47,9 @@ const api = struct {
         return  returnState(allocator);
     }
 
-    pub fn @"POST /:id"(allocator: std.mem.Allocator, id: u32, data: struct {}) ![]const u8
+    pub fn @"POST /"(allocator: std.mem.Allocator, data: struct {}) ![]const u8
     {
         _= data;
-        _= id;
         return  returnState(allocator);
     }
 };
