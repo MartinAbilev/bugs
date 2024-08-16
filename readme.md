@@ -5,11 +5,8 @@
 
 #Client (Next Js) work in progress
 
--local client&server when up:
-        http://77.38.218.82:3000      
-        
--dev with local-server. not workin with some issues: 
-        https://bianca-ai-git-dev-martinabilevs-projects.vercel.app
+-vercel prod client whith local server:
+        https://bianca-ai.vercel.app
 
     Reanimation of old historic project "the bugs".
     where you evolve ANN Bugs. previosly writen in python
