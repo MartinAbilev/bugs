@@ -6,9 +6,9 @@
 #Client (Next Js) work in progress
 
 -local working when up: 
-        http://77.38.218.82:3000
+        https://bianca-ai-git-dev-martinabilevs-projects.vercel.app
         
--prod deploy on vercel. bugz server not accesible from there: 
+-prod deploy on vercel.some ssues on prod: 
         https://bianca-ai.vercel.app
 
     Reanimation of old historic project "the bugs".
