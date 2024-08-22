@@ -17,7 +17,7 @@ var rng: std.Random.Xoshiro256 = undefined;
 var svg: [2]jok.svg.SvgBitmap = undefined;
 var tex: [2]sdl.Texture = undefined;
 
-var Bugs :[16] bb.Bug= undefined;
+var Bugs :[8] bb.Bug= undefined;
 
 // bugz httpz test
 pub fn httpz() !void

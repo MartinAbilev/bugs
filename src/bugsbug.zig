@@ -1,3 +1,5 @@
+pub const std = @import("std");
+
 pub const br = @import("bugsbrain.zig");
 
 const conf = @import("bugsconfig.zig");
@@ -282,8 +284,19 @@ pub const Bug =struct
     {
         // _=self;
         self.isAlive = false;
+                        const rand = std.crypto.random;
+                const a = rand.float(f32);
+                const b = rand.boolean();
+                const c = rand.int(u8);
+                const d = rand.intRangeAtMost(u8, 0, 255);
 
-        const kur = cp.c.cpv(300.0, 300.0);
+
+                _ = .{ a, b, c, d };
+
+        const rx: f32=  @floatFromInt(rand.intRangeAtMost(u16, 50, 750));
+        const ry: f32=  @floatFromInt(rand.intRangeAtMost(u16, 50, 550));
+
+        const kur = cp.c.cpv(rx, ry);
 
         cp.c.cpBodySetVelocity(self.pbody, cp.c.cpv(0,0));
         cp.c.cpBodySetAngularVelocity(self.pbody, 0.0);

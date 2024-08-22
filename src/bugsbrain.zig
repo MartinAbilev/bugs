@@ -43,10 +43,10 @@ pub const Brain = struct
                     if(con.to < hids.len)
                     {
                         inps[i].varsum *= hids[con.to].neuronvalue * con.weight;
+                        if( inps[i].varsum > inps[i].thresold )
+                        hids[con.to].fire();
                     }
 
-            if( inps[i].varsum > inps[i].thresold )
-            hids[con.to].fire();
             }
             inps[i].update();
 
@@ -160,6 +160,35 @@ pub const Brain = struct
            if(b)outputs[i].thresold += a;
            if(!b)outputs[i].thresold -= a;
         }
+
+        var inputs = &self.inputs.nurons;
+        for(inputs, 0..inputs.len)|nuron, i|
+        {
+            _= nuron;
+           var cons = &inputs[i].cons;
+           for(cons, 0..cons.len)|con,ii|
+           {
+                _=con;
+                const rand = std.crypto.random;
+                const a = rand.float(f32);
+                const b = rand.boolean();
+                const c = rand.int(u8);
+                const d = rand.intRangeAtMost(u8, 0, 255);
+
+                const rnd = a;
+
+                _ = .{ a, c, d };
+
+                if(b)cons[ii].weight += rnd;
+                if(!b)cons[ii].weight -= rnd;
+           }
+           const rand = std.crypto.random;
+           const a: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, 20) );
+           const b = rand.boolean();
+           if(b)inputs[i].thresold += a;
+           if(!b)inputs[i].thresold -= a;
+        }
+
 
         self.ct = 0.0;
     }
