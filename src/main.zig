@@ -70,7 +70,7 @@ fn returnState(allocator: std.mem.Allocator)![]const u8
 
             const json: JSON = .{.id=777, .bugz = x};
 
-            var buf: [1000000]u8 = undefined;
+            var buf: [1000000000]u8 = undefined;
             var fba = std.heap.FixedBufferAllocator.init(&buf);
 
             var string = std.ArrayList(u8).init(fba.allocator());

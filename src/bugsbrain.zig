@@ -44,14 +44,13 @@ pub const Brain = struct
             {
                 _=c;
                 // search for conected nuron need rework with pinter
-                for(hids, 0..hids.len)|hd, hi|
-                {
-                    _=hi;
-                    if(con.to == hd.id)
+
+
+                    if(con.to < hids.len)
                     {
-                        hids[i].varsum *= hd.neuronvalue * con.weight;
+                        hids[i].varsum *= hids[con.to].neuronvalue * con.weight;
                     }
-                }
+
             }
             // when sum of all iputs reaches trezold fire nuron
             if( hids[i].varsum > hids[i].thresold )
@@ -69,14 +68,13 @@ pub const Brain = struct
             {
                 _=c;
                 // search for conected nuron need rework with pinter
-                for(outs, 0..outs.len)|od, oi|
-                {
-                    _=oi;
-                    if(con.to == od.id)
+
+
+                    if(con.to < hids.len)
                     {
-                        outs[i].varsum *= od.neuronvalue * con.weight;
+                        outs[i].varsum *= hids[con.to].neuronvalue * con.weight;
                     }
-                }
+
             }
             // when sum of all iputs reaches trezold fire nuron
             if( outs[i].varsum > outs[i].thresold )
