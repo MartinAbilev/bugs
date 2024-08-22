@@ -45,9 +45,9 @@ pub const Brain = struct
                         inps[i].varsum *= hids[con.to].neuronvalue * con.weight;
                     }
 
-            }
             if( inps[i].varsum > inps[i].thresold )
-            hids[i].fire();
+            hids[con.to].fire();
+            }
             inps[i].update();
 
         }
