@@ -107,7 +107,7 @@ pub fn init(ctx: jok.Context) !void
     );
 
     bb.world = try cp.World.init(ctx.allocator(), .{
-        .gravity = .{ .x = 0, .y = 600 },
+        .gravity = .{ .x = 0, .y = 100 },
     });
 
     const postSolve = struct {

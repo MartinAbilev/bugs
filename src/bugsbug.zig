@@ -206,6 +206,8 @@ pub const Bug =struct
         constrain(world,self.pinp1, self.pinp4);
         constrain(world,self.pinp2, self.pinp3);
         constrain(world,self.pinp3, self.pinp4);
+        constrain(world,self.pinp1, self.pinp3);
+        constrain(world,self.pinp2, self.pinp4);
 
         cp.c.cpBodySetMyUserData(self.pbody, .{.id=self.id, .inp = 0});
         cp.c.cpBodySetMyUserData(self.pinp1, .{.id=self.id, .inp = 0});
@@ -242,9 +244,26 @@ pub const Bug =struct
         self.x = px;
         self.y = py;
     }
+     pub fn fireTruster(self: *Bug, id: usize) void
+    {
+        // const bodyPos = cp.c.cpBodyGetPosition(self.pbody);
+        const bodyPos = cp.c.cpv(0, 0);        // const impos = cp.c.cpBodyGetPosition(self.pinp3);
+
+        // const locp = cp.c.cpBodyWorldToLocal(self.pbody, cp.c.cpBodyGetPosition(self.pinp1));
+        const locp = cp.c.cpBodyWorldToLocal(self.pbody, cp.c.cpv(self.brain.inputs.nurons[id].x, self.brain.inputs.nurons[id].y));
+        const force = cp.c.cpv(-locp.x*2, -locp.y*2);
+        // const force = cp.c.cpBodyGetPosition(self.pinp1);
+
+
+        cp.c.cpBodyApplyImpulseAtLocalPoint(self.pbody,
+                                            force,
+                                            bodyPos,
+                                            );
+    }
     pub fn fire(self: *Bug, id: usize) void
     {
         self.brain.inputs.nurons[id].fire();
+        fireTruster(self, id);
     }
     pub fn mutate(self: *Bug) void
     {
@@ -252,14 +271,23 @@ pub const Bug =struct
     }
     pub fn die(self: *Bug) void
     {
+        // _=self;
         self.isAlive = false;
 
-        const kur = cp.c.cpv(300.0, 10.0);
+        const kur = cp.c.cpv(300.0, 300.0);
+
+        cp.c.cpBodySetVelocity(self.pbody, cp.c.cpv(0,0));
+        cp.c.cpBodySetAngularVelocity(self.pbody, 0.0);
+        cp.c.cpBodySetVelocity(self.pinp1, cp.c.cpv(10,10));
+        cp.c.cpBodySetVelocity(self.pinp2, cp.c.cpv(10,10));
+        cp.c.cpBodySetVelocity(self.pinp3, cp.c.cpv(10,10));
+        cp.c.cpBodySetVelocity(self.pinp4, cp.c.cpv(10,10));
+
         cp.c.cpBodySetPosition(self.pbody, kur);
-        cp.c.cpBodySetPosition(self.pinp1, kur);
-        cp.c.cpBodySetPosition(self.pinp2, kur);
-        cp.c.cpBodySetPosition(self.pinp3, kur);
-        cp.c.cpBodySetPosition(self.pinp4, kur);
+        cp.c.cpBodySetPosition(self.pinp1, cp.c.cpv(kur.x+50, kur.y));
+        cp.c.cpBodySetPosition(self.pinp2, cp.c.cpv(kur.x-50, kur.y));
+        cp.c.cpBodySetPosition(self.pinp3, cp.c.cpv(kur.x, kur.y+50));
+        cp.c.cpBodySetPosition(self.pinp4, cp.c.cpv(kur.x, kur.y-50));
 
         mutate(self);
 
