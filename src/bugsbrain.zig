@@ -19,68 +19,36 @@ pub const Brain = struct
 
     size: usize = brainSize,
 
+    ct: f32 = 0.1,
+
+
+
     pub fn update(self: *Brain)void
     {
+        self.ct += 0.1;
+        if(self.ct > 1.0)self.ct = 0.1;
 
-        for(self.inputs.nurons) |inp|
+        var inps = &self.inputs.nurons;
+        var hids = &self.hidden.nurons;
+        for(inps, 0..inps.len)|inp, i|
         {
-            const value = inp.neuronvalue;
-
-            for(inp.cons) |con|
-            {
-                const conto = con.to;
-                const weight = con.weight;
-
-                for(0..self.hidden.nurons.len)|i|
-                {
-                    if(self.hidden.nurons[i].id == conto)
-                    {
-                        self.hidden.nurons[i].neuronvalue = 666 * weight * value;
-                    }
-                }
-            }
+            // _= inp;
+            if(inp.neuronvalue > 0.9) hids[i].fire();
+            inps[i].update();
         }
-
-        for(self.hidden.nurons, 0..self.hidden.nurons.len) |hid, ii|
+        for(hids, 0..hids.len)|hid, i|
         {
-            // const value = hid.neuronvalue;
-            var varsum:f32 = 0.0;
+            _= hid;
 
-            for(hid.cons) |con|
-            {
-                const conto = con.to;
-                const weight = con.weight;
-
-                for(0..self.hidden.nurons.len)|i|
-                {
-                    // _=value;
-                    // _=conto;
-                    // _=weight;
-
-                        // std.debug.print("IIII = {}\n", .{i});
-                    if(self.hidden.nurons[i].id == conto)
-                    {
-                        varsum = (varsum + self.hidden.nurons[i].neuronvalue) * weight;
-                    }
-                    if(self.inputs.nurons.len > i)
-                    if(self.inputs.nurons[i].id == conto)
-                    {
-                        self.inputs.nurons[i].neuronvalue -= 0.0001;
-                    };
-                }
-            }
-            if(varsum > 1.5)
-            self.hidden.nurons[ii].neuronvalue = 1.0
-            else
-            self.hidden.nurons[ii].neuronvalue = 0.0;
-            self.hidden.nurons[ii].varsum = varsum;
+            hids[i].update();
         }
-
-
     }
 
+
+
     pub fn mutate(self: *Brain)void
-    {   var ct: f32 = 0.1;
+    {
+        var cf: f32 = 0.01;
         var hidden = &self.hidden.nurons;
         for(hidden, 0..hidden.len)|nuron, i|
         {
@@ -90,10 +58,11 @@ pub const Brain = struct
            {
                 _=con;
 
-                const seed: f32 = @floatFromInt(std.time.milliTimestamp());
-                const random: f32 = ct ;
-                cons[ii].weight = 1.0 /  random / seed;
-                ct += 0.1;
+                const seed: f32 = @floatFromInt(std.time.milliTimestamp() );
+
+                // const random: f32 = self.ct ;
+                cons[ii].weight = 1.0 /  seed / cf;
+                cf += 1.0;
            }
         }
     }

@@ -21,6 +21,15 @@ pub const Nuron = struct
             self.cons[i] = con;
         }
     }
+    pub fn update(self: *Nuron) void
+    {
+
+           self.neuronvalue -=0.1;
+
+           if(self.neuronvalue < 0.0) self.neuronvalue = 0.0;
+
+
+    }
 
     pub fn fire(self: *Nuron) void
     {
