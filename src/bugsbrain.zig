@@ -33,7 +33,22 @@ pub const Brain = struct
         for(inps, 0..inps.len)|inp, i|
         {
             // _= inp;
-            if(inp.neuronvalue > 0.9) hids[i].fire();
+            inps[i].varsum = 0.1;
+            for(inp.cons, 0..inp.cons.len)|con, c|
+            {
+                _=c;
+                // search for conected nuron need rework with pinter
+
+
+                    if(con.to < hids.len)
+                    {
+                        inps[i].varsum *= hids[con.to].neuronvalue * con.weight;
+                    }
+
+            }
+            if( inps[i].varsum > inps[i].thresold )
+            hids[i].fire();
+
             inps[i].update();
         }
         for(hids, 0..hids.len)|hid, i|

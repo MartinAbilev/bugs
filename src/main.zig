@@ -17,7 +17,7 @@ var rng: std.Random.Xoshiro256 = undefined;
 var svg: [2]jok.svg.SvgBitmap = undefined;
 var tex: [2]sdl.Texture = undefined;
 
-var Bugs :[4] bb.Bug= undefined;
+var Bugs :[6] bb.Bug= undefined;
 
 // bugz httpz test
 pub fn httpz() !void
@@ -48,6 +48,9 @@ const api = struct
         return  returnState(allocator);
     }
 };
+
+var buf: [99999999]u8 = undefined;
+
 fn returnState(allocator: std.mem.Allocator)![]const u8
 {
             const JsonBugs = struct { id: usize, x: f32, y: f32, brain: bb.br.Brain };
@@ -70,7 +73,6 @@ fn returnState(allocator: std.mem.Allocator)![]const u8
 
             const json: JSON = .{.id=777, .bugz = x};
 
-            var buf: [1000000000]u8 = undefined;
             var fba = std.heap.FixedBufferAllocator.init(&buf);
 
             var string = std.ArrayList(u8).init(fba.allocator());
