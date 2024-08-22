@@ -36,5 +36,9 @@ pub const Nuron = struct
         self.neuronvalue = 1.0;
         // print("nuron fired {}\n", .{self.id});
     }
+    pub fn zero(self: *Nuron) void
+    {
+        self.neuronvalue = 0.0;
+    }
 };
 

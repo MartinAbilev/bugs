@@ -3,6 +3,9 @@ pub const std = @import("std");
 const conf = @import("bugsconfig.zig");
 const nn = @import("bugsnuron.zig");
 
+const print = @import("bugsshared.zig").print;
+
+
 // some inputs outputs and hiden layers basic struct
 pub const Inputs = struct {nurons:[conf.maxIn] nn.Nuron};
 pub const Outputs = struct {nurons:[conf.maxOut] nn.Nuron};
@@ -38,7 +41,36 @@ pub const Brain = struct
         }
         for(hids, 0..hids.len)|hid, i|
         {
-            _= hid;
+            hids[i].varsum = 0.0;
+
+            // var conlen: f32 = 0.0;
+            //  add all conected nurons value sum
+            for(hid.cons, 0..hid.cons.len)|con, c|
+            {
+                _=c;
+                // search for conected nuron need rework with pinter
+                for(hids, 0..hids.len)|hd, hi|
+                {
+                    _=hi;
+                    if(con.to == hd.id)
+                    {
+                        // print("hidd len: {}  conto: {} hidid: {}\n", .{hids.len, con.to, hd.id});
+
+
+                        // const  v = hids[con.to-1].neuronvalue;
+                        hids[i].varsum += hd.neuronvalue + con.weight;
+                        // conlen +=1;
+                    }
+                }
+
+
+
+
+            }
+
+            // when sum of all iputs reaches trezold fire nuron
+            if( hids[i].varsum > 7.0 )
+            hids[i].fire();
 
             hids[i].update();
         }
