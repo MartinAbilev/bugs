@@ -1,5 +1,7 @@
 const bs = @import("bugsshared.zig");
 const bb =@import("bugsbug.zig");
+pub const br = @import("bugsbrain.zig");
+
 const tk = @import("tokamak");
 
 const std = bs.std;
@@ -18,6 +20,9 @@ var svg: [2]jok.svg.SvgBitmap = undefined;
 var tex: [2]sdl.Texture = undefined;
 
 var Bugs :[3] bb.Bug= undefined;
+
+var championBrain: br.Brain = undefined;
+
 
 var bestTime: f32= 0.0;
 
@@ -131,7 +136,8 @@ pub fn init(ctx: jok.Context) !void
             if (bodyA) |body| {
                 const userData = cp.c.cpBodyGetMyUserData(body);
                  // make bug dead;
-                Bugs[userData.id].die();
+                 const chb: *br.Brain = &championBrain;
+                Bugs[userData.id].die(chb);
                 // std.debug.print("Body A: {} \n", .{userData});
             } else {
                 std.debug.print("Body A: null userData\n", .{});
@@ -339,9 +345,10 @@ pub fn update(ctx: jok.Context) !void {
     bb.world.update(ctx.deltaSeconds());
     for(Bugs, 0..Bugs.len) |bug, i|
     {
-        if(bug.y > 1000) Bugs[i].die();
+        const chb: *br.Brain = &championBrain;
+        if(bug.y > 1000) Bugs[i].die(chb);
         const bt: *f32 = &bestTime;
-        Bugs[i].update(bt);
+        Bugs[i].update(bt, chb);
         // _=bug;
         // _=i;
     }

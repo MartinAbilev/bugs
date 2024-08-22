@@ -22,9 +22,8 @@ pub const Bug =struct
     x: f32,
     y: f32,
     z: f32,
-    ct: f32 = 0.1,
+    ct: f32 = 0.0,
 
-    chapionBrain: br.Brain = undefined,
 
     brain: br.Brain = undefined,
     pbody: ?*cp.c.cpBody = undefined,
@@ -245,7 +244,7 @@ pub const Bug =struct
                                             bodyPos,
                                             );
     }
-    pub fn update(self: *Bug, bestTime: *f32) void
+    pub fn update(self: *Bug, bestTime: *f32, championBrain: *br.Brain) void
     {
         self.brain.update(fireTruster , self);
 
@@ -273,17 +272,17 @@ pub const Bug =struct
 
         self.x = px;
         self.y = py;
-
+        self.ct += 0.1;
         if(self.ct > bestTime.*)
         {
             bestTime.* = self.ct;
             self.ct = 0.0;
 
-            self.chapionBrain = self.brain;
+            championBrain.* = self.brain;
             print("best time is: {}\n", .{bestTime.*});
         }
 
-        self.ct += 0.1;
+
     }
 
     pub fn fire(self: *Bug, id: usize) void
@@ -295,7 +294,7 @@ pub const Bug =struct
     {
         self.brain.mutate();
     }
-    pub fn die(self: *Bug) void
+    pub fn die(self: *Bug, championBrain: *br.Brain) void
     {
         // _=self;
         self.isAlive = false;
@@ -326,7 +325,7 @@ pub const Bug =struct
         cp.c.cpBodySetPosition(self.pinp3, cp.c.cpv(kur.x, kur.y+50));
         cp.c.cpBodySetPosition(self.pinp4, cp.c.cpv(kur.x, kur.y-50));
 
-        self.brain = self.chapionBrain;
+        self.brain = championBrain.*;
         mutate(self);
 
         print("Bug {} DIE!\n", .{self.id});
