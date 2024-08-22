@@ -225,6 +225,7 @@ pub fn init(ctx: jok.Context) !void
         try Bugs[i].init(ctx, i);
     }
 
+    // flor
     _ = try bb.world.addObject(.{
         .body = .{
             .kinematic = .{
@@ -237,6 +238,75 @@ pub fn init(ctx: jok.Context) !void
                 .segment = .{
                     .a = .{ .x = -390, .y = 0 },
                     .b = .{ .x = 690, .y = 0 },
+                    .radius = 10,
+                    .physics = .{
+                        .weight = .{ .mass = 0 },
+                        .elasticity = 1.0,
+                    },
+                },
+            },
+        },
+    });
+
+    // wall right
+    _ = try bb.world.addObject(.{
+        .body = .{
+            .kinematic = .{
+                .position = .{ .x = 0, .y = 0 },
+                .angular_velocity = 0,
+            },
+        },
+        .shapes = &[_]cp.World.ObjectOption.ShapeProperty{
+            .{
+                .segment = .{
+                    .a = .{ .x = 0, .y = 10 },
+                    .b = .{ .x = 800, .y = 10 },
+                    .radius = 10,
+                    .physics = .{
+                        .weight = .{ .mass = 0 },
+                        .elasticity = 1.0,
+                    },
+                },
+            },
+        },
+    });
+
+    // wall left
+    _ = try bb.world.addObject(.{
+        .body = .{
+            .kinematic = .{
+                .position = .{ .x = 0, .y = 0 },
+                .angular_velocity = 0,
+            },
+        },
+        .shapes = &[_]cp.World.ObjectOption.ShapeProperty{
+            .{
+                .segment = .{
+                    .a = .{ .x = 10, .y = 0 },
+                    .b = .{ .x = 10, .y = 600 },
+                    .radius = 10,
+                    .physics = .{
+                        .weight = .{ .mass = 0 },
+                        .elasticity = 1.0,
+                    },
+                },
+            },
+        },
+    });
+
+    // wall right
+    _ = try bb.world.addObject(.{
+        .body = .{
+            .kinematic = .{
+                .position = .{ .x = 800, .y = 0 },
+                .angular_velocity = 0,
+            },
+        },
+        .shapes = &[_]cp.World.ObjectOption.ShapeProperty{
+            .{
+                .segment = .{
+                    .a = .{ .x = -10, .y = 0 },
+                    .b = .{ .x = -10, .y = 600 },
                     .radius = 10,
                     .physics = .{
                         .weight = .{ .mass = 0 },
