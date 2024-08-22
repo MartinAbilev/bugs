@@ -34,8 +34,8 @@ pub const Nuron = struct
     }
     pub fn zero(self: *Nuron) void
     {
-        self.neuronvalue = 0.0;
-        self.varsum = 0.0;
+        self.neuronvalue = 0.1;
+        self.varsum = 0.1;
     }
 };
 

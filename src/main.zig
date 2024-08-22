@@ -175,16 +175,20 @@ pub fn init(ctx: jok.Context) !void
                  Bugs[userData.id].fire(userData.inp);
                 // std.debug.print("Body A: {} \n", .{userData});
             } else {
-                std.debug.print("Body A: null userData\n", .{});
+                // std.debug.print("Body A: null userData\n", .{});
             }
 
             // Check if bodyB is not null and then retrieve its userData
             const bId = if (bodyB) |body| cp.c.cpBodyGetUserData(body) else null;
             if (bId) |id| {
                 _= id;
+                const userData = cp.c.cpBodyGetMyUserData(bodyB);
+
+                Bugs[userData.id].fire(userData.inp);
+
                 // std.debug.print("Body B: {p}\n", .{id});
             } else {
-                std.debug.print("Body B: null userData\n", .{});
+                // std.debug.print("Body B: null userData\n", .{});
             }
 
         } else {
@@ -202,8 +206,11 @@ pub fn init(ctx: jok.Context) !void
     const handler1 = cp.c.cpSpaceAddCollisionHandler(bb.world.space, 1, 0);
     handler1.*.postSolveFunc = postSolve;
 
-    const handler2 = cp.c.cpSpaceAddCollisionHandler(bb.world.space, 0, 0);
+    const handler2 = cp.c.cpSpaceAddCollisionHandler(bb.world.space, 3, 0);
     handler2.*.preSolveFunc = preSolve;
+
+    const handler3 = cp.c.cpSpaceAddCollisionHandler(bb.world.space, 3, 1);
+    handler3.*.preSolveFunc = preSolve;
 
     for(svg, 0..)|asvg, i|
     tex[i] = try jok.utils.gfx.createTextureFromPixels(

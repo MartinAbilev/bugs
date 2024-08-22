@@ -125,6 +125,8 @@ pub const Bug =struct
             },
         });
         self.pinp1 = world.objects.items[pid1].body.?;
+                cp.c.cpShapeSetCollisionType(world.objects.items[pid1].shapes[0], 3);
+
         cp.c.cpShapeSetSensor(world.objects.items[pid1].shapes[0], cp.c.cpTrue);
         constrain(world, self.pbody, self.pinp1);
 
@@ -151,6 +153,8 @@ pub const Bug =struct
         });
         self.pinp2 = world.objects.items[pid2].body.?;
         cp.c.cpShapeSetSensor(world.objects.items[pid2].shapes[0], cp.c.cpTrue);
+                cp.c.cpShapeSetCollisionType(world.objects.items[pid2].shapes[0], 3);
+
         constrain(world, self.pbody, self.pinp2);
 
         const pid3 =  try world.addObject(.{
@@ -176,6 +180,8 @@ pub const Bug =struct
         });
         self.pinp3 = world.objects.items[pid3].body.?;
         cp.c.cpShapeSetSensor(world.objects.items[pid3].shapes[0], cp.c.cpTrue);
+                cp.c.cpShapeSetCollisionType(world.objects.items[pid3].shapes[0], 3);
+
         constrain(world, self.pbody, self.pinp3);
 
         const pid4 =  try world.addObject(.{
@@ -201,6 +207,8 @@ pub const Bug =struct
         });
         self.pinp4 = world.objects.items[pid4].body.?;
         cp.c.cpShapeSetSensor(world.objects.items[pid4].shapes[0], cp.c.cpTrue);
+                cp.c.cpShapeSetCollisionType(world.objects.items[pid4].shapes[0], 3);
+
 
         constrain(world,self.pbody, self.pinp4);
         constrain(world,self.pinp1, self.pinp4);
