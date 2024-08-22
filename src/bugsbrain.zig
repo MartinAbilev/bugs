@@ -48,8 +48,8 @@ pub const Brain = struct
             }
             if( inps[i].varsum > inps[i].thresold )
             hids[i].fire();
-
             inps[i].update();
+
         }
         for(hids, 0..hids.len)|hid, i|
         {
@@ -70,8 +70,11 @@ pub const Brain = struct
             // when sum of all iputs reaches trezold fire nuron
             if( hids[i].varsum > hids[i].thresold )
             hids[i].fire();
-
             hids[i].update();
+            // hids[i].zero();
+
+
+            // hids[i].update();
             self.ct += 1.0;
         }
 
@@ -93,10 +96,10 @@ pub const Brain = struct
             }
             // when sum of all iputs reaches trezold fire nuron
             if( outs[i].varsum > outs[i].thresold )
-            // outs[i].zero();
             fire(bself, i);
 
-            outs[i].update();
+
+            outs[i].zero();
             self.ct += 1.0;
         }
     }
