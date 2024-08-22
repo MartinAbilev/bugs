@@ -1,0 +1,24 @@
+        var outputs = &self.outputs.nurons;
+        for(outputs, 0..outputs.len)|nuron, i|
+        {
+            _= nuron;
+           var cons = &outputs[i].cons;
+           for(cons, 0..cons.len)|con,ii|
+           {
+                _=con;
+                const rand = std.crypto.random;
+                const a = rand.float(f32);
+                const b = rand.boolean();
+                const c = rand.int(u8);
+                const d = rand.intRangeAtMost(u8, 0, 255);
+
+                const rnd = a;
+
+                _ = .{ a, b, c, d };
+
+                cons[ii].weight = rnd;
+           }
+           const rand = std.crypto.random;
+           const a: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, 10) );
+           outputs[i].thresold = a;
+        }

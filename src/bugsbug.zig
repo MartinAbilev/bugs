@@ -215,9 +215,25 @@ pub const Bug =struct
         cp.c.cpBodySetMyUserData(self.pinp3, .{.id=self.id, .inp = 2});
         cp.c.cpBodySetMyUserData(self.pinp4, .{.id=self.id, .inp = 3});
     }
+    pub fn fireTruster(self: *Bug, id: usize) void
+    {
+        // const bodyPos = cp.c.cpBodyGetPosition(self.pbody);
+        const bodyPos = cp.c.cpv(0, 0);        // const impos = cp.c.cpBodyGetPosition(self.pinp3);
+
+        // const locp = cp.c.cpBodyWorldToLocal(self.pbody, cp.c.cpBodyGetPosition(self.pinp1));
+        const locp = cp.c.cpBodyWorldToLocal(self.pbody, cp.c.cpv(self.brain.inputs.nurons[id].x, self.brain.inputs.nurons[id].y));
+        const force = cp.c.cpv(-locp.x*2, -locp.y*2);
+        // const force = cp.c.cpBodyGetPosition(self.pinp1);
+
+
+        cp.c.cpBodyApplyImpulseAtLocalPoint(self.pbody,
+                                            force,
+                                            bodyPos,
+                                            );
+    }
     pub fn update(self: *Bug) void
     {
-        self.brain.update();
+        self.brain.update(fireTruster , self);
 
         const pinp1 = cp.c.cpBodyGetPosition(self.pinp1);
         self.brain.inputs.nurons[0].x = pinp1.x;
@@ -244,26 +260,11 @@ pub const Bug =struct
         self.x = px;
         self.y = py;
     }
-     pub fn fireTruster(self: *Bug, id: usize) void
-    {
-        // const bodyPos = cp.c.cpBodyGetPosition(self.pbody);
-        const bodyPos = cp.c.cpv(0, 0);        // const impos = cp.c.cpBodyGetPosition(self.pinp3);
 
-        // const locp = cp.c.cpBodyWorldToLocal(self.pbody, cp.c.cpBodyGetPosition(self.pinp1));
-        const locp = cp.c.cpBodyWorldToLocal(self.pbody, cp.c.cpv(self.brain.inputs.nurons[id].x, self.brain.inputs.nurons[id].y));
-        const force = cp.c.cpv(-locp.x*2, -locp.y*2);
-        // const force = cp.c.cpBodyGetPosition(self.pinp1);
-
-
-        cp.c.cpBodyApplyImpulseAtLocalPoint(self.pbody,
-                                            force,
-                                            bodyPos,
-                                            );
-    }
     pub fn fire(self: *Bug, id: usize) void
     {
         self.brain.inputs.nurons[id].fire();
-        fireTruster(self, id);
+        // fireTruster(self, id);
     }
     pub fn mutate(self: *Bug) void
     {
