@@ -19,6 +19,8 @@ var tex: [2]sdl.Texture = undefined;
 
 var Bugs :[3] bb.Bug= undefined;
 
+var bestTime: f32= 0.0;
+
 // bugz httpz test
 pub fn httpz() !void
 {
@@ -338,7 +340,8 @@ pub fn update(ctx: jok.Context) !void {
     for(Bugs, 0..Bugs.len) |bug, i|
     {
         if(bug.y > 1000) Bugs[i].die();
-        Bugs[i].update();
+        const bt: *f32 = &bestTime;
+        Bugs[i].update(bt);
         // _=bug;
         // _=i;
     }

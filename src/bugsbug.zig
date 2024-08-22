@@ -22,6 +22,10 @@ pub const Bug =struct
     x: f32,
     y: f32,
     z: f32,
+    ct: f32 = 0.1,
+
+    chapionBrain: br.Brain = undefined,
+
     brain: br.Brain = undefined,
     pbody: ?*cp.c.cpBody = undefined,
     pshape: ?*cp.c.cpShape = undefined,
@@ -232,7 +236,7 @@ pub const Bug =struct
 
         // const locp = cp.c.cpBodyWorldToLocal(self.pbody, cp.c.cpBodyGetPosition(self.pinp1));
         const locp = cp.c.cpBodyWorldToLocal(self.pbody, cp.c.cpv(self.brain.inputs.nurons[id].x, self.brain.inputs.nurons[id].y));
-        const force = cp.c.cpv(-locp.x*0.2, -locp.y*0.2);
+        const force = cp.c.cpv(-locp.x*1, -locp.y*1);
         // const force = cp.c.cpBodyGetPosition(self.pinp1);
 
 
@@ -241,7 +245,7 @@ pub const Bug =struct
                                             bodyPos,
                                             );
     }
-    pub fn update(self: *Bug) void
+    pub fn update(self: *Bug, bestTime: *f32) void
     {
         self.brain.update(fireTruster , self);
 
@@ -269,6 +273,17 @@ pub const Bug =struct
 
         self.x = px;
         self.y = py;
+
+        if(self.ct > bestTime.*)
+        {
+            bestTime.* = self.ct;
+            self.ct = 0.0;
+
+            self.chapionBrain = self.brain;
+            print("best time is: {}\n", .{bestTime.*});
+        }
+
+        self.ct += 0.1;
     }
 
     pub fn fire(self: *Bug, id: usize) void
@@ -311,6 +326,7 @@ pub const Bug =struct
         cp.c.cpBodySetPosition(self.pinp3, cp.c.cpv(kur.x, kur.y+50));
         cp.c.cpBodySetPosition(self.pinp4, cp.c.cpv(kur.x, kur.y-50));
 
+        self.brain = self.chapionBrain;
         mutate(self);
 
         print("Bug {} DIE!\n", .{self.id});

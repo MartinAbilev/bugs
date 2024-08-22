@@ -20,12 +20,10 @@ pub const Brain = struct
     hidden: Hidden,
     outputs: Outputs,
     size: usize = brainSize,
-    ct: f32 = 0.1,
 
     pub fn update(self: *Brain, fire: fn(self: *bb.Bug, id: usize)void, bself: *bb.Bug)void
     {
-        self.ct += 0.1;
-        if(self.ct > 1.0)self.ct = 0.1;
+
 
         var inps = &self.inputs.nurons;
         var hids = &self.hidden.nurons;
@@ -75,7 +73,6 @@ pub const Brain = struct
 
 
             // hids[i].update();
-            self.ct += 1.0;
         }
 
         for(outs, 0..outs.len)|out, i|
@@ -100,7 +97,6 @@ pub const Brain = struct
 
 
             outs[i].update();
-            self.ct += 1.0;
         }
     }
     pub fn mutate(self: *Brain)void
@@ -119,14 +115,14 @@ pub const Brain = struct
                 const c = rand.int(u8);
                 const d = rand.intRangeAtMost(u8, 0, 255);
 
-                const rnd = a;
+                const rnd: f32 = @floatFromInt( rand.intRangeAtMost(u8, 0, 3) );
 
-                _ = .{ a, c, d };
+                _ = .{ a, b, c, d };
                 if(b)cons[ii].weight += rnd;
                 if(!b)cons[ii].weight -= rnd;
            }
            const rand = std.crypto.random;
-           const a: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, 20) );
+           const a: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, 3) );
            const b = rand.boolean();
 
            if(b)hidden[i].thresold += a;
@@ -155,7 +151,7 @@ pub const Brain = struct
                 if(!b)cons[ii].weight -= rnd;
            }
            const rand = std.crypto.random;
-           const a: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, 20) );
+           const a: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, 3) );
            const b = rand.boolean();
            if(b)outputs[i].thresold += a;
            if(!b)outputs[i].thresold -= a;
@@ -183,14 +179,11 @@ pub const Brain = struct
                 if(!b)cons[ii].weight -= rnd;
            }
            const rand = std.crypto.random;
-           const a: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, 20) );
+           const a: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, 3) );
            const b = rand.boolean();
            if(b)inputs[i].thresold += a;
            if(!b)inputs[i].thresold -= a;
         }
-
-
-        self.ct = 0.0;
     }
 
 
