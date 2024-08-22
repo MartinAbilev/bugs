@@ -22,7 +22,7 @@ pub fn build(b: *std.Build) void {
     });
     const examples = [_]struct { name: []const u8, opt: BuildOptions }
     {
-        .{ .name = "bugs", .opt = .{ .use_cp = true } },
+        .{ .name = "bugz", .opt = .{ .use_cp = true } },
     };
 
     const build_examples = b.step("examples", "compile and install all examples");
@@ -94,7 +94,7 @@ pub fn createGame(
     });
 
     const tokamak = b.dependency("tokamak", .{}).module("tokamak");
-    
+
     if (opt.use_ztracy) {
         jok.import_table.putNoClobber(b.allocator, "ztracy", ztracy_pkg.ztracy) catch unreachable;
     }

@@ -65,11 +65,11 @@ pub const Brain = struct
                     if(self.inputs.nurons.len > i)
                     if(self.inputs.nurons[i].id == conto)
                     {
-                        self.inputs.nurons[i].neuronvalue -= 0.001;
+                        self.inputs.nurons[i].neuronvalue -= 0.0001;
                     };
                 }
             }
-            if(varsum > 100)
+            if(varsum > 1.5)
             self.hidden.nurons[ii].neuronvalue = 1.0
             else
             self.hidden.nurons[ii].neuronvalue = 0.0;
@@ -77,6 +77,25 @@ pub const Brain = struct
         }
 
 
+    }
+
+    pub fn mutate(self: *Brain)void
+    {   var ct: f32 = 0.1;
+        var hidden = &self.hidden.nurons;
+        for(hidden, 0..hidden.len)|nuron, i|
+        {
+            _= nuron;
+           var cons = &hidden[i].cons;
+           for(cons, 0..cons.len)|con,ii|
+           {
+                _=con;
+
+                const seed: f32 = @floatFromInt(std.time.milliTimestamp());
+                const random: f32 = ct ;
+                cons[ii].weight = 1.0 /  random / seed;
+                ct += 0.1;
+           }
+        }
     }
 };
 

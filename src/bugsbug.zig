@@ -246,6 +246,10 @@ pub const Bug =struct
     {
         self.brain.inputs.nurons[id].fire();
     }
+    pub fn mutate(self: *Bug) void
+    {
+        self.brain.mutate();
+    }
     pub fn die(self: *Bug) void
     {
         self.isAlive = false;
@@ -257,6 +261,9 @@ pub const Bug =struct
         cp.c.cpBodySetPosition(self.pinp3, kur);
         cp.c.cpBodySetPosition(self.pinp4, kur);
 
+        mutate(self);
+
         print("Bug {} DIE!\n", .{self.id});
     }
+
 };
