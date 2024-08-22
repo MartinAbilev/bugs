@@ -99,7 +99,7 @@ pub const Brain = struct
             fire(bself, i);
 
 
-            outs[i].zero();
+            outs[i].update();
             self.ct += 1.0;
         }
     }

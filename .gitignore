@@ -1,5 +1,5 @@
 .zig-cache
 
 zig-out/bin/assets
-zig-out/bin/bugs.exe
-zig-out/bin/bugs.pdb
+zig-out/bin/bugz.exe
+zig-out/bin/bugz.pdb
