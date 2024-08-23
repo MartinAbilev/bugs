@@ -362,7 +362,6 @@ pub fn draw(ctx: jok.Context) !void {
     ctx.clear(null);
 
     j2d.begin(.{ .depth_sort = .back_to_forth });
-    defer j2d.end();
 
 
     ctx.displayStats(.{});
@@ -389,11 +388,16 @@ pub fn draw(ctx: jok.Context) !void {
             const center:sdl.PointF = .{.x=inp.x, .y=inp.y};
             const radius: f32 = 3.0;
             const outvalue = bug.brain.outputs.nurons[i].neuronvalue;
+            const inpvalue = bug.brain.inputs.nurons[i].neuronvalue;
             var cr: u8= 0;
+            var cg: u8= 0;
             if(outvalue>0.5)
             cr = 255
             else cr = 0;
-            const color: sdl.Color = .{.r=cr, .g=0, .b=0};
+            if(inpvalue>0.9)
+            cg = 255
+            else cg = 0;
+            const color: sdl.Color = .{.r=cr, .g=cg, .b=0};
             const opt: j2d.CircleOption = .{
                                             .thickness = 3.0,
                                             .num_segments = 0,
@@ -423,6 +427,8 @@ pub fn draw(ctx: jok.Context) !void {
         );
 
     }
+    defer j2d.end();
+
 
 }
 

@@ -31,14 +31,21 @@ pub const Brain = struct
     {
 
 
-        var inps = &self.inputs.nurons;
+        const inps = &self.inputs.nurons;
         var hids = &self.hidden.nurons;
         var outs = &self.outputs.nurons;
         for(inps, 0..inps.len)|inp, i|
         {
             // _= inp;
-            if(inp.neuronvalue>0.9)self.hidden.nurons[i].fire();
-            inps[i].update();
+            if(inp.neuronvalue>0.9)
+            {
+                self.hidden.nurons[i].fire();
+            }
+            else
+            {
+                self.inputs.nurons[i].zero();
+            }
+            self.inputs.nurons[i].update();
 
         }
         for(hids, 0..hids.len)|hid, i|
