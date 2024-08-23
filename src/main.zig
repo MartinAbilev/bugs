@@ -24,7 +24,7 @@ var Bugs :[3] bb.Bug= undefined;
 var championBrain: br.Brain = undefined;
 
 
-var bestTime: f32= 0.0;
+var bestTime: i64 = 0;
 
 // bugz httpz test
 pub fn httpz() !void
@@ -56,10 +56,10 @@ const api = struct
     }
 };
 
-var buf: [999999]u8 = undefined;
 
 fn returnState(allocator: std.mem.Allocator)![]const u8
 {
+        var buf: [8*1024*32]u8 = undefined;
             const JsonBugs = struct { id: usize, x: f32, y: f32, brain: bb.br.Brain };
 
             var x:[Bugs.len]JsonBugs = undefined;
@@ -347,7 +347,7 @@ pub fn update(ctx: jok.Context) !void {
     {
         const chb: *br.Brain = &championBrain;
         if(bug.y > 1000) Bugs[i].die(chb);
-        const bt: *f32 = &bestTime;
+        const bt: *i64 = &bestTime;
         Bugs[i].update(bt, chb);
         // _=bug;
         // _=i;

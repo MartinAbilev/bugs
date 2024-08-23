@@ -22,7 +22,7 @@ pub const Bug =struct
     x: f32,
     y: f32,
     z: f32,
-    ct: f32 = 0.0,
+    ct: i64 = 0,
 
 
     brain: br.Brain = undefined,
@@ -50,24 +50,23 @@ pub const Bug =struct
         var  on3 = Nuron{.id = idc, .x = 0, .y = 30, .z = 0, .ntype = 2, }; idc = idc + 1 ;
         var  on4 = Nuron{.id = idc, .x = 0, .y = -30, .z = 0, .ntype = 2, }; idc = idc + 1 ;
 
-        const ph: *[conf.maxHidden]Nuron = &self.brain.hidden.nurons;
         var  hnn: [conf.maxHidden]Nuron = undefined;
         for(0..conf.maxHidden)|i|
         {
             const hn = Nuron{.id = idc, .x = 0, .y = 0, .z = 0};
             hnn[i] = hn;
-            hnn[i].conToAll(ph);
+            hnn[i].conToAll();
             idc = idc + 1 ;
         }
 
-        in1.conToAll(ph);
-        in2.conToAll(ph);
-        in3.conToAll(ph);
-        in4.conToAll(ph);
-        on1.conToAll(ph);
-        on2.conToAll(ph);
-        on3.conToAll(ph);
-        on4.conToAll(ph);
+        in1.conToAll();
+        in2.conToAll();
+        in3.conToAll();
+        in4.conToAll();
+        on1.conToAll();
+        on2.conToAll();
+        on3.conToAll();
+        on4.conToAll();
 
         const inputs   = br.Inputs{.nurons=[_]Nuron{in1, in2, in3, in4}};
         const outputs = br.Outputs{.nurons = [_]Nuron{on1, on2, on3, on4}};
@@ -244,7 +243,7 @@ pub const Bug =struct
                                             bodyPos,
                                             );
     }
-    pub fn update(self: *Bug, bestTime: *f32, championBrain: *br.Brain) void
+    pub fn update(self: *Bug, bestTime: *i64, championBrain: *br.Brain) void
     {
         self.brain.update(fireTruster , self);
 
@@ -272,11 +271,11 @@ pub const Bug =struct
 
         self.x = px;
         self.y = py;
-        self.ct += 0.1;
+        self.ct += 1;
         if(self.ct > bestTime.*)
         {
             bestTime.* = self.ct;
-            self.ct = 0.0;
+            self.ct = 0;
 
             championBrain.* = self.brain;
             print("best time is: {}\n", .{bestTime.*});

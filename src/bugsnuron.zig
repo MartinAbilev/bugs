@@ -1,6 +1,6 @@
 const conf = @import("bugsconfig.zig");
 const print = @import("bugsshared.zig").print;
-pub const Con = struct {to: usize, weight: f32, vw: f32 = undefined, p: *Nuron};
+pub const Con = struct {to: usize, weight: f32, vw: f32 = undefined};
 
 // the nuron struct
 pub const Nuron = struct
@@ -14,11 +14,11 @@ pub const Nuron = struct
     neuronvalue: f32 = 0.1,
     thresold: f32 = 4.0,
     varsum: f32 = 0.1,
-    pub fn conToAll(self: *Nuron, nurons: *[conf.maxHidden]Nuron) void
+    pub fn conToAll(self: *Nuron) void
     {
         for(0..self.cons.len)|i|
         {
-            const con: Con = Con{.to = i, .weight = 0.5, .p = &nurons[i]};
+            const con: Con = Con{.to = i, .weight = 0.5};
             self.cons[i] = con;
         }
     }
