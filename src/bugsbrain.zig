@@ -79,6 +79,11 @@ pub const Brain = struct
             // when sum of all iputs reaches trezold fire nuron
             if( outs[i].varsum > outs[i].thresold )
             {
+                outs[i].zero();
+            }
+            else
+            {
+                outs[i].fire();
                 fire(bself, i);
             }
             outs[i].update();
@@ -95,24 +100,23 @@ pub const Brain = struct
            {
                 _=con;
                 const rand = std.crypto.random;
-                const a = rand.float(f32);
+                // const a = rand.float(f32);
                 const b = rand.boolean();
-                const c = rand.int(u8);
-                const d = rand.intRangeAtMost(u8, 0, 255);
+                // const c = rand.int(u8);
+                // const d = rand.intRangeAtMost(u8, 0, 255);
 
-                const rnd: f32 = @floatFromInt( rand.intRangeAtMost(u8, 0, 3) );
+                const rnd: f32 = @floatFromInt( rand.intRangeAtMost(u8, 0, 100) );
 
-                _ = .{ a,  c, d };
-                if(b)cons[ii].weight += rnd;
-                if(!b)cons[ii].weight -= rnd;
+                if(b)cons[ii].weight += rnd/100;
+                if(!b)cons[ii].weight -= rnd/100;
            }
            const rand = std.crypto.random;
-           const a: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, 3) );
+           const a: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, 100) );
            const b = rand.boolean();
 
-           if(b)hidden[i].thresold += a;
-           if(!b)hidden[i].thresold -= a;
-           if(hidden[i].thresold < 0)hidden[i].thresold = 10.0;
+           if(b)hidden[i].thresold += a/100;
+           if(!b)hidden[i].thresold -= a/100;
+           if(hidden[i].thresold < 0)hidden[i].thresold = 0.0;
         }
 
         var outputs = &self.outputs.nurons;
@@ -124,24 +128,22 @@ pub const Brain = struct
            {
                 _=con;
                 const rand = std.crypto.random;
-                const a = rand.float(f32);
+                // const a = rand.float(f32);
                 const b = rand.boolean();
-                const c = rand.int(u8);
-                const d = rand.intRangeAtMost(u8, 0, 255);
+                // const c = rand.int(u8);
+                // const d = rand.intRangeAtMost(u8, 0, 255);
 
-                const rnd = a;
+                const rnd: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, 100) );
 
-                _ = .{ a, c, d };
-
-                if(b)cons[ii].weight += rnd;
-                if(!b)cons[ii].weight -= rnd;
+                if(b)cons[ii].weight += rnd/100;
+                if(!b)cons[ii].weight -= rnd/100;
            }
            const rand = std.crypto.random;
-           const a: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, 3) );
+           const a: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, 100) );
            const b = rand.boolean();
-           if(b)outputs[i].thresold += a;
-           if(!b)outputs[i].thresold -= a;
-           if(outputs[i].thresold < 0)outputs[i].thresold = 10.0;
+           if(b)outputs[i].thresold += a/100;
+           if(!b)outputs[i].thresold -= a/100;
+           if(outputs[i].thresold < 0)outputs[i].thresold = 0.0;
         }
 
         var inputs = &self.inputs.nurons;
@@ -153,24 +155,24 @@ pub const Brain = struct
            {
                 _=con;
                 const rand = std.crypto.random;
-                const a = rand.float(f32);
+                // const a = rand.float(f32);
                 const b = rand.boolean();
-                const c = rand.int(u8);
-                const d = rand.intRangeAtMost(u8, 0, 255);
+                // const c = rand.int(u8);
+                const d = rand.intRangeAtMost(u8, 0, 100);
 
-                const rnd = a;
+                const rnd: f32 = @floatFromInt( d/100);
 
-                _ = .{ a, c, d };
+                // _ = .{ a, c, d };
 
                 if(b)cons[ii].weight += rnd;
                 if(!b)cons[ii].weight -= rnd;
            }
            const rand = std.crypto.random;
-           const a: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, 3) );
+           const a: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, 100) );
            const b = rand.boolean();
-           if(b)inputs[i].thresold += a;
-           if(!b)inputs[i].thresold -= a;
-           if(inputs[i].thresold < 0)inputs[i].thresold = 10.0;
+           if(b)inputs[i].thresold += a/100;
+           if(!b)inputs[i].thresold -= a/100;
+           if(inputs[i].thresold < 0)inputs[i].thresold = 0.0;
         }
     }
 
