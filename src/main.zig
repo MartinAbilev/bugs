@@ -21,7 +21,7 @@ var rng: std.Random.Xoshiro256 = undefined;
 var svg: [2]jok.svg.SvgBitmap = undefined;
 var tex: [2]sdl.Texture = undefined;
 
-var Bugs :[16] bb.Bug= undefined;
+var Bugs :[8] bb.Bug= undefined;
 
 var championBrain: br.Brain = undefined;
 
@@ -62,7 +62,7 @@ const api = struct
 fn returnState(allocator: std.mem.Allocator)![]const u8
 {
         const bugzToSend: usize = 2;
-        var buf: [190*conf.maxCons*(conf.maxHidden + conf.maxIn + conf.maxOut)*bugzToSend]u8 = undefined;
+        var buf: [(conf.maxHidden + conf.maxIn + conf.maxOut)*conf.maxCons*bugzToSend*128]u8 = undefined;
             const JsonBugs = struct { id: usize, x: f32, y: f32, brain: bb.br.Brain };
 
             var x:[bugzToSend]JsonBugs = undefined;
