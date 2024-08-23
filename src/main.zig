@@ -27,6 +27,7 @@ var championBrain: br.Brain = undefined;
 
 
 var bestTime: i64 = 0;
+var bestestTime: i64 = 0;
 const hiveSize: usize = 64;
 var deaths: usize = 0;
 
@@ -352,9 +353,10 @@ pub fn hiveDeath() void
     if(deaths>=hiveSize)
     {
         deaths = 0;
+        if(bestTime > bestestTime)bestestTime = bestTime;
         bestTime -=12;
     }
-    print("hive size: {}, deaths: {}, bestTime: {} \n", .{hiveSize, deaths, bestTime});
+    print("hive size: {}, deaths: {}, bestTime: {}, bestestTime {} \n", .{hiveSize, deaths, bestTime, bestestTime});
 }
 pub fn update(ctx: jok.Context) !void {
     // _ = ctx;
