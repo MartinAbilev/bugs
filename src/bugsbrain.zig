@@ -58,6 +58,10 @@ pub const Brain = struct
             if( hids[i].varsum > hids[i].thresold )
             {
                 // print("hidden value is greater tha zero: {}\n", .{hids[i].varsum});
+                self.hidden.nurons[i].zero();
+            }
+            else
+            {
                 self.hidden.nurons[i].fire();
             }
             self.hidden.nurons[i].update();
