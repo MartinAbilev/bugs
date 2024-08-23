@@ -37,7 +37,7 @@ pub const Brain = struct
         for(inps, 0..inps.len)|inp, i|
         {
             // _= inp;
-            if(inp.neuronvalue>0.5)
+            if(inp.neuronvalue>inp.thresold)
             {
                 self.hidden.nurons[i].fire();
             }

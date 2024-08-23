@@ -354,8 +354,8 @@ pub fn hiveDeath() void
     {
         deaths = 0;
         if(bestTime > bestestTime)bestestTime = bestTime;
-        bestTime -=hiveSize;
-        bestTime = 0;
+        // bestTime -=hiveSize;
+        bestTime -= conf.maxBugs;
     }
     print("hive size: {}, deaths: {}, bestTime: {}, bestestTime {} \n", .{hiveSize, deaths, bestTime, bestestTime});
 }
