@@ -31,7 +31,6 @@ pub const Brain = struct
         for(inps, 0..inps.len)|inp, i|
         {
             // _= inp;
-            inps[i].varsum = 0.1;
             if(inp.neuronvalue>0.9)self.hidden.nurons[i].fire();
             inps[i].update();
 

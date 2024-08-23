@@ -50,24 +50,24 @@ pub const Bug =struct
         var  on3 = Nuron{.id = idc, .x = 0, .y = 30, .z = 0, .ntype = 2, }; idc = idc + 1 ;
         var  on4 = Nuron{.id = idc, .x = 0, .y = -30, .z = 0, .ntype = 2, }; idc = idc + 1 ;
 
+        const ph: *[conf.maxHidden]Nuron = &self.brain.hidden.nurons;
         var  hnn: [conf.maxHidden]Nuron = undefined;
         for(0..conf.maxHidden)|i|
         {
             const hn = Nuron{.id = idc, .x = 0, .y = 0, .z = 0};
             hnn[i] = hn;
-            hnn[i].conToAll();
+            hnn[i].conToAll(ph);
             idc = idc + 1 ;
         }
 
-        in1.conToAll();
-        in2.conToAll();
-        in3.conToAll();
-        in4.conToAll();
-
-        on1.conToAll();
-        on2.conToAll();
-        on3.conToAll();
-        on4.conToAll();
+        in1.conToAll(ph);
+        in2.conToAll(ph);
+        in3.conToAll(ph);
+        in4.conToAll(ph);
+        on1.conToAll(ph);
+        on2.conToAll(ph);
+        on3.conToAll(ph);
+        on4.conToAll(ph);
 
         const inputs   = br.Inputs{.nurons=[_]Nuron{in1, in2, in3, in4}};
         const outputs = br.Outputs{.nurons = [_]Nuron{on1, on2, on3, on4}};

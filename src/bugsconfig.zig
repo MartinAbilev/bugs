@@ -2,4 +2,4 @@
 pub const maxIn: usize = 4;
 pub const maxOut: usize = 4;
 pub const maxHidden: usize = 16;
-pub const maxCons: usize = maxIn + maxOut + maxHidden;
+pub const maxCons: usize = maxHidden;
