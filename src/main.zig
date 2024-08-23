@@ -65,7 +65,7 @@ const api = struct
 fn returnState(allocator: std.mem.Allocator)![]const u8
 {
         const bugzToSend: usize = 2;
-        var buf: [(conf.maxHidden + conf.maxIn + conf.maxOut)*conf.maxCons*bugzToSend*128]u8 = undefined;
+        var buf: [(conf.maxHidden + conf.maxIn + conf.maxOut)*conf.maxCons*bugzToSend*1024]u8 = undefined;
             const JsonBugs = struct { id: usize, x: f32, y: f32, brain: bb.br.Brain };
 
             var x:[bugzToSend]JsonBugs = undefined;
@@ -425,6 +425,38 @@ pub fn draw(ctx: jok.Context) !void {
                 color,
                 opt,
             );
+        }
+
+        for(bug.brain.hidden.nurons, 0..bug.brain.hidden.nurons.len)|hid, iu|
+        {
+            const i: f32= @floatFromInt(iu);
+            const nlen: f32= @floatFromInt(bug.brain.hidden.nurons.len);
+            var center:sdl.PointF = .{.x=bug.x + (i*3) - (nlen/2) * 3, .y=bug.y + 10};
+            const radius: f32 = 3.0;
+            const c =  hid.neuronvalue;
+            var cb: u8 = 0;
+            if(c>0.5)cb=255;
+            const color: sdl.Color = .{.r = 0, .g= 0, .b = cb};
+            const opt: j2d.CircleOption = .{
+                                            .thickness = 1.0,
+                                            .num_segments = 0,
+                                            .depth = 0.5,
+                                        };
+            try j2d.circle(
+                center,
+                radius,
+                color,
+                opt,
+            );
+            center.y = center.y-20;
+            try j2d.circle(
+                center,
+                radius,
+                color,
+                opt,
+            );
+
+
         }
 
         const center:sdl.PointF = .{.x=bug.x, .y=bug.y};
