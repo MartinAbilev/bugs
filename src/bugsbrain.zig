@@ -32,20 +32,7 @@ pub const Brain = struct
         {
             // _= inp;
             inps[i].varsum = 0.1;
-            for(inp.cons, 0..inp.cons.len)|con, c|
-            {
-                _=c;
-                // search for conected nuron need rework with pinter
-
-
-                    if(con.to < hids.len)
-                    {
-                        inps[i].varsum *= hids[con.to].neuronvalue * con.weight;
-                        if( inps[i].varsum > inps[i].thresold )
-                        hids[con.to].fire();
-                    }
-
-            }
+            if(inp.neuronvalue>0.9)self.hidden.nurons[i].fire();
             inps[i].update();
 
         }
@@ -61,18 +48,15 @@ pub const Brain = struct
 
                     if(con.to < hids.len)
                     {
-                        hids[i].varsum *= hids[con.to].neuronvalue * con.weight;
+                        self.hidden.nurons[i].varsum *= hids[con.to].neuronvalue * con.weight;
                     }
 
             }
             // when sum of all iputs reaches trezold fire nuron
-            if( hids[i].varsum > hids[i].thresold )
-            hids[i].fire();
-            hids[i].update();
-            // hids[i].zero();
+            if( self.hidden.nurons[i].varsum > 0 )
+            self.hidden.nurons[i].fire();
+            self.hidden.nurons[i].update();
 
-
-            // hids[i].update();
         }
 
         for(outs, 0..outs.len)|out, i|
@@ -117,7 +101,7 @@ pub const Brain = struct
 
                 const rnd: f32 = @floatFromInt( rand.intRangeAtMost(u8, 0, 3) );
 
-                _ = .{ a, b, c, d };
+                _ = .{ a,  c, d };
                 if(b)cons[ii].weight += rnd;
                 if(!b)cons[ii].weight -= rnd;
            }
@@ -127,6 +111,7 @@ pub const Brain = struct
 
            if(b)hidden[i].thresold += a;
            if(!b)hidden[i].thresold -= a;
+           if(hidden[i].thresold < 0)hidden[i].thresold = 10.0;
         }
 
         var outputs = &self.outputs.nurons;
@@ -155,6 +140,7 @@ pub const Brain = struct
            const b = rand.boolean();
            if(b)outputs[i].thresold += a;
            if(!b)outputs[i].thresold -= a;
+           if(outputs[i].thresold < 0)outputs[i].thresold = 10.0;
         }
 
         var inputs = &self.inputs.nurons;
@@ -183,6 +169,7 @@ pub const Brain = struct
            const b = rand.boolean();
            if(b)inputs[i].thresold += a;
            if(!b)inputs[i].thresold -= a;
+           if(inputs[i].thresold < 0)inputs[i].thresold = 10.0;
         }
     }
 

@@ -56,7 +56,7 @@ const api = struct
     }
 };
 
-var buf: [99999999]u8 = undefined;
+var buf: [999999]u8 = undefined;
 
 fn returnState(allocator: std.mem.Allocator)![]const u8
 {
