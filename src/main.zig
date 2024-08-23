@@ -354,6 +354,7 @@ pub fn hiveDeath() void
         deaths = 0;
         bestTime -=12;
     }
+    print("hive size: {}, deaths: {}, bestTime: {} \n", .{hiveSize, deaths, bestTime});
 }
 pub fn update(ctx: jok.Context) !void {
     // _ = ctx;
