@@ -1,6 +1,8 @@
 const bs = @import("bugsshared.zig");
 const bb =@import("bugsbug.zig");
 pub const br = @import("bugsbrain.zig");
+const conf = @import("bugsconfig.zig");
+
 
 const tk = @import("tokamak");
 
@@ -19,7 +21,7 @@ var rng: std.Random.Xoshiro256 = undefined;
 var svg: [2]jok.svg.SvgBitmap = undefined;
 var tex: [2]sdl.Texture = undefined;
 
-var Bugs :[1] bb.Bug= undefined;
+var Bugs :[32] bb.Bug= undefined;
 
 var championBrain: br.Brain = undefined;
 
@@ -59,7 +61,7 @@ const api = struct
 
 fn returnState(allocator: std.mem.Allocator)![]const u8
 {
-        var buf: [8*1024*32]u8 = undefined;
+        var buf: [64*conf.maxCons*(conf.maxHidden + conf.maxIn + conf.maxOut)*Bugs.len]u8 = undefined;
             const JsonBugs = struct { id: usize, x: f32, y: f32, brain: bb.br.Brain };
 
             var x:[Bugs.len]JsonBugs = undefined;

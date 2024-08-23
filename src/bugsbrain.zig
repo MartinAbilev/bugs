@@ -43,18 +43,15 @@ pub const Brain = struct
             {
                 _=c;
                 // search for conected nuron need rework with pinter
-
-
-                    if(con.to < hids.len)
-                    {
-                        self.hidden.nurons[i].varsum += hids[con.to].neuronvalue * con.weight;
-                    }
-
+                if(con.to < hids.len)
+                {
+                    self.hidden.nurons[i].varsum += hids[con.to].neuronvalue * con.weight;
+                }
             }
             // when sum of all iputs reaches trezold fire nuron
             if( hids[i].varsum > hids[i].thresold )
             {
-                print("hidden value is greater tha zero: {}\n", .{hids[i].varsum});
+                // print("hidden value is greater tha zero: {}\n", .{hids[i].varsum});
                 self.hidden.nurons[i].fire();
             }
             self.hidden.nurons[i].update();
@@ -68,23 +65,16 @@ pub const Brain = struct
             for(out.cons, 0..out.cons.len)|con, c|
             {
                 _=c;
-                // search for conected nuron need rework with pinter
-
-
-                    if(con.to < hids.len)
-                    {
-                        outs[i].varsum += hids[con.to].neuronvalue * con.weight;
-                    }
-
+                if(con.to < hids.len)
+                {
+                    outs[i].varsum += hids[con.to].neuronvalue * con.weight;
+                }
             }
             // when sum of all iputs reaches trezold fire nuron
             if( outs[i].varsum > outs[i].thresold )
             {
-                print("fire truster: {}\n", .{i});
                 fire(bself, i);
             }
-
-
             outs[i].update();
         }
     }
