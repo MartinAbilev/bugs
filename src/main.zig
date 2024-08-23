@@ -21,14 +21,14 @@ var rng: std.Random.Xoshiro256 = undefined;
 var svg: [2]jok.svg.SvgBitmap = undefined;
 var tex: [2]sdl.Texture = undefined;
 
-var Bugs :[8] bb.Bug= undefined;
+var Bugs :[conf.maxBugs] bb.Bug= undefined;
 
 var championBrain: br.Brain = undefined;
 
 
 var bestTime: i64 = 0;
 var bestestTime: i64 = 0;
-const hiveSize: usize = 64;
+const hiveSize: usize = conf.maxBugs;
 var deaths: usize = 0;
 
 // bugz httpz test
@@ -122,7 +122,7 @@ pub fn init(ctx: jok.Context) !void
     );
 
     bb.world = try cp.World.init(ctx.allocator(), .{
-        .gravity = .{ .x = 0, .y = 100 },
+        .gravity = .{ .x = 0, .y = 10 },
     });
 
     const postSolve = struct {
@@ -197,9 +197,9 @@ pub fn init(ctx: jok.Context) !void
             const bId = if (bodyB) |body| cp.c.cpBodyGetUserData(body) else null;
             if (bId) |id| {
                 _= id;
-                const userData = cp.c.cpBodyGetMyUserData(bodyB);
+                // const userData = cp.c.cpBodyGetMyUserData(bodyB);
 
-                Bugs[userData.id].fire(userData.inp);
+                // Bugs[userData.id].fire(userData.inp);
 
                 // std.debug.print("Body B: {p}\n", .{id});
             } else {
@@ -354,7 +354,8 @@ pub fn hiveDeath() void
     {
         deaths = 0;
         if(bestTime > bestestTime)bestestTime = bestTime;
-        bestTime -=12;
+        bestTime -=hiveSize;
+        bestTime = 0;
     }
     print("hive size: {}, deaths: {}, bestTime: {}, bestestTime {} \n", .{hiveSize, deaths, bestTime, bestestTime});
 }

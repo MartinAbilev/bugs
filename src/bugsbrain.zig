@@ -37,7 +37,7 @@ pub const Brain = struct
         for(inps, 0..inps.len)|inp, i|
         {
             // _= inp;
-            if(inp.neuronvalue>0.9)
+            if(inp.neuronvalue>0.5)
             {
                 self.hidden.nurons[i].fire();
             }
@@ -61,8 +61,9 @@ pub const Brain = struct
                     self.hidden.nurons[i].varsum += hids[con.to].neuronvalue * con.weight;
                 }
             }
+            hids[i].varsum = hids[i].varsum / hid.cons.len;
             // when sum of all iputs reaches trezold fire nuron
-            if( hids[i].varsum > hids[i].thresold )
+            if( hids[i].varsum < hids[i].thresold )
             {
                 // print("hidden value is greater tha zero: {}\n", .{hids[i].varsum});
                 self.hidden.nurons[i].zero();
@@ -87,8 +88,10 @@ pub const Brain = struct
                     outs[i].varsum += hids[con.to].neuronvalue * con.weight;
                 }
             }
+            outs[i].varsum = outs[i].varsum / out.cons.len;
+
             // when sum of all iputs reaches trezold fire nuron
-            if( outs[i].varsum > outs[i].thresold )
+            if( outs[i].varsum < outs[i].thresold )
             {
                 outs[i].zero();
             }
@@ -139,10 +142,8 @@ pub const Brain = struct
            for(cons, 0..cons.len)|con,ii|
            {
                 _=con;
-                // const a = rand.float(f32);
+                // const a = rand.float(f3);
                 const b = rand.boolean();
-                // const c = rand.int(u8);
-                // const d = rand.intRangeAtMost(u8, 0, 255);
 
                 const rnd: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, 100) );
 
@@ -153,7 +154,6 @@ pub const Brain = struct
            const b = rand.boolean();
            if(b)outputs[i].thresold += a/100*rate;
            if(!b)outputs[i].thresold -= a/100*rate;
-           if(outputs[i].thresold < 0)outputs[i].thresold = 0.0;
         }
 
         var inputs = &self.inputs.nurons;
@@ -167,20 +167,15 @@ pub const Brain = struct
                 // const a = rand.float(f32);
                 const b = rand.boolean();
                 // const c = rand.int(u8);
-                const d = rand.intRangeAtMost(u8, 0, 100);
+                const d: f32 = @floatFromInt( rand.intRangeAtMost(u8, 0, 100) );
 
-                const rnd: f32 = @floatFromInt(d);
-
-                // _ = .{ a, c, d };
-
-                if(b)cons[ii].weight += rnd/100*rate;
-                if(!b)cons[ii].weight -= rnd/100*rate;
+                if(b)cons[ii].weight += d/100*rate;
+                if(!b)cons[ii].weight -= d/100*rate;
            }
            const a: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, 100) );
            const b = rand.boolean();
            if(b)inputs[i].thresold += a/100*rate;
            if(!b)inputs[i].thresold -= a/100*rate;
-           if(inputs[i].thresold < 0)inputs[i].thresold = 0.0;
         }
     }
 

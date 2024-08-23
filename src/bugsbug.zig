@@ -235,7 +235,7 @@ pub const Bug =struct
 
         // const locp = cp.c.cpBodyWorldToLocal(self.pbody, cp.c.cpBodyGetPosition(self.pinp1));
         const locp = cp.c.cpBodyWorldToLocal(self.pbody, cp.c.cpv(self.brain.inputs.nurons[id].x, self.brain.inputs.nurons[id].y));
-        const force = cp.c.cpv(-locp.x*1, -locp.y*1);
+        const force = cp.c.cpv(-locp.x*0.1, -locp.y*0.1);
         // const force = cp.c.cpBodyGetPosition(self.pinp1);
 
 
@@ -319,6 +319,19 @@ pub const Bug =struct
         const ry: f32=  @floatFromInt(rand.intRangeAtMost(u16, 50, 550));
 
         const kur = cp.c.cpv(rx, ry);
+        self.ct = 0;
+        for(0..self.brain.inputs.nurons.len)|i|
+        {
+            self.brain.inputs.nurons[i].neuronvalue =0.0;
+        }
+        for(0..self.brain.hidden.nurons.len)|i|
+        {
+            self.brain.hidden.nurons[i].zero();
+        }
+        for(0..self.brain.outputs.nurons.len)|i|
+        {
+            self.brain.outputs.nurons[i].zero();
+        }
 
         cp.c.cpBodySetVelocity(self.pbody, cp.c.cpv(0,0));
         cp.c.cpBodySetAngularVelocity(self.pbody, 0.0);
