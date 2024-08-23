@@ -352,7 +352,7 @@ pub fn hiveDeath() void
     if(deaths>=hiveSize)
     {
         deaths = 0;
-        bestTime = 0;
+        bestTime -=12;
     }
 }
 pub fn update(ctx: jok.Context) !void {
