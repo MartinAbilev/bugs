@@ -95,6 +95,9 @@ pub const Brain = struct
     }
     pub fn mutate(self: *Brain)void
     {
+        const rand = std.crypto.random;
+        const raternd: f32 = @floatFromInt( rand.intRangeAtMost(u8, 0, 100) );
+        const rate: f32 = raternd;
         var hidden = &self.hidden.nurons;
         for(hidden, 0..hidden.len)|nuron, i|
         {
@@ -103,7 +106,6 @@ pub const Brain = struct
            for(cons, 0..cons.len)|con,ii|
            {
                 _=con;
-                const rand = std.crypto.random;
                 // const a = rand.float(f32);
                 const b = rand.boolean();
                 // const c = rand.int(u8);
@@ -111,15 +113,14 @@ pub const Brain = struct
 
                 const rnd: f32 = @floatFromInt( rand.intRangeAtMost(u8, 0, 100) );
 
-                if(b)cons[ii].weight += rnd/100;
-                if(!b)cons[ii].weight -= rnd/100;
+                if(b)cons[ii].weight += rnd/100*rate;
+                if(!b)cons[ii].weight -= rnd/100*rate;
            }
-           const rand = std.crypto.random;
            const a: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, 100) );
            const b = rand.boolean();
 
-           if(b)hidden[i].thresold += a/100;
-           if(!b)hidden[i].thresold -= a/100;
+           if(b)hidden[i].thresold += a/100*rate;
+           if(!b)hidden[i].thresold -= a/100*rate;
            if(hidden[i].thresold < 0)hidden[i].thresold = 0.0;
         }
 
@@ -131,7 +132,6 @@ pub const Brain = struct
            for(cons, 0..cons.len)|con,ii|
            {
                 _=con;
-                const rand = std.crypto.random;
                 // const a = rand.float(f32);
                 const b = rand.boolean();
                 // const c = rand.int(u8);
@@ -139,14 +139,13 @@ pub const Brain = struct
 
                 const rnd: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, 100) );
 
-                if(b)cons[ii].weight += rnd/100;
-                if(!b)cons[ii].weight -= rnd/100;
+                if(b)cons[ii].weight += rnd/100*rate;
+                if(!b)cons[ii].weight -= rnd/100*rate;
            }
-           const rand = std.crypto.random;
            const a: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, 100) );
            const b = rand.boolean();
-           if(b)outputs[i].thresold += a/100;
-           if(!b)outputs[i].thresold -= a/100;
+           if(b)outputs[i].thresold += a/100*rate;
+           if(!b)outputs[i].thresold -= a/100*rate;
            if(outputs[i].thresold < 0)outputs[i].thresold = 0.0;
         }
 
@@ -158,24 +157,22 @@ pub const Brain = struct
            for(cons, 0..cons.len)|con,ii|
            {
                 _=con;
-                const rand = std.crypto.random;
                 // const a = rand.float(f32);
                 const b = rand.boolean();
                 // const c = rand.int(u8);
                 const d = rand.intRangeAtMost(u8, 0, 100);
 
-                const rnd: f32 = @floatFromInt( d/100);
+                const rnd: f32 = @floatFromInt(d);
 
                 // _ = .{ a, c, d };
 
-                if(b)cons[ii].weight += rnd;
-                if(!b)cons[ii].weight -= rnd;
+                if(b)cons[ii].weight += rnd/100*rate;
+                if(!b)cons[ii].weight -= rnd/100*rate;
            }
-           const rand = std.crypto.random;
            const a: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, 100) );
            const b = rand.boolean();
-           if(b)inputs[i].thresold += a/100;
-           if(!b)inputs[i].thresold -= a/100;
+           if(b)inputs[i].thresold += a/100*rate;
+           if(!b)inputs[i].thresold -= a/100*rate;
            if(inputs[i].thresold < 0)inputs[i].thresold = 0.0;
         }
     }
