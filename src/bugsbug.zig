@@ -235,7 +235,7 @@ pub const Bug =struct
 
         // const locp = cp.c.cpBodyWorldToLocal(self.pbody, cp.c.cpBodyGetPosition(self.pinp1));
         const locp = cp.c.cpBodyWorldToLocal(self.pbody, cp.c.cpv(self.brain.inputs.nurons[id].x, self.brain.inputs.nurons[id].y));
-        const force = cp.c.cpv(-locp.x*0.51, -locp.y*0.51);
+        const force = cp.c.cpv(-locp.x*1.51, -locp.y*1.51);
         // const force = cp.c.cpBodyGetPosition(self.pinp1);
 
 
