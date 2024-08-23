@@ -37,7 +37,8 @@ pub const Brain = struct
         for(inps, 0..inps.len)|inp, i|
         {
             // _= inp;
-            if(inp.neuronvalue>inp.thresold)
+            // if(inp.neuronvalue>inp.thresold)
+            if(inp.neuronvalue>0.9)
             {
                 for(inp.cons)|con|
                 {
