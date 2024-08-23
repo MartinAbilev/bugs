@@ -27,6 +27,8 @@ var championBrain: br.Brain = undefined;
 
 
 var bestTime: i64 = 0;
+const hiveSize: usize = 64;
+var deaths: usize = 0;
 
 // bugz httpz test
 pub fn httpz() !void
@@ -140,6 +142,7 @@ pub fn init(ctx: jok.Context) !void
                 const userData = cp.c.cpBodyGetMyUserData(body);
                  // make bug dead;
                  const chb: *br.Brain = &championBrain;
+                 hiveDeath();
                 Bugs[userData.id].die(chb);
                 // std.debug.print("Body A: {} \n", .{userData});
             } else {
@@ -343,6 +346,15 @@ pub fn event(ctx: jok.Context, e: sdl.Event) !void {
     _ = e;
 }
 
+pub fn hiveDeath() void
+{
+    deaths +=1;
+    if(deaths>=hiveSize)
+    {
+        deaths = 0;
+        bestTime = 0;
+    }
+}
 pub fn update(ctx: jok.Context) !void {
     // _ = ctx;
     bb.world.update(ctx.deltaSeconds());
