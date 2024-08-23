@@ -363,6 +363,7 @@ pub fn draw(ctx: jok.Context) !void {
     j2d.begin(.{ .depth_sort = .back_to_forth });
     defer j2d.end();
 
+
     ctx.displayStats(.{});
     try bb.world.debugDraw(ctx.renderer());
 
@@ -399,7 +400,23 @@ pub fn draw(ctx: jok.Context) !void {
             );
         }
 
+        const center:sdl.PointF = .{.x=bug.x, .y=bug.y};
+        const radius: f32 = 30.0;
+        const color: sdl.Color = bug.brain.color;
+        const opt: j2d.CircleOption = .{
+                                        .thickness = 10.0,
+                                        .num_segments = 0,
+                                        .depth = 0.5,
+                                    };
+        try j2d.circle(
+            center,
+            radius,
+            color,
+            opt,
+        );
+
     }
+
 }
 
 pub fn quit(ctx: jok.Context) void {

@@ -4,6 +4,11 @@ const conf = @import("bugsconfig.zig");
 const nn = @import("bugsnuron.zig");
 
 const bb: type = @import("bugsbug.zig");
+const cp = @import("bugsshared.zig").cp;
+const j2d = @import("bugsshared.zig").j2d;
+const sdl = @import("bugsshared.zig").sdl;
+
+
 
 const print = @import("bugsshared.zig").print;
 
@@ -20,6 +25,7 @@ pub const Brain = struct
     hidden: Hidden,
     outputs: Outputs,
     size: usize = brainSize,
+    color: sdl.Color = .{ .r = 255, .g =255, .b = 255 },
 
     pub fn update(self: *Brain, fire: fn(self: *bb.Bug, id: usize)void, bself: *bb.Bug)void
     {

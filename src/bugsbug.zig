@@ -6,6 +6,7 @@ const conf = @import("bugsconfig.zig");
 pub const Nuron = @import("bugsnuron.zig").Nuron;
 
 const cp = @import("bugsshared.zig").cp;
+const sdl = @import("bugsshared.zig").sdl;
 const constrain = @import("bugsshared.zig").constrain;
 const print = @import("bugsshared.zig").print;
 const jok = @import("bugsshared.zig").jok;
@@ -275,9 +276,17 @@ pub const Bug =struct
         if(self.ct > bestTime.*)
         {
             bestTime.* = self.ct;
+            const rand = std.crypto.random;
 
+                const cr = rand.intRangeAtMost(u8, 0, 255);
+                const cg = rand.intRangeAtMost(u8, 0, 255);
+                const cb = rand.intRangeAtMost(u8, 0, 255);
+
+            const newChampionColor: sdl.Color = .{ .r = cr, .g =cg, .b = cb };
 
             championBrain.* = self.brain;
+            championBrain.*.color = newChampionColor;
+
             print("best time is: {}\n", .{bestTime.*});
         }
 

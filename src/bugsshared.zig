@@ -2,6 +2,10 @@ pub const std = @import("std");
 pub const jok = @import("jok");
 
 pub const cp = jok.cp;
+pub const font = jok.font;
+pub const j2d = jok.j2d;
+pub const sdl = jok.sdl;
+
 
 pub const print = std.debug.print;
 
