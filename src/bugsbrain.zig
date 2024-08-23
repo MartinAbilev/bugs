@@ -61,9 +61,9 @@ pub const Brain = struct
                     self.hidden.nurons[i].varsum += hids[con.to].neuronvalue * con.weight;
                 }
             }
-            hids[i].varsum = hids[i].varsum / hid.cons.len;
+            // hids[i].varsum = hids[i].varsum / hid.cons.len;
             // when sum of all iputs reaches trezold fire nuron
-            if( hids[i].varsum < hids[i].thresold )
+            if( hids[i].varsum > hids[i].thresold )
             {
                 // print("hidden value is greater tha zero: {}\n", .{hids[i].varsum});
                 self.hidden.nurons[i].zero();
@@ -88,10 +88,10 @@ pub const Brain = struct
                     outs[i].varsum += hids[con.to].neuronvalue * con.weight;
                 }
             }
-            outs[i].varsum = outs[i].varsum / out.cons.len;
+            // outs[i].varsum = outs[i].varsum / out.cons.len;
 
             // when sum of all iputs reaches trezold fire nuron
-            if( outs[i].varsum < outs[i].thresold )
+            if( outs[i].varsum > outs[i].thresold )
             {
                 outs[i].zero();
             }
