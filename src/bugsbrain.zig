@@ -75,7 +75,7 @@ pub const Brain = struct
 
             }
             // when sum of all iputs reaches trezold fire nuron
-            if( outs[i].varsum > outs[i].thresold )
+            if( outs[i].varsum > 0 )
             fire(bself, i);
 
 

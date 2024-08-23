@@ -275,7 +275,7 @@ pub const Bug =struct
         if(self.ct > bestTime.*)
         {
             bestTime.* = self.ct;
-            self.ct = 0;
+
 
             championBrain.* = self.brain;
             print("best time is: {}\n", .{bestTime.*});
@@ -324,6 +324,7 @@ pub const Bug =struct
         cp.c.cpBodySetPosition(self.pinp3, cp.c.cpv(kur.x, kur.y+50));
         cp.c.cpBodySetPosition(self.pinp4, cp.c.cpv(kur.x, kur.y-50));
 
+        self.ct = 0;
         self.brain = championBrain.*;
         mutate(self);
 
