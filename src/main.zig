@@ -19,7 +19,7 @@ var rng: std.Random.Xoshiro256 = undefined;
 var svg: [2]jok.svg.SvgBitmap = undefined;
 var tex: [2]sdl.Texture = undefined;
 
-var Bugs :[3] bb.Bug= undefined;
+var Bugs :[1] bb.Bug= undefined;
 
 var championBrain: br.Brain = undefined;
 

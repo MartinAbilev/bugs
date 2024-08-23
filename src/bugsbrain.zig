@@ -37,7 +37,7 @@ pub const Brain = struct
         }
         for(hids, 0..hids.len)|hid, i|
         {
-            hids[i].varsum = 0.1;
+            hids[i].varsum = 0.0;
 
             for(hid.cons, 0..hid.cons.len)|con, c|
             {
@@ -47,20 +47,23 @@ pub const Brain = struct
 
                     if(con.to < hids.len)
                     {
-                        self.hidden.nurons[i].varsum *= hids[con.to].neuronvalue * con.weight;
+                        self.hidden.nurons[i].varsum += hids[con.to].neuronvalue * con.weight;
                     }
 
             }
             // when sum of all iputs reaches trezold fire nuron
-            if( self.hidden.nurons[i].varsum > 0 )
-            self.hidden.nurons[i].fire();
+            if( hids[i].varsum > hids[i].thresold )
+            {
+                print("hidden value is greater tha zero: {}\n", .{hids[i].varsum});
+                self.hidden.nurons[i].fire();
+            }
             self.hidden.nurons[i].update();
 
         }
 
         for(outs, 0..outs.len)|out, i|
         {
-            outs[i].varsum = 0.1;
+            outs[i].varsum = 0.0;
 
             for(out.cons, 0..out.cons.len)|con, c|
             {
@@ -70,13 +73,16 @@ pub const Brain = struct
 
                     if(con.to < hids.len)
                     {
-                        outs[i].varsum *= hids[con.to].neuronvalue * con.weight;
+                        outs[i].varsum += hids[con.to].neuronvalue * con.weight;
                     }
 
             }
             // when sum of all iputs reaches trezold fire nuron
-            if( outs[i].varsum > 0 )
-            fire(bself, i);
+            if( outs[i].varsum > outs[i].thresold )
+            {
+                print("fire truster: {}\n", .{i});
+                fire(bself, i);
+            }
 
 
             outs[i].update();

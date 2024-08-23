@@ -11,7 +11,7 @@ pub const Nuron = struct
     z: f32,
     ntype: usize = 0,
     cons: [conf.maxCons] Con = undefined,
-    neuronvalue: f32 = 0.1,
+    neuronvalue: f32 = 0.0,
     thresold: f32 = 4.0,
     varsum: f32 = 0.1,
     pub fn conToAll(self: *Nuron) void
@@ -24,8 +24,8 @@ pub const Nuron = struct
     }
     pub fn update(self: *Nuron) void
     {
-        self.neuronvalue -=0.02;
-        if(self.neuronvalue < 0.0) self.neuronvalue = 0.1;
+        self.neuronvalue -=0.002;
+        if(self.neuronvalue < 0.0) self.neuronvalue = 0.0;
     }
     pub fn fire(self: *Nuron) void
     {
@@ -34,8 +34,8 @@ pub const Nuron = struct
     }
     pub fn zero(self: *Nuron) void
     {
-        self.neuronvalue = 0.1;
-        self.varsum = 0.1;
+        self.neuronvalue = 0.0;
+        self.varsum = 0.0;
     }
 };
 
