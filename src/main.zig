@@ -423,7 +423,7 @@ pub fn draw(ctx: jok.Context) !void {
             const color: sdl.Color = .{.r=cr, .g=cg, .b=0};
             const opt: j2d.CircleOption = .{
                                             .thickness = 3.0,
-                                            .num_segments = 0,
+                                            .num_segments = 8,
                                             .depth = 0.5,
                                         };
             try j2d.circle(
@@ -485,7 +485,7 @@ pub fn draw(ctx: jok.Context) !void {
         const color: sdl.Color = bug.brain.color;
         const opt: j2d.CircleOption = .{
                                         .thickness = 10.0,
-                                        .num_segments = 0,
+                                        .num_segments = 16,
                                         .depth = 0.5,
                                     };
         try j2d.circle(
@@ -497,8 +497,6 @@ pub fn draw(ctx: jok.Context) !void {
 
     }
     defer j2d.end();
-
-
 }
 
 pub fn quit(ctx: jok.Context) void {
