@@ -274,7 +274,6 @@ pub fn init(ctx: jok.Context) !void
     GOD = bb.world.objects.items[GODiD].body.?;
     cp.c.cpShapeSetCollisionType(bb.world.objects.items[GODiD].shapes[0], 3);
 
-
     // flor
     _ = try bb.world.addObject(.{
         .body = .{
@@ -374,7 +373,6 @@ pub fn event(ctx: jok.Context, e: sdl.Event) !void
     {
         .mouse_motion => |me|
         {
-            _= me;
             const mouse_state = ctx.getMouseState();
             if (!mouse_state.buttons.getPressed(.left))
             {
@@ -386,6 +384,13 @@ pub fn event(ctx: jok.Context, e: sdl.Event) !void
             //     @as(f32, @floatFromInt(me.delta_x)) * 0.01,
             //     @as(f32, @floatFromInt(me.delta_y)) * 0.01,
             // );
+
+            const dx: f32 = @floatFromInt(me.delta_x);
+            const dy: f32 = @floatFromInt(me.delta_y);
+
+            const posCurrent = cp.c.cpBodyGetPosition(GOD);
+            const mpos = cp.c.cpv(posCurrent.x + dx, posCurrent.y + dy);
+            cp.c.cpBodySetPosition(GOD, mpos);
         },
         .mouse_wheel => |me|
         {
