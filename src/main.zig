@@ -25,6 +25,7 @@ var Bugs :[conf.maxBugs] bb.Bug= undefined;
 
 var championBrain: br.Brain = undefined;
 
+var isDebugVisible = true;
 
 var bestTime: i64 = 0;
 var bestestTime: i64 = 0;
@@ -60,7 +61,6 @@ const api = struct
         return  returnState(allocator);
     }
 };
-
 
 fn returnState(allocator: std.mem.Allocator)![]const u8
 {
@@ -341,9 +341,33 @@ pub fn init(ctx: jok.Context) !void
     });
 }
 
-pub fn event(ctx: jok.Context, e: sdl.Event) !void {
-    _ = ctx;
-    _ = e;
+pub fn event(ctx: jok.Context, e: sdl.Event) !void
+{
+    switch (e)
+    {
+        .mouse_motion => |me|
+        {
+            _= me;
+            const mouse_state = ctx.getMouseState();
+            if (!mouse_state.buttons.getPressed(.left))
+            {
+                return;
+            }
+
+            // camera.rotateAroundBy(
+            //     null,
+            //     @as(f32, @floatFromInt(me.delta_x)) * 0.01,
+            //     @as(f32, @floatFromInt(me.delta_y)) * 0.01,
+            // );
+        },
+        .mouse_wheel => |me|
+        {
+            _=me;
+            // camera.zoomBy(@as(f32, @floatFromInt(me.delta_y)) * -0.1);
+            isDebugVisible = !isDebugVisible;
+        },
+        else => {},
+    }
 }
 
 pub fn hiveDeath() void
@@ -380,7 +404,7 @@ pub fn draw(ctx: jok.Context) !void {
 
 
     ctx.displayStats(.{});
-    try bb.world.debugDraw(ctx.renderer());
+    if(isDebugVisible) try bb.world.debugDraw(ctx.renderer());
 
     for(Bugs)|bug|
     {
