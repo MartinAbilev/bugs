@@ -272,7 +272,7 @@ pub fn init(ctx: jok.Context) !void
         },
     });
     GOD = bb.world.objects.items[GODiD].body.?;
-    cp.c.cpShapeSetCollisionType(bb.world.objects.items[GODiD].shapes[0], 3);
+    cp.c.cpShapeSetCollisionType(bb.world.objects.items[GODiD].shapes[0], 1);
 
     // flor
     _ = try bb.world.addObject(.{
@@ -468,14 +468,14 @@ pub fn draw(ctx: jok.Context) !void {
             const radius: f32 = 3.0;
             const outvalue: f32 = if(i<bug.brain.outputs.nurons.len)bug.brain.outputs.nurons[i].neuronvalue else 0.0;
             const inpvalue = bug.brain.inputs.nurons[i].neuronvalue;
-            var cr: u8= 0;
-            var cg: u8= 0;
+            var cr: u8= 100;
+            var cg: u8= 100;
             if(outvalue>0.5)
             cr = 255
-            else cr = 0;
+            else cr = 100;
             if(inpvalue>0.9)
             cg = 255
-            else cg = 0;
+            else cg = 100;
             const color: sdl.Color = .{.r=cr, .g=cg, .b=0};
             const opt: j2d.CircleOption = .{
                                             .thickness = 3.0,
