@@ -401,7 +401,15 @@ pub fn draw(ctx: jok.Context) !void {
         );
         for(bug.brain.inputs.nurons, 0..)|inp, i|
         {
-            const center:sdl.PointF = .{.x=inp.x, .y=inp.y};
+            var center:sdl.PointF = if(i<4)
+            .{.x=inp.x, .y=inp.y}
+            else
+            .{.x=bug.x, .y=bug.y};
+
+            if(i == 4) center = .{.x=bug.x - 10.0, .y=bug.y};
+            if(i == 5) center = .{.x=bug.x + 10.0, .y=bug.y};
+            if(i == 6) center = .{.x=bug.x , .y= bug.y - 10};
+
             const radius: f32 = 3.0;
             const outvalue: f32 = if(i<bug.brain.outputs.nurons.len)bug.brain.outputs.nurons[i].neuronvalue else 0.0;
             const inpvalue = bug.brain.inputs.nurons[i].neuronvalue;
