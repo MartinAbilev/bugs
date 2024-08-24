@@ -8,8 +8,6 @@ const cp = @import("bugsshared.zig").cp;
 const j2d = @import("bugsshared.zig").j2d;
 const sdl = @import("bugsshared.zig").sdl;
 
-
-
 const print = @import("bugsshared.zig").print;
 
 // some inputs outputs and hiden layers basic struct
@@ -109,7 +107,7 @@ pub const Brain = struct
     pub fn mutate(self: *Brain)void
     {
         const rand = std.crypto.random;
-        const raternd: f32 = @floatFromInt( rand.intRangeAtMost(u8, 0, 100) );
+        const raternd: f32 = @floatFromInt( rand.intRangeAtMost(u8, 0, conf.maxMutRate) );
         const rate: f32 = raternd;
         var hidden = &self.hidden.nurons;
         for(hidden, 0..hidden.len)|nuron, i|
