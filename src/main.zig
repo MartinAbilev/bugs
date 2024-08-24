@@ -25,7 +25,7 @@ var Bugs :[conf.maxBugs] bb.Bug= undefined;
 
 var championBrain: br.Brain = undefined;
 
-var isDebugVisible = true;
+var isDebugVisible = false;
 
 var bestTime: i64 = 0;
 var bestestTime: i64 = 0;
@@ -434,9 +434,11 @@ pub fn draw(ctx: jok.Context) !void {
 
     j2d.begin(.{ .depth_sort = .back_to_forth });
 
-
-    ctx.displayStats(.{});
-    if(isDebugVisible) try bb.world.debugDraw(ctx.renderer());
+    if(isDebugVisible)
+    {
+        ctx.displayStats(.{});
+        try bb.world.debugDraw(ctx.renderer());
+    }
 
     for(Bugs)|bug|
     {
