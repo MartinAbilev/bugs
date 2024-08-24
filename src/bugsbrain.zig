@@ -27,60 +27,50 @@ pub const Brain = struct
 
     pub fn update(self: *Brain, fire: fn(self: *bb.Bug, id: usize)void, bself: *bb.Bug)void
     {
-
-
         const inps = &self.inputs.nurons;
         var hids = &self.hidden.nurons;
         var outs = &self.outputs.nurons;
         for(inps, 0..inps.len)|inp, i|
         {
-            // _= inp;
             // if(inp.neuronvalue>inp.thresold)
             if(inp.neuronvalue>0.9)
             {
+                // input if over thresold fire to all conected hiddens * wight
                 for(inp.cons)|con|
                 {
-                    self.hidden.nurons[con.to].neuronvalue=inp.neuronvalue * con.weight;
+                    hids[con.to].neuronvalue=inp.neuronvalue * con.weight;
                 }
             }
             else
             {
-                self.inputs.nurons[i].zero();
+                inps[i].zero();
             }
-            self.inputs.nurons[i].update();
-
+            inps[i].update();
         }
+
         for(hids, 0..hids.len)|hid, i|
         {
             hids[i].varsum = 0.0;
-
             for(hid.cons, 0..hid.cons.len)|con, c|
             {
                 _=c;
-                // search for conected nuron need rework with pinter
-
-                    self.hidden.nurons[i].varsum += hids[con.to].neuronvalue * con.weight;
-
+                hids[i].varsum += hids[con.to].neuronvalue * con.weight;
             }
-            // hids[i].varsum = hids[i].varsum / hid.cons.len;
-            // when sum of all iputs reaches trezold fire nuron
-            if( hids[i].varsum > hids[i].thresold )
+            // when sum of all conected hids reaches trezold fire nuron
+            if( hids[i].varsum > hid.thresold ) // dont use here hid from  for loop cuz it not mutate!!
             {
-                // print("hidden value is greater tha zero: {}\n", .{hids[i].varsum});
-                self.hidden.nurons[i].fire();
+               hids[i].fire();
             }
             else
             {
-                self.hidden.nurons[i].zero();
+                hids[i].zero();
             }
-            self.hidden.nurons[i].update();
-
+            hids[i].update();
         }
 
         for(outs, 0..outs.len)|out, i|
         {
             outs[i].varsum = 0.0;
-
             for(out.cons, 0..out.cons.len)|con, c|
             {
                 _=c;
@@ -89,8 +79,6 @@ pub const Brain = struct
                     outs[i].varsum += hids[con.to].neuronvalue * con.weight;
                 }
             }
-            // outs[i].varsum = outs[i].varsum / out.cons.len;
-
             // when sum of all iputs reaches trezold fire nuron
             if( outs[i].varsum > outs[i].thresold )
             {
@@ -104,11 +92,14 @@ pub const Brain = struct
             outs[i].update();
         }
     }
+
     pub fn mutate(self: *Brain)void
     {
         const rand = std.crypto.random;
-        const raternd: f32 = @floatFromInt( rand.intRangeAtMost(u8, 0, conf.maxMutRate) );
+        const raternd: f32 =
+        @floatFromInt( rand.intRangeAtMost(u8, 0, conf.maxMutRate) );
         const rate: f32 = raternd;
+
         var hidden = &self.hidden.nurons;
         for(hidden, 0..hidden.len)|nuron, i|
         {
@@ -117,10 +108,7 @@ pub const Brain = struct
            for(cons, 0..cons.len)|con,ii|
            {
                 _=con;
-                // const a = rand.float(f32);
                 const b = rand.boolean();
-                // const c = rand.int(u8);
-                // const d = rand.intRangeAtMost(u8, 0, 255);
 
                 const rnd: f32 = @floatFromInt( rand.intRangeAtMost(u8, 0, conf.maxMutRate) );
 
@@ -143,7 +131,6 @@ pub const Brain = struct
            for(cons, 0..cons.len)|con,ii|
            {
                 _=con;
-                // const a = rand.float(f3);
                 const b = rand.boolean();
 
                 const rnd: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, conf.maxMutRate) );
@@ -179,7 +166,5 @@ pub const Brain = struct
            if(!b)inputs[i].thresold -= a/conf.maxMutRate*rate;
         }
     }
-
-
 };
 
