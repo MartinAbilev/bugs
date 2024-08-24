@@ -30,10 +30,11 @@ pub const Brain = struct
         const inps = &self.inputs.nurons;
         var hids = &self.hidden.nurons;
         var outs = &self.outputs.nurons;
+
         for(inps, 0..inps.len)|inp, i|
         {
-            // if(inp.neuronvalue>inp.thresold)
-            if(inp.neuronvalue>0.9)
+            if(inp.neuronvalue>inp.thresold)
+            // if(inp.neuronvalue>0.9)
             {
                 // input if over thresold fire to all conected hiddens * wight
                 for(inp.cons)|con|
@@ -74,13 +75,10 @@ pub const Brain = struct
             for(out.cons, 0..out.cons.len)|con, c|
             {
                 _=c;
-                if(con.to < hids.len)
-                {
-                    outs[i].varsum += hids[con.to].neuronvalue * con.weight;
-                }
+                outs[i].varsum += hids[con.to].neuronvalue * con.weight;
             }
             // when sum of all iputs reaches trezold fire nuron
-            if( outs[i].varsum > outs[i].thresold )
+            if( outs[i].varsum > out.thresold )
             {
                 fire(bself, i);
                 outs[i].fire();
