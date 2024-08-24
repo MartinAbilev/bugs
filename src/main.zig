@@ -64,35 +64,34 @@ const api = struct
 
 fn returnState(allocator: std.mem.Allocator)![]const u8
 {
-        const bugzToSend: usize = 2;
-        var buf: [(conf.maxHidden + conf.maxIn + conf.maxOut)*conf.maxCons*bugzToSend*95]u8 = undefined;
-            const JsonBugs = struct { id: usize, x: f32, y: f32, brain: bb.br.Brain };
+    const bugzToSend: usize = 1;
+    const JsonBugs = struct { id: usize, x: f32, y: f32, brain: bb.br.Brain };
+    var x:[bugzToSend]JsonBugs = undefined;
 
-            var x:[bugzToSend]JsonBugs = undefined;
+    for(0..bugzToSend)|i|
+    {
+        const b = Bugs[i];
+        const brain = b.brain;
 
-            for(0..bugzToSend)|i|
-            {
-                const b = Bugs[i];
-                x[i] = JsonBugs
-                {
-                    .id = b.id,
-                    .x = b.x,
-                    .y = b.y,
-                    .brain = b.brain,
-                };
-            }
+        x[i] = JsonBugs
+        {
+            .id = b.id,
+            .x = b.x,
+            .y = b.y,
+            .brain = brain,
+        };
+    }
 
-            const JSON = struct{ id: usize, bugz: [bugzToSend]JsonBugs };
+    const JSON = struct{ id: usize, bugz: [bugzToSend]JsonBugs };
 
-            const json: JSON = .{.id=777, .bugz = x};
+    const json: JSON = .{.id=777, .bugz = x};
 
-            var fba = std.heap.FixedBufferAllocator.init(&buf);
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
 
-            var string = std.ArrayList(u8).init(fba.allocator());
-            try std.json.stringify(json, .{}, string.writer());
-            // try std.json.stringify(x, .{}, string.writer());
+    var string = std.ArrayList(u8).init(gpa.allocator());
+    try std.json.stringify(json, .{}, string.writer());
 
-            return std.fmt.allocPrint(allocator, "{s}", .{string.items});
+    return std.fmt.allocPrint(allocator, "{s}", .{string.items});
 }
 
 // init bugz jok

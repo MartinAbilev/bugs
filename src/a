@@ -1,26 +1,34 @@
-exports.shorthands = undefined;
+export function monthlyCharge(yearMonth: string, subscription: Subscription | null, users: User[]): number
+{
+    let charge = 0
+    // If there's no subscription or no users, return 0
 
-exports.up = (pgm) => {
-  pgm.createTable('settings',
-    {
-    id:
-    {
-       type: 'integer'
-    },
-    daily_email_updates:
-    {
-      type: 'boolean',
-    },
-    // this is a new setting
-    audit_table_default_rows:
-    {
-      type: 'integer',
-    },
-    user_id: {
-      type: 'integer',
-      unique: true,
-    },
-  });
+    // Parse the yearMonth to get the first and last day of the mont
+    const [year, mont] = yearMonth.split('-').map(Number)
+    const firstDay = new Date(year, mont - 1, 1) // months are 0-indexed in JavaScript
+    const lastDay = lastDayOfMonth(firstDay)
+    const dInM = lastDay.getDate()
 
-  pgm.dropColumns('users', ['daily_email_updates']);
-};
+    // Calculate the daily rate
+    const dailyRate = subscription.monthlyPriceInCents / dInM
+
+
+    // Calculate the charge for each user
+    for (const user of users)
+    {
+      // Determine the actual activation and deactivation dates within the given mont
+      const activationDate = user.activatedOn > firstDay ? user.activatedOn : firstDay
+      const deactivationDate = user.deactivatedOn ? (user.deactivatedOn < lastDay ? user.deactivatedOn : lastDay) : lastDay
+
+      // Calculate the number of active days in the mont for this user
+      const ad = Math.floor((deactivationDate.getTime() - activationDate.getTime()) / (1000 * 60 * 60 * 24)) + 1
+
+      if (ad > 0)
+      {
+        // Add to the total charge
+        charge += Math.round(ad * dailyRate)
+      }
+    }
+
+    return charge
+  }
