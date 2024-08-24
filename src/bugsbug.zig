@@ -244,20 +244,48 @@ pub const Bug =struct
         // const locp = cp.c.cpBodyWorldToLocal(self.pbody, cp.c.cpBodyGetPosition(self.pinp1));
         const locp = cp.c.cpBodyWorldToLocal(self.pbody, cp.c.cpv(self.brain.outputs.nurons[id].x, self.brain.outputs.nurons[id].y));
         var force = cp.c.cpv(-locp.x*1, -locp.y*1);
+        var bodyPos = cp.c.cpv(cx, cy);        // const impos = cp.c.cpBodyGetPosition(self.pinp3);
         if(id == 4)
         {
-            cx = 0;
-            cy = -50;
-            force = cp.c.cpv(locp.x*0.1, 0.0);
+            cx = 0.0;
+            cy = -10.0;
+            force = cp.c.cpv(1, cy);
+            bodyPos = cp.c.cpv(cx, cy);
+                    cp.c.cpBodyApplyImpulseAtLocalPoint(self.pbody,
+                                            force,
+                                            bodyPos,
+                                            );
+                                                        cx = 0.0;
+            cx = 0.0;
+            cy = 10.0;
+            force = cp.c.cpv(-1, cy);
+            bodyPos = cp.c.cpv(cx, cy);
+                    cp.c.cpBodyApplyImpulseAtLocalPoint(self.pbody,
+                                            force,
+                                            bodyPos,
+                                            );
         }
+        else
         if(id == 5)
         {
-            cx = 0;
-            cy = 50;
-            force = cp.c.cpv(-locp.x*0.1, 0.0);
+            cx = 0.0;
+            cy = -10.0;
+            force = cp.c.cpv(-1, cy);
+            bodyPos = cp.c.cpv(cx, cy);
+                    cp.c.cpBodyApplyImpulseAtLocalPoint(self.pbody,
+                                            force,
+                                            bodyPos,
+                                            );
+            cx = 0.0;
+            cy = 10.0;
+            force = cp.c.cpv(1, cy);
+            bodyPos = cp.c.cpv(cx, cy);
+                    cp.c.cpBodyApplyImpulseAtLocalPoint(self.pbody,
+                                            force,
+                                            bodyPos,
+                                            );
         }
-        const bodyPos = cp.c.cpv(cx, cy);        // const impos = cp.c.cpBodyGetPosition(self.pinp3);
-
+        else
         cp.c.cpBodyApplyImpulseAtLocalPoint(self.pbody,
                                             force,
                                             bodyPos,
