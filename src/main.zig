@@ -436,7 +436,7 @@ pub fn draw(ctx: jok.Context) !void {
             const nlen: f32= @floatFromInt(bug.brain.hidden.nurons.len);
             const w: f32= nlen / linesVertical;
             const h: f32= linesVertical;
-            const xspacing: f32 =3;
+            const xspacing: f32 =2.4;
             const yspacing: f32 =10;
 
             const center:sdl.PointF =
@@ -449,7 +449,9 @@ pub fn draw(ctx: jok.Context) !void {
             const c =  hid.neuronvalue;
             var cb: u8 = 0;
             if(c>0.5)cb=255;
-            const color: sdl.Color = .{.r = 0, .g= 0, .b = cb};
+            const fcb: f32 = @floatFromInt(cb);
+            const cr: u8 = @intFromFloat(fcb / 2);
+            const color: sdl.Color = .{.r = cr, .g= 0, .b = cb};
             const opt: j2d.CircleOption = .{
                                             .thickness = 1.0,
                                             .num_segments = 0,
