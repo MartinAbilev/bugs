@@ -32,6 +32,8 @@ var bestestTime: i64 = 0;
 const hiveSize: usize = conf.maxBugs;
 var deaths: usize = 0;
 
+var GOD: ?*cp.c.cpBody = undefined;
+
 // bugz httpz test
 pub fn httpz() !void
 {
@@ -215,7 +217,6 @@ pub fn init(ctx: jok.Context) !void
         }
     }.preSolve;
 
-
     // Create a collision handler
     const handler1 = cp.c.cpSpaceAddCollisionHandler(bb.world.space, 1, 0);
     handler1.*.postSolveFunc = postSolve;
@@ -247,6 +248,32 @@ pub fn init(ctx: jok.Context) !void
         Bugs[i] = b;
         try Bugs[i].init(ctx, i);
     }
+
+    // GOD
+    const GODiD = try bb.world.addObject(.{
+        .body = .{
+            .kinematic = .{
+                .position = .{ .x = 400, .y = 300 },
+                .angular_velocity = 0,
+            },
+        },
+        .shapes = &[_]cp.World.ObjectOption.ShapeProperty{
+            .{
+                .segment = .{
+                    .a = .{ .x = -30, .y = 0 },
+                    .b = .{ .x = 30, .y = 0 },
+                    .radius = 10,
+                    .physics = .{
+                        .weight = .{ .mass = 0 },
+                        .elasticity = 1.0,
+                    },
+                },
+            },
+        },
+    });
+    GOD = bb.world.objects.items[GODiD].body.?;
+    cp.c.cpShapeSetCollisionType(bb.world.objects.items[GODiD].shapes[0], 3);
+
 
     // flor
     _ = try bb.world.addObject(.{
