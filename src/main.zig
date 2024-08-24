@@ -432,20 +432,20 @@ pub fn draw(ctx: jok.Context) !void {
         for(bug.brain.hidden.nurons, 0..bug.brain.hidden.nurons.len)|hid, iu|
         {
             _= iu;
+            const radius: f32 = 3.0;
             const linesVertical: f32 = 6;
-            const nlen: f32= @floatFromInt(bug.brain.hidden.nurons.len);
-            const w: f32= nlen / linesVertical;
-            const h: f32= linesVertical;
-            const xspacing: f32 =2.4;
-            const yspacing: f32 =10;
+            const nlen: f32 = @floatFromInt(bug.brain.hidden.nurons.len);
+            const w: f32 = nlen / linesVertical;
+            const h: f32 = linesVertical;
+            const xspacing: f32 = 50 / w;
+            const yspacing: f32 = 50 / h;
 
             const center:sdl.PointF =
             .{
                 .x=bug.x + (x * xspacing) - (w * xspacing)/2,
-                .y=bug.y + 5 + (y * yspacing) - (h * yspacing)/2
+                .y=bug.y + radius + (y * yspacing) - (h * yspacing)/2
              };
 
-            const radius: f32 = 3.0;
             const c =  hid.neuronvalue;
             var cb: u8 = 0;
             if(c>0.5)cb=255;
