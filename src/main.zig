@@ -403,7 +403,7 @@ pub fn draw(ctx: jok.Context) !void {
         {
             const center:sdl.PointF = .{.x=inp.x, .y=inp.y};
             const radius: f32 = 3.0;
-            const outvalue = bug.brain.outputs.nurons[i].neuronvalue;
+            const outvalue: f32 = if(i<bug.brain.outputs.nurons.len)bug.brain.outputs.nurons[i].neuronvalue else 0.0;
             const inpvalue = bug.brain.inputs.nurons[i].neuronvalue;
             var cr: u8= 0;
             var cg: u8= 0;

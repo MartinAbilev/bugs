@@ -46,9 +46,12 @@ pub const Bug =struct
         var  in3 = Nuron{.id = idc, .x = 0, .y = 50, .z = 0, .ntype = 1, }; idc = idc + 1 ;
         var  in4 = Nuron{.id = idc, .x = 0, .y = -50, .z = 0, .ntype = 1, }; idc = idc + 1 ;
 
-    // for velosity check
+        // for velosity check
         var  in5 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0, .ntype = 1, }; idc = idc + 1 ;
         var  in6 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0, .ntype = 1, }; idc = idc + 1 ;
+
+        // for angular velocity check
+        var  in7 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0, .ntype = 1, }; idc = idc + 1 ;
 
         var  on1 = Nuron{.id = idc, .x = 30, .y = 0, .z = 0, .ntype = 2, }; idc = idc + 1 ;
         var  on2 = Nuron{.id = idc, .x = -30, .y = 0, .z = 0, .ntype = 2, }; idc = idc + 1 ;
@@ -72,6 +75,7 @@ pub const Bug =struct
         in4.conToAll();
         in5.conToAll();
         in6.conToAll();
+        in7.conToAll();
         on1.conToAll();
         on2.conToAll();
         on3.conToAll();
@@ -80,7 +84,7 @@ pub const Bug =struct
         on6.conToAll();
 
         const inputs   = br.Inputs
-        {.nurons=[_]Nuron{in1, in2, in3, in4, in5, in5}};
+        {.nurons=[_]Nuron{in1, in2, in3, in4, in5, in6, in7}};
 
         const outputs = br.Outputs
         {.nurons = [_]Nuron{on1, on2, on3, on4, on5, on6}};
@@ -339,8 +343,10 @@ pub const Bug =struct
 
 
         const velocity = cp.c.cpBodyGetVelocity(self.pbody);
+        const angularVelocity = cp.c.cpBodyGetAngularVelocity(self.pbody);
         self.brain.inputs.nurons[4].neuronvalue = velocity.x;
         self.brain.inputs.nurons[5].neuronvalue = velocity.y;
+        self.brain.inputs.nurons[6].neuronvalue = angularVelocity;
 
         self.x = px;
         self.y = py;
@@ -361,8 +367,6 @@ pub const Bug =struct
 
             print("best time is: {}\n", .{bestTime.*});
         }
-
-
     }
 
     pub fn fire(self: *Bug, id: usize) void
