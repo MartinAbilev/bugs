@@ -551,6 +551,22 @@ pub fn draw(ctx: jok.Context) !void {
         );
 
     }
+        const Gpos = cp.c.cpBodyGetPosition(GOD);
+        const center:sdl.PointF = .{.x = Gpos.x, .y = Gpos.y};
+        const radius: f32 = 30.0;
+        const color: sdl.Color = .{.r=255, .g=255, .b=0};
+        const opt: j2d.CircleOption = .{
+                                        .thickness = 8,
+                                        .num_segments = 8,
+                                        .depth = 0.5,
+                                    };
+        try j2d.circle(
+            center,
+            radius,
+            color,
+            opt,
+        );
+
     defer j2d.end();
 }
 
