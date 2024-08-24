@@ -501,14 +501,13 @@ pub fn draw(ctx: jok.Context) !void {
                 x = 0;
                 y +=1;
             }
-
         }
 
         const center:sdl.PointF = .{.x=bug.x, .y=bug.y};
         const radius: f32 = 30.0;
         const color: sdl.Color = bug.brain.color;
         const opt: j2d.CircleOption = .{
-                                        .thickness = 10.0,
+                                        .thickness = 4,
                                         .num_segments = 16,
                                         .depth = 0.5,
                                     };
