@@ -449,7 +449,7 @@ pub fn draw(ctx: jok.Context) !void {
 
             const center:sdl.PointF =
             .{
-                .x=bug.x + (x * xspacing) - (w * xspacing)/2,
+                .x=bug.x + radius/2 + (x * xspacing) - (w * xspacing)/2,
                 .y=bug.y + radius + (y * yspacing) - (h * yspacing)/2
              };
 
