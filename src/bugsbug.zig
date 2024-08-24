@@ -50,6 +50,8 @@ pub const Bug =struct
         var  on2 = Nuron{.id = idc, .x = -30, .y = 0, .z = 0, .ntype = 2, }; idc = idc + 1 ;
         var  on3 = Nuron{.id = idc, .x = 0, .y = 30, .z = 0, .ntype = 2, }; idc = idc + 1 ;
         var  on4 = Nuron{.id = idc, .x = 0, .y = -30, .z = 0, .ntype = 2, }; idc = idc + 1 ;
+        var  on5 = Nuron{.id = idc, .x = 0, .y = 30, .z = 0, .ntype = 2, }; idc = idc + 1 ;
+        var  on6 = Nuron{.id = idc, .x = 0, .y = -30, .z = 0, .ntype = 2, }; idc = idc + 1 ;
 
         var  hnn: [conf.maxHidden]Nuron = undefined;
         for(0..conf.maxHidden)|i|
@@ -68,9 +70,14 @@ pub const Bug =struct
         on2.conToAll();
         on3.conToAll();
         on4.conToAll();
+        on5.conToAll();
+        on6.conToAll();
 
-        const inputs   = br.Inputs{.nurons=[_]Nuron{in1, in2, in3, in4}};
-        const outputs = br.Outputs{.nurons = [_]Nuron{on1, on2, on3, on4}};
+        const inputs   = br.Inputs
+        {.nurons=[_]Nuron{in1, in2, in3, in4}};
+
+        const outputs = br.Outputs
+        {.nurons = [_]Nuron{on1, on2, on3, on4, on5, on6}};
         const hidden   = br.Hidden{.nurons = hnn};
 
         self.brain = br.Brain
@@ -231,13 +238,25 @@ pub const Bug =struct
     pub fn fireTruster(self: *Bug, id: usize) void
     {
         // const bodyPos = cp.c.cpBodyGetPosition(self.pbody);
-        const bodyPos = cp.c.cpv(0, 0);        // const impos = cp.c.cpBodyGetPosition(self.pinp3);
+        var cx: f32 = 0.0;
+        var cy: f32 = 0.0;
 
         // const locp = cp.c.cpBodyWorldToLocal(self.pbody, cp.c.cpBodyGetPosition(self.pinp1));
-        const locp = cp.c.cpBodyWorldToLocal(self.pbody, cp.c.cpv(self.brain.inputs.nurons[id].x, self.brain.inputs.nurons[id].y));
-        const force = cp.c.cpv(-locp.x*1, -locp.y*1);
-        // const force = cp.c.cpBodyGetPosition(self.pinp1);
-
+        const locp = cp.c.cpBodyWorldToLocal(self.pbody, cp.c.cpv(self.brain.outputs.nurons[id].x, self.brain.outputs.nurons[id].y));
+        var force = cp.c.cpv(-locp.x*1, -locp.y*1);
+        if(id == 4)
+        {
+            cx = 0;
+            cy = -50;
+            force = cp.c.cpv(locp.x*0.1, 0.0);
+        }
+        if(id == 5)
+        {
+            cx = 0;
+            cy = 50;
+            force = cp.c.cpv(-locp.x*0.1, 0.0);
+        }
+        const bodyPos = cp.c.cpv(cx, cy);        // const impos = cp.c.cpBodyGetPosition(self.pinp3);
 
         cp.c.cpBodyApplyImpulseAtLocalPoint(self.pbody,
                                             force,
@@ -251,18 +270,32 @@ pub const Bug =struct
         const pinp1 = cp.c.cpBodyGetPosition(self.pinp1);
         self.brain.inputs.nurons[0].x = pinp1.x;
         self.brain.inputs.nurons[0].y = pinp1.y;
+        self.brain.outputs.nurons[0].x = pinp1.x;
+        self.brain.outputs.nurons[0].y = pinp1.y;
 
         const pinp2 = cp.c.cpBodyGetPosition(self.pinp2);
         self.brain.inputs.nurons[1].x = pinp2.x;
         self.brain.inputs.nurons[1].y = pinp2.y;
+        self.brain.outputs.nurons[1].x = pinp2.x;
+        self.brain.outputs.nurons[1].y = pinp2.y;
 
         const pinp3 = cp.c.cpBodyGetPosition(self.pinp3);
         self.brain.inputs.nurons[2].x = pinp3.x;
         self.brain.inputs.nurons[2].y = pinp3.y;
+        self.brain.outputs.nurons[2].x = pinp3.x;
+        self.brain.outputs.nurons[2].y = pinp3.y;
 
         const pinp4 = cp.c.cpBodyGetPosition(self.pinp4);
         self.brain.inputs.nurons[3].x = pinp4.x;
         self.brain.inputs.nurons[3].y = pinp4.y;
+        self.brain.outputs.nurons[3].x = pinp4.x;
+        self.brain.outputs.nurons[3].y = pinp4.y;
+
+        self.brain.outputs.nurons[4].x = pinp4.x;
+        self.brain.outputs.nurons[4].y = pinp4.y;
+
+        self.brain.outputs.nurons[5].x = pinp3.x;
+        self.brain.outputs.nurons[5].y = pinp3.y;
 
         const b =   self.pbody;
         const bv = cp.c.cpBodyGetPosition(b);
