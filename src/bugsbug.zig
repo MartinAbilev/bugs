@@ -263,7 +263,7 @@ pub const Bug =struct
 
         // const locp = cp.c.cpBodyWorldToLocal(self.pbody, cp.c.cpBodyGetPosition(self.pinp1));
         const locp = cp.c.cpBodyWorldToLocal(self.pbody, cp.c.cpv(self.brain.outputs.nurons[id].x, self.brain.outputs.nurons[id].y));
-        var force = cp.c.cpv(-locp.x*0.1, -locp.y*0.1);
+        var force = cp.c.cpv(-locp.x*0.5, -locp.y*0.5);
         var bodyPos = cp.c.cpv(cx, cy);        // const impos = cp.c.cpBodyGetPosition(self.pinp3);
         if(id == 4)
         {

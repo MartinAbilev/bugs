@@ -28,7 +28,7 @@ pub const Nuron = struct
         {
             self.neuronvalue -=0.1;
         }
-        else self.neuronvalue -= 0.03;
+        else self.neuronvalue -= 0.001;
         if(self.neuronvalue < 0.0) self.neuronvalue = 0.0;
     }
     pub fn fire(self: *Nuron) void

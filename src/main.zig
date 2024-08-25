@@ -473,26 +473,18 @@ pub fn draw(ctx: jok.Context) !void {
 
             const radius: f32 = 3.0;
             const outvalue: f32 = if(i<bug.brain.outputs.nurons.len)bug.brain.outputs.nurons[i].neuronvalue else 0.0;
-            const outhresold: f32 =  if(i<bug.brain.outputs.nurons.len)bug.brain.outputs.nurons[i].thresold else 0.0;
+            // const outhresold: f32 =  if(i<bug.brain.outputs.nurons.len)bug.brain.outputs.nurons[i].thresold else 0.0;
             const inpvalue = bug.brain.inputs.nurons[i].neuronvalue;
-            const inpthresold = bug.brain.inputs.nurons[i].thresold;
+            // const inpthresold = bug.brain.inputs.nurons[i].thresold;
             var cr: u8= 100;
             var cg: u8= 100;
 
 
-            if(
-                (outvalue>0 and outvalue>outhresold)
-                or
-                (outvalue<0 and outvalue>outhresold*-1)
-            )
+            if(outvalue>0)
             cr = 255
             else cr = 100;
 
-            if(
-                (inpvalue>0 and inpvalue>inpthresold)
-                or
-                (inpvalue<0 and inpvalue>inpthresold*-1)
-            )
+            if(inpvalue>0)
             cg = 255
             else cg = 0;
 
