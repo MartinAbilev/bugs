@@ -355,14 +355,27 @@ pub const Bug =struct
         const velocity = cp.c.cpBodyGetVelocity(self.pbody);
         const angularVelocity = cp.c.cpBodyGetAngularVelocity(self.pbody);
 
+        // print("linear velocity: {}\n", .{velocity});
         // print("angular velocity: {}\n", .{angularVelocity});
-       if(velocity.x>0) self.brain.inputs.nurons[4].neuronvalue = velocity.x;
-       if(velocity.x<0) self.brain.inputs.nurons[5].neuronvalue = -1 * velocity.x;
-       if(velocity.y>0)self.brain.inputs.nurons[6].neuronvalue = velocity.y;
-       if(velocity.y<0)self.brain.inputs.nurons[7].neuronvalue = -1 * velocity.y;
+       if( self.brain.inputs.nurons[4].neuronvalue == 0 and velocity.x > 6) self.brain.inputs.nurons[4].neuronvalue = velocity.x
+       else self.brain.inputs.nurons[4].neuronvalue = 0.0;
 
-       if(angularVelocity>0) self.brain.inputs.nurons[8].neuronvalue = angularVelocity;
-       if(angularVelocity<0) self.brain.inputs.nurons[9].neuronvalue = -1 * angularVelocity;
+       if( self.brain.inputs.nurons[5].neuronvalue == 0 and velocity.x < -6) self.brain.inputs.nurons[5].neuronvalue = -1*velocity.x
+       else self.brain.inputs.nurons[5].neuronvalue = 0.0;
+
+       if( self.brain.inputs.nurons[6].neuronvalue == 0 and velocity.y > 6) self.brain.inputs.nurons[6].neuronvalue = velocity.y
+       else self.brain.inputs.nurons[6].neuronvalue = 0.0;
+
+       if( self.brain.inputs.nurons[7].neuronvalue == 0 and velocity.y < -6) self.brain.inputs.nurons[7].neuronvalue = -1*velocity.y
+       else self.brain.inputs.nurons[7].neuronvalue = 0.0;
+
+
+       if( self.brain.inputs.nurons[8].neuronvalue == 0 and angularVelocity > 3) self.brain.inputs.nurons[8].neuronvalue = angularVelocity
+       else self.brain.inputs.nurons[8].neuronvalue = 0;
+
+       if( self.brain.inputs.nurons[9].neuronvalue == 0 and angularVelocity < -3) self.brain.inputs.nurons[9].neuronvalue = -1*angularVelocity
+       else self.brain.inputs.nurons[9].neuronvalue = 0;
+
 
         self.x = px;
         self.y = py;
@@ -398,32 +411,13 @@ pub const Bug =struct
     {
         // _=self;
         self.isAlive = false;
-                        const rand = std.crypto.random;
-                const a = rand.float(f32);
-                const b = rand.boolean();
-                const c = rand.int(u8);
-                const d = rand.intRangeAtMost(u8, 0, 255);
 
-
-                _ = .{ a, b, c, d };
+        const rand = std.crypto.random;
 
         const rx: f32=  @floatFromInt(rand.intRangeAtMost(u16, 50, 750));
         const ry: f32=  @floatFromInt(rand.intRangeAtMost(u16, 50, 550));
 
         const kur = cp.c.cpv(rx, ry);
-        self.ct = 0;
-        for(0..self.brain.inputs.nurons.len)|i|
-        {
-            self.brain.inputs.nurons[i].neuronvalue =0.0;
-        }
-        for(0..self.brain.hidden.nurons.len)|i|
-        {
-            self.brain.hidden.nurons[i].zero();
-        }
-        for(0..self.brain.outputs.nurons.len)|i|
-        {
-            self.brain.outputs.nurons[i].zero();
-        }
 
         cp.c.cpBodySetVelocity(self.pbody, cp.c.cpv(0,0));
         cp.c.cpBodySetAngularVelocity(self.pbody, 0.0);
@@ -440,6 +434,19 @@ pub const Bug =struct
 
         self.ct = 0;
         self.brain = championBrain.*;
+
+        for(0..self.brain.inputs.nurons.len)|i|
+        {
+            self.brain.inputs.nurons[i].neuronvalue =0.0;
+        }
+        for(0..self.brain.hidden.nurons.len)|i|
+        {
+            self.brain.hidden.nurons[i].zero();
+        }
+        for(0..self.brain.outputs.nurons.len)|i|
+        {
+            self.brain.outputs.nurons[i].zero();
+        }
         mutate(self);
 
        // print("Bug {} DIE!\n", .{self.id});
