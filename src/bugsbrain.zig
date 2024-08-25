@@ -154,17 +154,19 @@ pub const Brain = struct
            for(cons, 0..cons.len)|con,ii|
            {
                 _=con;
-                // const b = rand.boolean();
+                const b = rand.boolean();
                 // const c = rand.int(u8);
                 // const d: f32 = @floatFromInt( rand.intRangeAtMost(u8, 0, conf.maxMutRate) );
                 const a = rand.float(f32);
 
-                cons[ii].weight = a;
+                if(b and cons[ii].weight < 1) cons[ii].weight += a*rate;
+                if(!b and cons[ii].weight > 0) cons[ii].weight -= a*rate;
            }
-                const a = rand.float(f32);
+            const a = rand.float(f32);
         //    const a: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, conf.maxMutRate) );
-        //    const b = rand.boolean();
-           inputs[i].thresold = a;
+            const b = rand.boolean();
+            if(b and inputs[i].thresold < 1) inputs[i].thresold += a;
+            if(!b and inputs[i].thresold > 0) inputs[i].thresold -= a;
 
         }
     }
