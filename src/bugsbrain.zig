@@ -33,13 +33,15 @@ pub const Brain = struct
 
         for(inps, 0..inps.len)|inp, i|
         {
-            if(inp.neuronvalue>inp.thresold)
-            // if(inp.neuronvalue>0.9)
+
+            if(
+                (inp.neuronvalue > 0 and inp.neuronvalue>inp.thresold)
+            )
             {
                 // input if over thresold fire to all conected hiddens * wight
                 for(inp.cons)|con|
                 {
-                    hids[con.to].neuronvalue=inp.neuronvalue * con.weight;
+                    hids[con.to].neuronvalue=1.0 * con.weight;
                 }
             }
             else
@@ -66,6 +68,7 @@ pub const Brain = struct
             {
                 hids[i].zero();
             }
+
             hids[i].update();
         }
 
@@ -117,7 +120,7 @@ pub const Brain = struct
            const b = rand.boolean();
 
            if(b)hidden[i].thresold += a/conf.maxMutRate*rate;
-           if(!b)hidden[i].thresold -= a/conf.maxMutRate*rate;
+           if(!b and hidden[i].thresold > 0)hidden[i].thresold -= a/conf.maxMutRate*rate;
            if(hidden[i].thresold < 0)hidden[i].thresold = 0.0;
         }
 
@@ -139,7 +142,7 @@ pub const Brain = struct
            const a: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, conf.maxMutRate) );
            const b = rand.boolean();
            if(b)outputs[i].thresold += a/conf.maxMutRate*rate;
-           if(!b)outputs[i].thresold -= a/conf.maxMutRate*rate;
+           if(!b and outputs[i].thresold>0)outputs[i].thresold -= a/conf.maxMutRate*rate;
         }
 
         var inputs = &self.inputs.nurons;
@@ -161,7 +164,7 @@ pub const Brain = struct
            const a: f32 =  @floatFromInt( rand.intRangeAtMost(u8, 0, conf.maxMutRate) );
            const b = rand.boolean();
            if(b)inputs[i].thresold += a/conf.maxMutRate*rate;
-           if(!b)inputs[i].thresold -= a/conf.maxMutRate*rate;
+           if(!b and inputs[i].thresold>0)inputs[i].thresold -= a/conf.maxMutRate*rate;
         }
     }
 };

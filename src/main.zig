@@ -465,19 +465,37 @@ pub fn draw(ctx: jok.Context) !void {
 
             if(i == 4) center = .{.x=bug.x - 10.0, .y=bug.y};
             if(i == 5) center = .{.x=bug.x + 10.0, .y=bug.y};
-            if(i == 6) center = .{.x=bug.x , .y= bug.y - 10};
+            if(i == 6) center = .{.x=bug.x - 10.0, .y=bug.y};
+            if(i == 7) center = .{.x=bug.x + 10.0, .y=bug.y};
+
+            if(i == 8) center = .{.x=bug.x , .y= bug.y - 10};
+            if(i == 9) center = .{.x=bug.x , .y= bug.y - 10};
 
             const radius: f32 = 3.0;
             const outvalue: f32 = if(i<bug.brain.outputs.nurons.len)bug.brain.outputs.nurons[i].neuronvalue else 0.0;
+            const outhresold: f32 =  if(i<bug.brain.outputs.nurons.len)bug.brain.outputs.nurons[i].thresold else 0.0;
             const inpvalue = bug.brain.inputs.nurons[i].neuronvalue;
+            const inpthresold = bug.brain.inputs.nurons[i].thresold;
             var cr: u8= 100;
             var cg: u8= 100;
-            if(outvalue>0.5)
+
+
+            if(
+                (outvalue>0 and outvalue>outhresold)
+                or
+                (outvalue<0 and outvalue>outhresold*-1)
+            )
             cr = 255
             else cr = 100;
-            if(inpvalue>0.9)
+
+            if(
+                (inpvalue>0 and inpvalue>inpthresold)
+                or
+                (inpvalue<0 and inpvalue>inpthresold*-1)
+            )
             cg = 255
-            else cg = 100;
+            else cg = 0;
+
             const color: sdl.Color = .{.r=cr, .g=cg, .b=0};
             const opt: j2d.CircleOption = .{
                                             .thickness = 3.0,

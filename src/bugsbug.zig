@@ -41,17 +41,20 @@ pub const Bug =struct
 
         var idc: usize= 0;
 
-        var  in1 = Nuron{.id = idc, .x = 50, .y = 0, .z = 0, .ntype = 1, }; idc = idc + 1 ;
-        var  in2 = Nuron{.id = idc, .x = -50, .y = 0, .z = 0, .ntype = 1, }; idc = idc + 1 ;
-        var  in3 = Nuron{.id = idc, .x = 0, .y = 50, .z = 0, .ntype = 1, }; idc = idc + 1 ;
-        var  in4 = Nuron{.id = idc, .x = 0, .y = -50, .z = 0, .ntype = 1, }; idc = idc + 1 ;
+        var  in01 = Nuron{.id = idc, .x = 50, .y = 0, .z = 0, .ntype = 1, }; idc = idc + 1 ;
+        var  in02 = Nuron{.id = idc, .x = -50, .y = 0, .z = 0, .ntype = 1, }; idc = idc + 1 ;
+        var  in03 = Nuron{.id = idc, .x = 0, .y = 50, .z = 0, .ntype = 1, }; idc = idc + 1 ;
+        var  in04 = Nuron{.id = idc, .x = 0, .y = -50, .z = 0, .ntype = 1, }; idc = idc + 1 ;
 
         // for velosity check
-        var  in5 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0, .ntype = 1, }; idc = idc + 1 ;
-        var  in6 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0, .ntype = 1, }; idc = idc + 1 ;
+        var  in05 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0, .ntype = 1, }; idc = idc + 1 ;
+        var  in06 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0, .ntype = 1, }; idc = idc + 1 ;
+        var  in07 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0, .ntype = 1, }; idc = idc + 1 ;
+        var  in08 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0, .ntype = 1, }; idc = idc + 1 ;
 
         // for angular velocity check
-        var  in7 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0, .ntype = 1, }; idc = idc + 1 ;
+        var  in09 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0, .ntype = 1, }; idc = idc + 1 ;
+        var  in10 = Nuron{.id = idc, .x = 0, .y = 0, .z = 0, .ntype = 1, }; idc = idc + 1 ;
 
         var  on1 = Nuron{.id = idc, .x = 30, .y = 0, .z = 0, .ntype = 2, }; idc = idc + 1 ;
         var  on2 = Nuron{.id = idc, .x = -30, .y = 0, .z = 0, .ntype = 2, }; idc = idc + 1 ;
@@ -69,13 +72,19 @@ pub const Bug =struct
             idc = idc + 1 ;
         }
 
-        in1.conToAll();
-        in2.conToAll();
-        in3.conToAll();
-        in4.conToAll();
-        in5.conToAll();
-        in6.conToAll();
-        in7.conToAll();
+        in01.conToAll();
+        in02.conToAll();
+        in03.conToAll();
+        in04.conToAll();
+
+        in05.conToAll();
+        in06.conToAll();
+        in07.conToAll();
+        in08.conToAll();
+
+        in09.conToAll();
+        in10.conToAll();
+
         on1.conToAll();
         on2.conToAll();
         on3.conToAll();
@@ -84,7 +93,7 @@ pub const Bug =struct
         on6.conToAll();
 
         const inputs   = br.Inputs
-        {.nurons=[_]Nuron{in1, in2, in3, in4, in5, in6, in7}};
+        {.nurons=[_]Nuron{in01, in02, in03, in04, in05, in06, in07, in08, in09, in10}};
 
         const outputs = br.Outputs
         {.nurons = [_]Nuron{on1, on2, on3, on4, on5, on6}};
@@ -344,9 +353,15 @@ pub const Bug =struct
 
         const velocity = cp.c.cpBodyGetVelocity(self.pbody);
         const angularVelocity = cp.c.cpBodyGetAngularVelocity(self.pbody);
-        self.brain.inputs.nurons[4].neuronvalue = velocity.x;
-        self.brain.inputs.nurons[5].neuronvalue = velocity.y;
-        self.brain.inputs.nurons[6].neuronvalue = angularVelocity;
+
+        // print("angular velocity: {}\n", .{angularVelocity});
+       if(velocity.x>0) self.brain.inputs.nurons[4].neuronvalue = velocity.x;
+       if(velocity.x<0) self.brain.inputs.nurons[5].neuronvalue = -1 * velocity.x;
+       if(velocity.y>0)self.brain.inputs.nurons[6].neuronvalue = velocity.y;
+       if(velocity.y<0)self.brain.inputs.nurons[7].neuronvalue = -1 * velocity.y;
+
+       if(angularVelocity>0) self.brain.inputs.nurons[8].neuronvalue = angularVelocity;
+       if(angularVelocity<0) self.brain.inputs.nurons[9].neuronvalue = -1 * angularVelocity;
 
         self.x = px;
         self.y = py;
