@@ -492,11 +492,14 @@ pub fn draw(ctx: jok.Context) !void {
             );
         }
 
+
         var x: f32 = 0;
         var y: f32 = 0;
-        const radius1: f32 = 4.0;
         const nlen: f32 = @floatFromInt(bug.brain.hidden.nurons.len);
-        const w: f32 = std.math.sqrt(nlen);
+        const square: f32 = std.math.sqrt(nlen);
+        const dim: f32 = 40;
+        const radius1: f32 = dim / square;
+        const w: f32 = square;
         const h: f32 = w;
         const xspacing: f32 = (w*radius1)/2;
         const yspacing: f32 = (h*radius1)/2;
