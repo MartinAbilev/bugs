@@ -260,9 +260,9 @@ pub fn init(ctx: jok.Context) !void
         .shapes = &[_]cp.World.ObjectOption.ShapeProperty{
             .{
                 .segment = .{
-                    .a = .{ .x = -30, .y = 0 },
-                    .b = .{ .x = 30, .y = 0 },
-                    .radius = 10,
+                    .a = .{ .x = -10, .y = 0 },
+                    .b = .{ .x = 10, .y = 0 },
+                    .radius = 20,
                     .physics = .{
                         .weight = .{ .mass = 0 },
                         .elasticity = 1.0,
