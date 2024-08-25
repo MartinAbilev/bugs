@@ -498,11 +498,11 @@ pub fn draw(ctx: jok.Context) !void {
         const nlen: f32 = @floatFromInt(bug.brain.hidden.nurons.len);
         const square: f32 = std.math.sqrt(nlen);
         const dim: f32 = 40;
-        const radius1: f32 = dim / square;
+        const radius1: f32 = (dim / square)/2;
         const w: f32 = square;
-        const h: f32 = w;
-        const xspacing: f32 = (w*radius1)/2;
-        const yspacing: f32 = (h*radius1)/2;
+        // const h: f32 = w;
+        const xspacing: f32 = (radius1*2);
+        const yspacing: f32 = (radius1*2);
 
         for(bug.brain.hidden.nurons, 0..bug.brain.hidden.nurons.len)|hid, iu|
         {
