@@ -25,13 +25,8 @@ Morphological Evolution: In the later iterations, bugs also began to evolve thei
 
 ## To-Dos:
 
-## For Physics
-- Add thrusters.
-- Make them fire with some graphics (gfx).
-
 ## For UI/UX
-- Add a simple UI.
-- Toggle between world/brain mode.
+- save/load bug from db.
 - Implement a function to grid layout neurons' positions.
 
 
