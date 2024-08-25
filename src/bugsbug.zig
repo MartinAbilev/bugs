@@ -256,13 +256,14 @@ pub const Bug =struct
     }
     pub fn fireTruster(self: *Bug, id: usize) void
     {
+        // print("fire", .{});
         // const bodyPos = cp.c.cpBodyGetPosition(self.pbody);
         var cx: f32 = 0.0;
         var cy: f32 = 0.0;
 
         // const locp = cp.c.cpBodyWorldToLocal(self.pbody, cp.c.cpBodyGetPosition(self.pinp1));
         const locp = cp.c.cpBodyWorldToLocal(self.pbody, cp.c.cpv(self.brain.outputs.nurons[id].x, self.brain.outputs.nurons[id].y));
-        var force = cp.c.cpv(-locp.x*1, -locp.y*1);
+        var force = cp.c.cpv(-locp.x*0.1, -locp.y*0.1);
         var bodyPos = cp.c.cpv(cx, cy);        // const impos = cp.c.cpBodyGetPosition(self.pinp3);
         if(id == 4)
         {
