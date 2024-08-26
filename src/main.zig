@@ -1,5 +1,7 @@
 const bs = @import("bugsshared.zig");
 const bb =@import("bugsbug.zig");
+const nn = @import("bugsnuron.zig");
+
 pub const br = @import("bugsbrain.zig");
 const conf = @import("bugsconfig.zig");
 
@@ -50,6 +52,20 @@ const handler = tk.chain(.{
     tk.group("/api", tk.router(api)),
     tk.send(error.NotFound),
 });
+
+
+pub const Inputs = struct {nurons:[conf.maxIn] nn.Nuron};
+pub const Outputs = struct {nurons:[conf.maxOut] nn.Nuron};
+pub const Hidden = struct {nurons:[conf.maxHidden] nn.Nuron};
+const brainSize = conf.maxIn + conf.maxHidden + conf.maxOut;
+    const BBrain:type = struct
+    {
+        inputs: Inputs,
+        hidden: Hidden,
+        outputs: Outputs,
+        size: usize = brainSize,
+        color: sdl.Color = .{ .r = 255, .g =255, .b = 255 },
+    };
 const api = struct
 {
 
@@ -61,6 +77,24 @@ const api = struct
     {
         _= data;
         return  returnState(allocator);
+    }
+
+    pub fn @"PUT /upload"(allocator: std.mem.Allocator, data: bb.br.Brain ) ![]const u8
+    {
+        print("Upload Done {}\n", .{data});
+
+        for(0..Bugs.len)|i|
+        {
+            Bugs[i].brain = data;
+        }
+        const json = .{.status=400};
+
+        var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+
+        var string = std.ArrayList(u8).init(gpa.allocator());
+        try std.json.stringify(json, .{}, string.writer());
+
+        return   std.fmt.allocPrint(allocator, "{s}", .{string.items});
     }
 };
 

@@ -394,7 +394,7 @@ pub const Bug =struct
             championBrain.* = self.brain;
             championBrain.*.color = newChampionColor;
 
-            print("best time is: {}\n", .{bestTime.*});
+            // print("best time is: {}\n", .{bestTime.*});
         }
     }
 
