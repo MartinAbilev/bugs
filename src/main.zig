@@ -93,7 +93,8 @@ const api = struct
 
         var string = std.ArrayList(u8).init(gpa.allocator());
         try std.json.stringify(json, .{}, string.writer());
-
+        bestTime = 0;
+        deaths = 0;
         return   std.fmt.allocPrint(allocator, "{s}", .{string.items});
     }
 };
@@ -444,7 +445,7 @@ pub fn hiveDeath() void
         deaths = 0;
         if(bestTime > bestestTime)bestestTime = bestTime;
         // bestTime -=hiveSize;
-        bestTime = 0;
+        bestTime -= hiveSize;
     }
     // print("hive size: {}, deaths: {}, bestTime: {}, bestestTime {} \n", .{hiveSize, deaths, bestTime, bestestTime});
 }
