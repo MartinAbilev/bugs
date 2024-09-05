@@ -4,3 +4,4 @@ zig-out
 zig-out/bin/assets
 zig-out/bin/bugz.exe
 zig-out/bin/bugz.pdb
+zig-out/bin/bugz.exe
