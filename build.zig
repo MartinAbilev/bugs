@@ -20,6 +20,11 @@ pub fn build(b: *std.Build) void {
         .install_dir = .bin,
         .install_subdir = "assets",
     });
+
+    const sdl_path = std.Build.LazyPath{ .cwd_relative = "sdl/SDL2.dll" };
+    const install_path = "bin/SDL2.dll";
+    const install_sdl=b.addInstallFile(sdl_path, install_path);
+
     const examples = [_]struct { name: []const u8, opt: BuildOptions }
     {
         .{ .name = "bugz", .opt = .{ .use_cp = true } },
@@ -39,13 +44,17 @@ pub fn build(b: *std.Build) void {
         );
         const install_cmd = b.addInstallArtifact(exe, .{});
         const run_cmd = b.addRunArtifact(exe);
+
         run_cmd.step.dependOn(&install_cmd.step);
         run_cmd.step.dependOn(&assets_install.step);
+        run_cmd.step.dependOn(&install_sdl.step);
+
         run_cmd.cwd = std.Build.LazyPath{ .cwd_relative = "zig-out/bin" };
         const run_step = b.step(
             demo.name,
             "run example " ++ demo.name,
         );
+
         run_step.dependOn(&run_cmd.step);
         build_examples.dependOn(&install_cmd.step);
     }
