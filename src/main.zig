@@ -97,6 +97,25 @@ const api = struct
         deaths = 0;
         return   std.fmt.allocPrint(allocator, "{s}", .{string.items});
     }
+
+    pub fn @"POST /firenuron"(allocator: std.mem.Allocator, data: struct{bugid: usize, inp: nn.Nuron} ) ![]const u8
+    {
+        print("Fire Nuron {}\n", .{data});
+
+        // for(0..Bugs.len)|i|
+        // {
+        //     Bugs[i].brain = data;
+        // }
+
+        const json = .{.status=400, .data=data};
+
+        var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+
+        var string = std.ArrayList(u8).init(gpa.allocator());
+        try std.json.stringify(json, .{}, string.writer());
+
+        return   std.fmt.allocPrint(allocator, "{s}", .{string.items});
+    }
 };
 
 fn returnState(allocator: std.mem.Allocator)![]const u8
