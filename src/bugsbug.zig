@@ -400,8 +400,34 @@ pub const Bug =struct
 
     pub fn fire(self: *Bug, id: usize) void
     {
-        self.brain.inputs.nurons[id].fire();
-        // fireTruster(self, id);
+        const inps = &self.brain.inputs.nurons;
+        for(0..inps.len)|ii|
+        {
+            if(id == inps[ii].id)
+            {
+                // print("Fire Input Nuron {}\n", .{id});
+                inps[ii].fire();
+            }
+        }
+        const hids = &self.brain.hidden.nurons;
+        for(0..hids.len)|ii|
+        {
+            if(id == hids[ii].id)
+            {
+                print("Fire Hidden Nuron {}\n", .{id});
+                hids[ii].fire();
+            }
+        }
+        const outs = &self.brain.outputs.nurons;
+        for(0..outs.len)|ii|
+        {
+            if(id == outs[ii].id)
+            {
+                print("Fire Output Nuron {}\n", .{id});
+                fireTruster(self, ii);
+            }
+        }
+
     }
     pub fn mutate(self: *Bug) void
     {

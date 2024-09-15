@@ -100,12 +100,12 @@ const api = struct
 
     pub fn @"POST /firenuron"(allocator: std.mem.Allocator, data: struct{bugid: usize, inp: nn.Nuron} ) ![]const u8
     {
-        print("Fire Nuron {}\n", .{data});
 
-        // for(0..Bugs.len)|i|
-        // {
-        //     Bugs[i].brain = data;
-        // }
+        const nuronToFire = data.inp.id;
+        for(0..Bugs.len)|i|
+        {
+            Bugs[i].fire(nuronToFire);
+        }
 
         const json = .{.status=400, .data=data};
 
