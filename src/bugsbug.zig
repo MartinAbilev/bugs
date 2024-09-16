@@ -425,6 +425,7 @@ pub const Bug =struct
             {
                 print("Fire Output Nuron {}\n", .{id});
                 fireTruster(self, ii);
+                outs[ii].fire();
             }
         }
 
