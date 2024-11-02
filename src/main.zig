@@ -87,14 +87,17 @@ const api = struct
         {
             Bugs[i].brain = data;
         }
+
+        bestTime = 0;
+        deaths = 0;
+
         const json = .{.status=400};
 
         var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-
         var string = std.ArrayList(u8).init(gpa.allocator());
+
         try std.json.stringify(json, .{}, string.writer());
-        bestTime = 0;
-        deaths = 0;
+
         return   std.fmt.allocPrint(allocator, "{s}", .{string.items});
     }
 
