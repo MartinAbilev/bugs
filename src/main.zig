@@ -124,7 +124,16 @@ const api = struct
 fn returnState(allocator: std.mem.Allocator)![]const u8
 {
     const bugzToSend: usize = 1;
-    const JsonBugs = struct { id: usize, x: f32, y: f32, brain: bb.br.Brain };
+    const JsonBugs = struct
+    {
+        id: usize,
+        x: f32,
+        y: f32,
+        ct: i64,
+        bestTime: i64,
+        bestestTime: i64,
+        brain: bb.br.Brain
+    };
     var x:[bugzToSend]JsonBugs = undefined;
 
     for(0..bugzToSend)|i|
@@ -137,6 +146,9 @@ fn returnState(allocator: std.mem.Allocator)![]const u8
             .id = b.id,
             .x = b.x,
             .y = b.y,
+            .ct = b.ct,
+            .bestTime = bestTime,
+            .bestestTime = bestestTime,
             .brain = brain,
         };
     }

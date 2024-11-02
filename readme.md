@@ -29,6 +29,13 @@ Morphological Evolution: In the later iterations, bugs also began to evolve thei
 - save/load bug from db.
 - Implement a function to grid layout neurons' positions.
 
-
+```
+CREATE TABLE public.brainz (
+	brain json NULL,
+	id serial4 NOT NULL,
+	created_at timestamp DEFAULT now() NULL,
+	CONSTRAINT brainz_pkey PRIMARY KEY (id)
+);
+```
 
 M.A 2024
