@@ -104,7 +104,7 @@ pub const Brain = struct
         const rand = std.crypto.random;
         const raternd: f32 =
         @floatFromInt( rand.intRangeAtMost(u8, 0, conf.maxMutRate) );
-        const rate: f32 = raternd / 1113.133;
+        const rate: f32 = raternd / 11113;
 
         var hidden = &self.hidden.nurons;
         for(hidden, 0..hidden.len)|nuron, i|
