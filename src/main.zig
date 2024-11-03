@@ -127,8 +127,9 @@ fn returnState(allocator: std.mem.Allocator)![]const u8
     const JsonBugs = struct
     {
         id: usize,
-        x: f32,
-        y: f32,
+        hsize: usize,
+        x: u32,
+        y: u32,
         ct: i64,
         bestTime: i64,
         bestestTime: i64,
@@ -144,8 +145,9 @@ fn returnState(allocator: std.mem.Allocator)![]const u8
         x[i] = JsonBugs
         {
             .id = b.id,
-            .x = b.x,
-            .y = b.y,
+            .hsize = conf.maxHidden,
+            .x = @intFromFloat(b.x),
+            .y = @intFromFloat(b.y),
             .ct = b.ct,
             .bestTime = bestTime,
             .bestestTime = bestestTime,
