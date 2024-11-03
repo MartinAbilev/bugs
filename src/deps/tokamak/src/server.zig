@@ -6,7 +6,7 @@ const Response = @import("response.zig").Response;
 
 pub const Options = struct {
     injector: Injector = .{},
-    hostname: []const u8 = "127.0.0.1",
+    hostname: []const u8 = "192.168.1.124",
     port: u16,
     n_threads: usize = 8,
     keep_alive: bool = true,
